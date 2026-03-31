@@ -1,0 +1,38 @@
+name: CulinarApp
+
+options:
+  bundleIdPrefix: ru.vitalijbagautdinov
+  deploymentTarget:
+    iOS: 18.0
+
+targets:
+  CulinarApp:
+    type: application
+    platform: iOS
+    sources: [CulinarApp]
+    settings:
+      base:
+        PRODUCT_NAME: CulinarApp
+        PRODUCT_BUNDLE_IDENTIFIER: ru.vitalijbagautdinov.culinarapp
+        TARGETED_DEVICE_FAMILY: 1
+        IPHONEOS_DEPLOYMENT_TARGET: 18.0
+        SWIFT_VERSION: 5.10
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
+        LOCALIZED_STRING_SWIFTUI_SUPPORT: NO
+        SWIFT_EMIT_LOC_STRINGS: NO
+    info:
+      path: CulinarApp/Info.plist
+      properties:
+        CFBundleDisplayName: CulinarApp
+        UIDeviceFamily: [1]
+
+schemes:
+  CulinarApp:
+    build:
+      targets:
+        CulinarApp: all
+    run:
+      config: Debug
