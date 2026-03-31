@@ -2,11 +2,10 @@
 //  CulinarAppTests.swift
 //  CulinarAppTests
 //
-//  Created by Виталий Багаутдинов on 31.03.2026.
+//  Created by Виталий Багаутдинов on 01.04.2026.
 //
 
 import XCTest
-@testable import CulinarApp
 
 final class CulinarAppTests: XCTestCase {
 
@@ -25,12 +24,4 @@ final class CulinarAppTests: XCTestCase {
         // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
         // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

@@ -1,0 +1,32 @@
+name: iOS Ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build_and_test:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache Mint packages
+        uses: actions/cache@v4
+        with:
+          path: /Users/runner/.mint
+          key: mint-${{ runner.os }}-${{ hashFiles('Mintfile') }}
+          restore-keys: |
+            mint-${{ runner.os }}-
+      - name: Install Mint
+        run: brew install mint
+      - name: Install Mint deps (XcodeGen, SwiftLint)
+        run: make bootstrap
+      - name: Generate Xcode project
+        run: make generate
+      - name: Build & test
+        run: |
+          xcodebuild clean test \
+            -project "CulinarApp.xcodeproj" \
+            -scheme "CulinarApp" \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
