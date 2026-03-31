@@ -16,7 +16,13 @@ make hook
 ## Установка зависимостей
 
 ### Homebrew
-Чтобы установить dev-зависимости проекта, установи [Homebrew](https://brew.sh/).
+Чтобы установить dev-зависимости проекта, необходимо установить себе локально [Homebrew](https://brew.sh/).
+
+Проверить работоспособность Homebrew можно командой:
+
+```shell
+brew doctor
+```
 
 ### Mint
 Затем установи менеджер зависимостей [Mint](https://github.com/yonaskolb/Mint):
