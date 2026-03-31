@@ -25,8 +25,9 @@ jobs:
         run: make generate
       - name: Build & test
         run: |
+          set -euo pipefail
           xcodebuild clean test \
             -project "CulinarApp.xcodeproj" \
             -scheme "CulinarApp" \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
             CODE_SIGNING_ALLOWED=NO
