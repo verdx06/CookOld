@@ -50,8 +50,13 @@ private extension MainView {
                     }
                 }
                 ZStack {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 22))
+                    Button {
+                        //TODO: - Task 9 navigate to SearchView
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 22))
+                            .foregroundStyle(.foreground)
+                    }
                 }
                 .frame(width: 55, height: 55)
                 .background(Color.gray.opacity(0.08), in: Capsule())
