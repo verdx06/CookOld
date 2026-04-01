@@ -39,7 +39,7 @@ targets:
         LOCALIZED_STRING_SWIFTUI_SUPPORT: NO
         SWIFT_EMIT_LOC_STRINGS: NO
     info:
-      path: Sources/Info.plist
+      path: Sources/Resources/Info.plist
       properties:
         CFBundleDisplayName: CulinarApp
 
