@@ -11,6 +11,7 @@ enum CustomTab: String, CaseIterable {
     case home = "Главная"
     case favorite = "Избранное"
     case dish = "Собери блюдо"
+    case search
     
     var symbol: String {
         switch self {
@@ -20,6 +21,8 @@ enum CustomTab: String, CaseIterable {
             "heart.fill"
         case .dish:
             "cooktop.fill"
+        case .search:
+            "magnifyingglass"
         }
     }
     
@@ -37,8 +40,6 @@ struct CustomTabBar<TabItemView: View>: UIViewRepresentable {
     var backgroundTint: Color = .gray.opacity(0.08)
     var barTint: Color = .gray.opacity(0.15)
     var cornerRadius: CGFloat = 14
-    
-    let queue = DispatchQueue.main
     
     @Binding var activeTab: CustomTab
     @ViewBuilder var tabItemView: (CustomTab) -> TabItemView
@@ -60,11 +61,9 @@ struct CustomTabBar<TabItemView: View>: UIViewRepresentable {
             control.setImage(image, forSegmentAt: index)
         }
         
-        queue.async {
-            for subview in control.subviews {
-                if subview is UIImageView && subview != control.subviews.last {
-                    subview.alpha = 0
-                }
+        for subview in control.subviews {
+            if subview is UIImageView && subview != control.subviews.last {
+                subview.alpha = 0
             }
         }
         
@@ -82,7 +81,9 @@ struct CustomTabBar<TabItemView: View>: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UISegmentedControl, context: Context) {
-        //
+        if uiView.selectedSegmentIndex != activeTab.index {
+            uiView.selectedSegmentIndex = activeTab.index
+        }
     }
     
     func sizeThatFits(_ proposal: ProposedViewSize, uiView: UISegmentedControl, context: Context) -> CGSize? {

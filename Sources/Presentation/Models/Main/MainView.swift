@@ -25,16 +25,19 @@ struct MainView: View {
                 DishBuilderView()
                     .toolbarVisibility(.hidden, for: .tabBar)
             }
+            Tab.init(value: .search, role: .search) {
+                SearchView()
+                    .toolbarVisibility(.hidden, for: .tabBar)
+            }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            customTabbar()
+            customTabbar
         }
     }
 }
 
 private extension MainView {
-    @ViewBuilder
-    func customTabbar() -> some View {
+    var customTabbar: some View {
         VStack {
             HStack(spacing: 10) {
                 GeometryReader { geo in
@@ -46,23 +49,8 @@ private extension MainView {
                                 .font(.system(size: 10))
                         }
                         .symbolVariant(.fill)
-                        .frame(maxWidth: .infinity)
                     }
                 }
-                ZStack {
-                    Button {
-                        //TODO: - Task 9 navigate to SearchView
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 22))
-                            .foregroundStyle(.foreground)
-                    }
-                }
-                .frame(width: 55, height: 55)
-                .background(Color.gray.opacity(0.08), in: Capsule())
-                .overlay(
-                    Capsule().stroke(Color.gray.opacity(0.18), lineWidth: 1)
-                )
             }
             .frame(height: 55)
         }
