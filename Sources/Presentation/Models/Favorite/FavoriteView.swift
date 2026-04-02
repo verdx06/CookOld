@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct FavoriteView: View {
+struct FavoriteView: View
+{
     var body: some View {
         VStack {
             HStack {
-                Text(.favouriteScreenTitle)
+                Text("favourite_title".localized())
                     .font(.largeTitle)
             }
         }

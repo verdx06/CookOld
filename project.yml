@@ -20,7 +20,7 @@ targets:
         script: |
           export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
           if command -v swiftlint >/dev/null 2>&1; then
-            swiftlint lint --config "${SRCROOT}/.swiftlint.yml" --path "${SRCROOT}" || true
+            swiftlint lint --config "${SRCROOT}/.swiftlint.yml" --cache-path "${SRCROOT}/.swiftlint_cache" "${SRCROOT}" || true
           else
             echo "warning: SwiftLint not installed"
           fi
@@ -30,19 +30,20 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: ru.vitalijbagautdinov.culinarapp
         TARGETED_DEVICE_FAMILY: 1
         IPHONEOS_DEPLOYMENT_TARGET: 18.0
-        SWIFT_VERSION: 5.10
-        ENABLE_USER_SCRIPT_SANDBOXING: NO
         SUPPORTS_MACCATALYST: NO
-        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
         ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         LOCALIZED_STRING_SWIFTUI_SUPPORT: NO
         SWIFT_EMIT_LOC_STRINGS: NO
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
         STRING_CATALOG_GENERATE_SYMBOLS: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
     info:
       path: Sources/Resources/Info.plist
       properties:
         CFBundleDisplayName: CulinarApp
+        UILaunchScreen: {}
 
   CulinarAppTests:
     type: bundle.unit-test
