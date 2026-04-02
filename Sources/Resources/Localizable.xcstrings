@@ -62,6 +62,23 @@
         }
       }
     },
+    "favourite_screen_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "favourite_screen_title"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Избранное"
+          }
+        }
+      }
+    },
     "favourite_title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -73,7 +90,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Избранное"
           }
         }
