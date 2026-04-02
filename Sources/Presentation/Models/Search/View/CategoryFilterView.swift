@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-
 struct CategoryFilterView : View {
     @Bindable var vm : SearchViewModel
+    @State private var searchTask: Task<Void, Never>?
     var selectedCategory: MealCategory
     
     var body: some View {
         VStack {
             SearchBar(searchText: $vm.searchText, onSearch: {
-                Task { await vm.searchMealsByCategories(category: selectedCategory) }
+                Task { await vm.searchMealsInCategory(category: selectedCategory) }
             })
             .padding()
             
@@ -45,11 +45,23 @@ struct CategoryFilterView : View {
             }
         }
         .task {
-            await vm.searchMealsByCategories(category: selectedCategory)
+            await vm.searchMealsInCategory(category: selectedCategory)
+        }
+        .onAppear() {
+            vm.searchText = ""
+            vm.isInCategoryMode = true
         }
         .onDisappear() {
             vm.searchResult = .idle
             vm.searchText = ""
+            vm.isInCategoryMode = false
+        }
+        .onChange(of: vm.searchText) {
+            searchTask?.cancel()
+            searchTask = Task {
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                await vm.searchMealsInCategory(category: selectedCategory)
+            }
         }
     }
 }

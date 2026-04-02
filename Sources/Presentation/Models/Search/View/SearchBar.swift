@@ -20,9 +20,6 @@ struct SearchBar: View {
             TextField("Найти рецепт...", text: $searchText)
                 .focused($isFocused)
                 .foregroundColor(.primary)
-                .onChange(of: searchText) {
-                    onSearch()
-                }
                 .onSubmit {
                     onSearch()
                 }

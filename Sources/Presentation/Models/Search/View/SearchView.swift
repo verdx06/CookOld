@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var vm = SearchViewModel()
+    @State private var vm = SearchViewModel(
+        repository: SearchRepository(
+            service: NetworkService()
+        )
+    )
+    @State private var searchTask: Task<Void, Never>?
     
     var body: some View {
         NavigationStack {
@@ -17,9 +22,21 @@ struct SearchView: View {
                     Task { await vm.searchMeals() }
                 })
                 .padding(.top, 8)
+                .onChange(of: vm.searchText) {
+                    guard !vm.isInCategoryMode else { return }
+                    searchTask?.cancel()
+                    searchTask = Task {
+                        try? await Task.sleep(nanoseconds: 500_000_000)
+                        await vm.searchMeals()
+                    }
+                }
                 
                 if case .success(let meals) = vm.searchResult {
-                    MealListView(meals: meals)
+                    if meals.isEmpty {
+                        EmptyStateView()
+                    } else {
+                        MealListView(meals: meals)
+                    }
                 } else {
                     switch vm.categoriesState {
                     case .idle:

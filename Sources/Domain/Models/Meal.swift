@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Root Response
 struct MealResponse: Codable {
-    let meals: [Meal]
+    let meals: [Meal]?
 }
 
 // MARK: - Meal
@@ -17,9 +17,9 @@ struct Meal: Codable {
     let idMeal: String
     let strMeal: String
     let strMealAlternate: String?
-    let strCategory: String
-    let strArea: String
-    let strInstructions: String
+    var strCategory: String?
+    let strArea: String?
+    let strInstructions: String?
     let strMealThumb: String
     let strTags: String?
     let strYoutube: String?
