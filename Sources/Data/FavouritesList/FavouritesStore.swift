@@ -8,6 +8,7 @@
 import Foundation
 
 @Observable
+@MainActor
 final class FavouritesStore {
     var likedMeals: [Meal] = []
     var pendingRemoval: [Meal] = []
