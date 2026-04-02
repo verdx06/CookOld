@@ -38,7 +38,6 @@ targets:
         ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         LOCALIZED_STRING_SWIFTUI_SUPPORT: NO
         SWIFT_EMIT_LOC_STRINGS: NO
-        STRING_CATALOG_GENERATE_SYMBOLS: YES
     info:
       path: Sources/Resources/Info.plist
       properties:
