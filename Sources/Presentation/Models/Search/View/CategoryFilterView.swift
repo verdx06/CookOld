@@ -21,15 +21,15 @@ struct CategoryFilterView : View {
             
             switch vm.searchResult {
             case .idle:
-                ScrollView {
-                    MealGridPreview()
-                }
+                preview
             case .loading:
-                ScrollView {
-                    MealGridPreview()
-                }
+                preview
             case .success(let meals):
-                MealListView(meals: meals)
+                if meals.isEmpty {
+                    EmptyStateView()
+                } else {
+                    MealListView(meals: meals)
+                }
             case .failure:
                 ErrorStateView()
             }
@@ -62,6 +62,12 @@ struct CategoryFilterView : View {
                 try? await Task.sleep(nanoseconds: 500_000_000)
                 await vm.searchMealsInCategory(category: selectedCategory)
             }
+        }
+    }
+    
+    var preview : some View {
+        ScrollView {
+            MealGridPreview()
         }
     }
 }

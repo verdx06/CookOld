@@ -8,9 +8,9 @@
 import Foundation
 
 final class SearchRepository {
-    private var service: NetworkService
+    private var service: CulinarNetworkService
     
-    init(service: NetworkService) {
+    init(service: CulinarNetworkService) {
         self.service = service
     }
     

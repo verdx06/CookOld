@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @State private var vm = SearchViewModel(
         repository: SearchRepository(
-            service: NetworkService()
+            service: CulinarNetworkService()
         )
     )
     @State private var searchTask: Task<Void, Never>?
@@ -40,15 +40,9 @@ struct SearchView: View {
                 } else {
                     switch vm.categoriesState {
                     case .idle:
-                        ScrollView {
-                            categoriesHeader
-                            CategoryGridPreview()
-                        }
+                        preview
                     case .loading:
-                        ScrollView {
-                            categoriesHeader
-                            CategoryGridPreview()
-                        }
+                        preview
                     case .success(let categories):
                         ScrollView {
                             categoriesHeader
@@ -77,6 +71,7 @@ struct SearchView: View {
             }
             .onAppear {
                 vm.searchResult = .idle
+                vm.searchText = ""
             }
         }
     }
@@ -87,6 +82,13 @@ struct SearchView: View {
             .fontWeight(.bold)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
+    }
+    
+    var preview: some View {
+        ScrollView {
+            categoriesHeader
+            CategoryGridPreview()
+        }
     }
 }
 

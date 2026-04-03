@@ -7,7 +7,14 @@
 
 import Foundation
 
-final class NetworkService {
+protocol Network {
+    func request<T: Decodable>(url: String) async throws -> T
+    
+    func requestData<T: Decodable>(url: String, params: [String: String]) async throws -> T
+}
+
+
+final class CulinarNetworkService : Network {
     private var baseURL = "https://www.themealdb.com/api/json/v2/9973533"
     
     func request<T: Decodable>(url: String) async throws -> T {
