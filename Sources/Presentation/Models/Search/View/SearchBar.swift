@@ -15,7 +15,7 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundColor(Color(.black))
+                .foregroundColor(.primary)
             
             TextField("Найти рецепт...", text: $searchText)
                 .focused($isFocused)
@@ -33,16 +33,16 @@ struct SearchBar: View {
                     isFocused = false
                 }) {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
         .padding(8)
         .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 16)
         .scaleEffect(isFocused ? 1.02 : 1.0)
-        .animation(.spring(duration: 0.3, bounce: 0.5), value: isFocused)
+        .animation(.spring(duration: 0.3, bounce: 0.2), value: isFocused)
     }
     
 }

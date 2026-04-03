@@ -19,29 +19,27 @@ struct SearchView: View {
                 .padding(.top, 8)
                 
                 if case .success(let meals) = vm.searchResult {
-                    MealListView(meals: meals)
+                    if meals.isEmpty {
+                        EmptyStateView()
+                    } else {
+                        MealListView(meals: meals)
+                            .transition(.opacity)
+                    }
                 } else {
                     switch vm.categoriesState {
-                    case .idle:
-                        ScrollView {
-                            categoriesHeader
-                            CategoryGridPreview()
-                        }
-                    case .loading:
-                        ScrollView {
-                            categoriesHeader
-                            CategoryGridPreview()
-                        }
+                    case .idle, .loading:
+                        preview
                     case .success(let categories):
                         ScrollView {
                             categoriesHeader
                             LazyVGrid(columns: [
-                                GridItem(.flexible(), spacing: 12),
-                                GridItem(.flexible(), spacing: 12)
-                            ], spacing: 16) {
+                                GridItem(.flexible()),
+                                GridItem(.flexible())
+                            ], spacing: 12) {
                                 ForEach(categories) { category in
                                     NavigationLink(destination: CategoryFilterView(vm: vm, selectedCategory: category)) {
                                         CategoryCard(category: category)
+                                            .frame(maxWidth: .infinity)
                                             .transition(.opacity.combined(with: .scale(scale: 0.9)))
                                     }
                                     .buttonStyle(.plain)
@@ -70,6 +68,14 @@ struct SearchView: View {
             .fontWeight(.bold)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
+    }
+    
+    var preview: some View {
+        ScrollView {
+            categoriesHeader
+            CategoryGridPreview()
+                .padding(.horizontal)
+        }
     }
 }
 

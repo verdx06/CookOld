@@ -20,16 +20,14 @@ struct CategoryFilterView : View {
             .padding()
             
             switch vm.searchResult {
-            case .idle:
-                ScrollView {
-                    MealGridPreview()
-                }
-            case .loading:
-                ScrollView {
-                    MealGridPreview()
-                }
+            case .idle, .loading:
+                preview
             case .success(let meals):
-                MealListView(meals: meals)
+                if meals.isEmpty {
+                    EmptyStateView()
+                } else {
+                    MealListView(meals: meals)
+                }
             case .failure:
                 ErrorStateView()
             }
@@ -42,6 +40,7 @@ struct CategoryFilterView : View {
                 Text(selectedCategory.name)
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundStyle(.black)
             }
         }
         .task {
@@ -50,6 +49,12 @@ struct CategoryFilterView : View {
         .onDisappear() {
             vm.searchResult = .idle
             vm.searchText = ""
+        }
+    }
+    
+    var preview: some View {
+        ScrollView {
+            MealGridPreview()
         }
     }
 }
