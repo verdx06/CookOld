@@ -21,7 +21,6 @@ struct SearchView: View {
                     Task { await vm.searchMeals() }
                 })
                 .padding(.top, 8)
-                
                 SearchContentView(vm: vm)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -38,6 +37,25 @@ struct SearchView: View {
             }
         }
     }
+<<<<<<< HEAD
+=======
+    
+    var categoriesHeader: some View {
+        Text("Категории")
+            .font(.title2)
+            .fontWeight(.bold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+    }
+    
+    var preview: some View {
+        ScrollView {
+            categoriesHeader
+            CategoryGridPreview()
+                .padding(.horizontal)
+        }
+    }
+>>>>>>> f590069 (Экран поиска)
 }
 
 

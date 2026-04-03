@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 @Observable
 final class SearchViewModel {
     private var repository: SearchRepository
@@ -47,7 +48,7 @@ final class SearchViewModel {
             categoriesState = .failure
         }
     }
-    
+
     func searchMeals() async {
         searchResult = .loading
         guard !searchText.isEmpty else {
