@@ -33,11 +33,11 @@ struct EmptyStateView: View {
             .animation(.spring(response: 0.4, dampingFraction: 0.6), value: appeared)
 
             VStack(spacing: 6) {
-                Text("Ничего не найдено")
+                Text("empty_search".localized())
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
 
-                Text("Попробуйте изменить запрос")
+                Text("change_request".localized())
                     .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
             }

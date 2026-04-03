@@ -17,7 +17,7 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.primary)
             
-            TextField("Найти рецепт...", text: $searchText)
+            TextField("search_field_placeholder".localized() + "...", text: $searchText)
                 .focused($isFocused)
                 .foregroundColor(.primary)
                 .onChange(of: searchText) {

@@ -34,11 +34,11 @@ struct ErrorStateView: View {
             .animation(.spring(response: 0.4, dampingFraction: 0.6), value: appeared)
 
             VStack(spacing: 6) {
-                Text("Что-то пошло не так")
+                Text("search_error".localized())
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
 
-                Text("Не удалось загрузить данные")
+                Text("data_loading_failed".localized())
                     .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
             }

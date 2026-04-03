@@ -1,6 +1,28 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "change_request" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробуйте изменить запрос"
+          }
+        }
+      }
+    },
+    "data_loading_failed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось загрузить данные"
+          }
+        }
+      }
+    },
     "dish_build_title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -14,6 +36,17 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Собери блюдо"
+          }
+        }
+      }
+    },
+    "empty_search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ничего не найдено"
           }
         }
       }
@@ -48,6 +81,28 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Главная"
+          }
+        }
+      }
+    },
+    "search_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что-то пошло не так"
+          }
+        }
+      }
+    },
+    "search_field_placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найти рецепт"
           }
         }
       }
