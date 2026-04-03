@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CategoryFilterView : View {
     @Bindable var vm : SearchViewModel
-    @State private var searchTask: Task<Void, Never>?
     var selectedCategory: MealCategory
     
     var body: some View {
@@ -20,15 +19,16 @@ struct CategoryFilterView : View {
             .padding()
             
             switch vm.searchResult {
-            case .idle:
-                preview
-            case .loading:
+            case .idle, .loading:
                 preview
             case .success(let meals):
                 if meals.isEmpty {
                     EmptyStateView()
                 } else {
                     MealListView(meals: meals)
+                        .refreshable {
+                            await vm.searchMealsInCategory(category: selectedCategory)
+                        }
                 }
             case .failure:
                 ErrorStateView()
@@ -42,6 +42,7 @@ struct CategoryFilterView : View {
                 Text(selectedCategory.name)
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundStyle(.black)
             }
         }
         .task {
@@ -57,14 +58,13 @@ struct CategoryFilterView : View {
             vm.isInCategoryMode = false
         }
         .onChange(of: vm.searchText) {
-            searchTask?.cancel()
-            searchTask = Task {
-                try? await Task.sleep(nanoseconds: 500_000_000)
-                await vm.searchMealsInCategory(category: selectedCategory)
-            }
+            vm.scheduleCategorySearch(category: selectedCategory)
         }
     }
-    
+}
+
+
+private extension CategoryFilterView {
     var preview : some View {
         ScrollView {
             MealGridPreview()

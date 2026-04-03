@@ -7,10 +7,17 @@
 
 import Foundation
 
-final class SearchRepository {
-    private var service: CulinarNetworkService
+protocol SearchRepository {
+    func loadCategories() async throws -> [MealCategory]
+    func searchMeals(name: String) async throws -> [Meal]
+    func searchMealsByCategories(category: MealCategory) async throws -> [Meal]
+    func searchMealsInCategory(name: String, category: MealCategory) async throws -> [Meal]
+}
+
+final class SearchRepositoryImpl : SearchRepository {
+    private var service: Network
     
-    init(service: CulinarNetworkService) {
+    init(service: Network) {
         self.service = service
     }
     

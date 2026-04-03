@@ -14,7 +14,7 @@ protocol Network {
 }
 
 
-final class CulinarNetworkService : Network {
+final class NetworkService : Network {
     private var baseURL = "https://www.themealdb.com/api/json/v2/9973533"
     
     func request<T: Decodable>(url: String) async throws -> T {
