@@ -17,13 +17,13 @@ enum CustomTab
 
 struct MainView: View
 {
-
-    @State var activeTab: CustomTab = .home
+    let diContainer: DIContainer
+    @State private var activeTab: CustomTab = .home
 
     var body: some View {
         TabView(selection: $activeTab) {
             Tab("main_title".localized(), systemImage: "house.fill", value: .home) {
-                HomeView()
+                HomeView(viewModel: self.diContainer.makeHomeViewModel())
             }
 
             Tab("favourite_title".localized(), systemImage: "heart.fill", value: .favorite) {
@@ -48,5 +48,5 @@ struct MainView: View
 }
 
 #Preview {
-    MainView()
+    MainView(diContainer: DIContainer())
 }
