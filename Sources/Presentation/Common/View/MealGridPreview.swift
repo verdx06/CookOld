@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct MealGridPreview: View {
+struct MealGridPreview: View
+{
     var body: some View {
         LazyVStack(spacing: 12) {
             ForEach(0..<10, id: \.self) { _ in
@@ -17,5 +18,4 @@ struct MealGridPreview: View {
         }
         .padding(.horizontal)
     }
-    
 }

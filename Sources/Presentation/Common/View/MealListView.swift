@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct MealListView: View {
+struct MealListView: View
+{
     let meals: [Meal]
-    
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {

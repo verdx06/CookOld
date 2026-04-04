@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct CategoriesSection: View {
-    var vm: SearchViewModel
-    
+struct CategoriesSection: View
+{
+    var viewModel: SearchViewModel
+
     var body: some View {
-        switch vm.categoriesState {
+        switch viewModel.categoriesState {
         case .idle, .loading:
             CategoryPreviewSection()
         case .success(let categories):
-            CategoryGridSection(vm: vm, categories: categories)
+            CategoryGridSection(viewModel: viewModel, categories: categories)
         case .failure:
             ErrorStateView()
         }

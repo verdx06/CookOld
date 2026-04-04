@@ -7,48 +7,46 @@
 
 import SwiftUI
 
-struct SearchView: View {
-    @State private var vm : SearchViewModel
-    
-    init(vm: SearchViewModel) {
-        self.vm = vm
+struct SearchView: View
+{
+    @State private var viewModel: SearchViewModel
+
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
-                SearchBar(searchText: $vm.searchText, onSearch: {
-                    Task { await vm.searchMeals() }
+                SearchBar(searchText: $viewModel.searchText, onSearch: {
+                    Task { await viewModel.searchMeals() }
                 })
                 .padding(.top, 8)
-                
-                SearchContentView(vm: vm)
+
+                SearchContentView(viewModel: viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .task {
-                await vm.loadCategories()
+                await viewModel.loadCategories()
             }
             .onAppear {
-                vm.searchResult = .idle
-                vm.searchText = ""
+                viewModel.searchResult = .idle
+                viewModel.searchText = ""
             }
-            .onChange(of: vm.searchText) {
-                guard !vm.isInCategoryMode else { return }
-                vm.scheduleSearch()
+            .onChange(of: viewModel.searchText) {
+                guard viewModel.isInCategoryMode == false else { return }
+                viewModel.scheduleSearch()
             }
         }
     }
 }
 
-
 #Preview {
     SearchView(
-        vm: SearchViewModel(
+        viewModel: SearchViewModel(
             repository: SearchRepositoryImpl(
                 service: NetworkService()
             )
         )
     )
 }
-
-

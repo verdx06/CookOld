@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct EmptyStateView: View {
+struct EmptyStateView: View
+{
     @State private var isAnimating = false
     @State private var appeared = false
 

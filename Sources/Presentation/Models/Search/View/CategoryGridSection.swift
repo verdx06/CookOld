@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct CategoryGridSection: View {
-    let vm: SearchViewModel
+struct CategoryGridSection: View
+{
+    let viewModel: SearchViewModel
     let categories: [MealCategory]
 
     var body: some View {
@@ -18,9 +19,9 @@ struct CategoryGridSection: View {
                 GridItem(.flexible()),
                 GridItem(.flexible())
             ], spacing: 12) {
-                ForEach(categories) { category in
+                ForEach(categories, id: \.id) { category in
                     NavigationLink(
-                        destination: CategoryFilterView(vm: vm, selectedCategory: category)
+                        destination: CategoryFilterView(viewModel: viewModel, selectedCategory: category)
                     ) {
                         CategoryCard(category: category)
                             .frame(maxWidth: .infinity)
@@ -31,6 +32,6 @@ struct CategoryGridSection: View {
             }
             .padding(.horizontal)
         }
-        .refreshable { await vm.loadCategories() }
+        .refreshable { await viewModel.loadCategories() }
     }
 }

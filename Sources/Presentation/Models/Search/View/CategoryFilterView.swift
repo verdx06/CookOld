@@ -7,18 +7,19 @@
 
 import SwiftUI
 
-struct CategoryFilterView : View {
-    @Bindable var vm : SearchViewModel
+struct CategoryFilterView: View
+{
+    @Bindable var viewModel: SearchViewModel
     var selectedCategory: MealCategory
-    
+
     var body: some View {
         VStack {
-            SearchBar(searchText: $vm.searchText, onSearch: {
-                Task { await vm.searchMealsInCategory(category: selectedCategory) }
+            SearchBar(searchText: $viewModel.searchText, onSearch: {
+                Task { await viewModel.searchMealsInCategory(category: selectedCategory) }
             })
             .padding()
-            
-            switch vm.searchResult {
+
+            switch viewModel.searchResult {
             case .idle, .loading:
                 preview
             case .success(let meals):
@@ -27,7 +28,7 @@ struct CategoryFilterView : View {
                 } else {
                     MealListView(meals: meals)
                         .refreshable {
-                            await vm.searchMealsInCategory(category: selectedCategory)
+                            await viewModel.searchMealsInCategory(category: selectedCategory)
                         }
                 }
             case .failure:
@@ -46,26 +47,26 @@ struct CategoryFilterView : View {
             }
         }
         .task {
-            await vm.searchMealsInCategory(category: selectedCategory)
+            await viewModel.searchMealsInCategory(category: selectedCategory)
         }
-        .onAppear() {
-            vm.searchText = ""
-            vm.isInCategoryMode = true
+        .onAppear {
+            viewModel.searchText = ""
+            viewModel.isInCategoryMode = true
         }
-        .onDisappear() {
-            vm.searchResult = .idle
-            vm.searchText = ""
-            vm.isInCategoryMode = false
+        .onDisappear {
+            viewModel.searchResult = .idle
+            viewModel.searchText = ""
+            viewModel.isInCategoryMode = false
         }
-        .onChange(of: vm.searchText) {
-            vm.scheduleCategorySearch(category: selectedCategory)
+        .onChange(of: viewModel.searchText) {
+            viewModel.scheduleCategorySearch(category: selectedCategory)
         }
     }
 }
 
-
-private extension CategoryFilterView {
-    var preview : some View {
+private extension CategoryFilterView
+{
+    var preview: some View {
         ScrollView {
             MealGridPreview()
         }

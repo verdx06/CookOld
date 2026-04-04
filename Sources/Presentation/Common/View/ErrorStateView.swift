@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct ErrorStateView: View {
+struct ErrorStateView: View
+{
     @State private var isShaking = false
     @State private var appeared = false
 

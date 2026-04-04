@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CategoryPreviewSection: View {
+struct CategoryPreviewSection: View
+{
     var body: some View {
         ScrollView {
             CategoriesHeader()

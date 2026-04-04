@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct SearchContentView: View {
-    var vm : SearchViewModel
-    
+struct SearchContentView: View
+{
+    var viewModel: SearchViewModel
+
     var body: some View {
-        if case .success(let meals) = vm.searchResult {
+        if case .success(let meals) = viewModel.searchResult {
             if meals.isEmpty {
                 EmptyStateView()
             } else {
@@ -19,8 +20,7 @@ struct SearchContentView: View {
                     .transition(.opacity)
             }
         } else {
-            CategoriesSection(vm: vm)
+            CategoriesSection(viewModel: viewModel)
         }
     }
 }
-
