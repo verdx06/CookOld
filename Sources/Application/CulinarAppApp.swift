@@ -11,10 +11,12 @@ import SwiftUI
 struct CulinarAppApp: App
 {
     private let diContainer = DIContainer()
+    @State private var repository = SwiftDataFavouritesRepository()
 
     var body: some Scene {
         WindowGroup {
             MainView(diContainer: self.diContainer)
+                .environment(repository)
         }
     }
 }

@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct FavoriteView: View {
-    @State private var viewModel = FavoriteViewModel()
+    @State private var viewModel: FavoriteViewModel
+
+    init(repository: SwiftDataFavouritesRepository) {
+        _viewModel = State(initialValue: FavoriteViewModel(repository: repository))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Избранное")
+            Text("favourite_title".localized())
                 .font(.largeTitle)
                 .bold()
                 .padding(.horizontal, 16)
@@ -21,9 +25,9 @@ struct FavoriteView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
-                TextField("Поиск рецептов...", text: $viewModel.searchText)
+                TextField("recipe_finder".localized(), text: $viewModel.searchText)
                 if !viewModel.searchText.isEmpty {
-                    Button("Отмена") {
+                    Button("cancel".localized()) {
                         viewModel.searchText = ""
                     }
                     .foregroundColor(.blue)
@@ -37,11 +41,11 @@ struct FavoriteView: View {
             ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(viewModel.filteredMeals) { meal in
-                        SmallCard(
+                        SmallCardView(viewModel: SmallCardViewModel(
                             meal: meal,
-                            isLiked: !viewModel.isPendingRemoval(meal),
+                            isLiked: !viewModel.mealToBeRemoved(meal.idMeal),
                             onToggle: { viewModel.toggle(meal) }
-                        )
+                        ))
                     }
                 }
             }
@@ -57,6 +61,7 @@ struct FavoriteView: View {
 }
 
 #Preview {
-    let _ = FavouritesRepository.shared.resetSeed()
-    FavoriteView()
+    let repository = SwiftDataFavouritesRepository()
+    let _ = repository.resetSeed()
+    FavoriteView(repository: repository)
 }

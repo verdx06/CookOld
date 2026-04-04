@@ -5,7 +5,12 @@ import Observation
 final class FavoriteViewModel {
     var searchText = ""
     private(set) var allMeals: [Meal] = []
-    private var pendingRemoval: Set<String> = []
+    private var toBeRemoved: Set<String> = []
+    private let repository: any FavouritesRepository
+
+    init(repository: SwiftDataFavouritesRepository) {
+        self.repository = repository
+    }
 
     var filteredMeals: [Meal] {
         if searchText.isEmpty { return allMeals }
@@ -15,21 +20,21 @@ final class FavoriteViewModel {
     }
 
     func load() {
-        FavouritesRepository.shared.seedIfEmpty()
-        allMeals = FavouritesRepository.shared.fetchAll()
+        repository.seedIfEmpty()
+        allMeals = repository.fetchAll()
     }
 
-    func isPendingRemoval(_ meal: Meal) -> Bool {
-        pendingRemoval.contains(meal.idMeal)
+    func mealToBeRemoved(_ id: String) -> Bool {
+        toBeRemoved.contains(id)
     }
 
     func toggle(_ meal: Meal) {
-        if isPendingRemoval(meal) {
-            pendingRemoval.remove(meal.idMeal)
-            FavouritesRepository.shared.save(meal)
+        if mealToBeRemoved(meal.idMeal) {
+            toBeRemoved.remove(meal.id)
+            repository.save(meal)
         } else {
-            pendingRemoval.insert(meal.idMeal)
-            FavouritesRepository.shared.delete(meal)
+            toBeRemoved.insert(meal.id)
+            repository.delete(meal.id)
         }
     }
 }
