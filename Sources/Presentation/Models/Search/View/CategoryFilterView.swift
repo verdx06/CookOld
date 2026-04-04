@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct CategoryFilterView : View {
+struct CategoryFilterView: View
+{
     @State private var viewModel: CategoryViewModel
     var selectedCategory: MealCategory
-    
+
     init(selectedCategory: MealCategory, repository: SearchRepository) {
         self.selectedCategory = selectedCategory
         self._viewModel = State(initialValue: CategoryViewModel(repository: repository))
     }
-    
+
     var body: some View {
         VStack {
             SearchBar(searchText: $viewModel.searchText, onSearch: {
@@ -67,4 +68,3 @@ private extension CategoryFilterView
         }
     }
 }
-

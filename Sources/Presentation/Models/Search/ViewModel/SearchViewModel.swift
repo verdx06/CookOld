@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 @Observable
 final class SearchViewModel
 {
@@ -25,7 +24,7 @@ final class SearchViewModel
             await loadCategories()
         }
     }
-    
+
     func scheduleSearch() {
         searchTask?.cancel()
         searchTask = Task {

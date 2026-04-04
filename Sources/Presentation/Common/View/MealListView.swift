@@ -15,9 +15,17 @@ struct MealListView: View
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(meals, id: \.idMeal) { meal in
-                    Text(meal.strMeal)
-                    // TODO: карточка блюда
+                    CardDishView(
+                        title: meal.strMeal,
+                        image: meal.strMealThumb,
+                        country: meal.strArea ?? "",
+                        timeMinutes: Int.random(in: 15...90),
+                        isFavorite: false,
+                        onFavoriteTap: {}
+                    )
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
+                .animation(.spring(duration: 0.4), value: meals.count)
             }
             .padding(.horizontal)
         }

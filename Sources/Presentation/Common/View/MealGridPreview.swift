@@ -13,7 +13,7 @@ struct MealGridPreview: View
         LazyVStack(spacing: 12) {
             ForEach(0..<10, id: \.self) { _ in
                 PreviewRectangle()
-                    .frame(height: 160)
+                    .frame(height: 230)
             }
         }
         .padding(.horizontal)

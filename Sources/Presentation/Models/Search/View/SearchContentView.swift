@@ -23,7 +23,7 @@ struct SearchContentView: View
                         await viewModel.searchMeals()
                     }
             }
-        case .loading where !viewModel.searchText.isEmpty:
+        case .loading where viewModel.searchText.isEmpty == false:
             ScrollView {
                 MealGridPreview()
             }
