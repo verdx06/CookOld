@@ -14,8 +14,7 @@ struct MealResponse: Codable
 }
 
 // MARK: - Meal
-struct Meal: Codable
-{
+struct Meal: Codable, Identifiable {
     let idMeal: String
     let strMeal: String
     let strMealAlternate: String?
@@ -75,6 +74,8 @@ struct Meal: Codable
     let strCreativeCommonsConfirmed: String?
     let dateModified: String?
 
+    var id: String { idMeal }
+
     // MARK: - Computed Properties для удобства работы
 
     /// Возвращает массив всех непустых ингредиентов
@@ -111,5 +112,52 @@ struct Meal: Codable
             result.append((ingredients[index], measures[index]))
         }
         return result
+    }
+}
+
+// MARK: - Category
+struct Category: Decodable, Identifiable {
+    let idCategory: String
+    let strCategory: String
+    let strCategoryThumb: String
+    let strCategoryDescription: String
+
+    var id: String { idCategory }
+}
+
+struct CategoryResponse: Decodable {
+    let categories: [Category]
+}
+
+// MARK: - Preview / Testing
+extension Meal {
+    init(idMeal: String, strMeal: String, strMealThumb: String, strArea: String? = nil, strCategory: String? = nil) {
+        self.idMeal = idMeal
+        self.strMeal = strMeal
+        self.strMealThumb = strMealThumb
+        self.strArea = strArea
+        self.strCategory = strCategory
+        self.strMealAlternate = nil
+        self.strInstructions = nil
+        self.strTags = nil
+        self.strYoutube = nil
+        self.strIngredient1 = nil; self.strIngredient2 = nil; self.strIngredient3 = nil
+        self.strIngredient4 = nil; self.strIngredient5 = nil; self.strIngredient6 = nil
+        self.strIngredient7 = nil; self.strIngredient8 = nil; self.strIngredient9 = nil
+        self.strIngredient10 = nil; self.strIngredient11 = nil; self.strIngredient12 = nil
+        self.strIngredient13 = nil; self.strIngredient14 = nil; self.strIngredient15 = nil
+        self.strIngredient16 = nil; self.strIngredient17 = nil; self.strIngredient18 = nil
+        self.strIngredient19 = nil; self.strIngredient20 = nil
+        self.strMeasure1 = nil; self.strMeasure2 = nil; self.strMeasure3 = nil
+        self.strMeasure4 = nil; self.strMeasure5 = nil; self.strMeasure6 = nil
+        self.strMeasure7 = nil; self.strMeasure8 = nil; self.strMeasure9 = nil
+        self.strMeasure10 = nil; self.strMeasure11 = nil; self.strMeasure12 = nil
+        self.strMeasure13 = nil; self.strMeasure14 = nil; self.strMeasure15 = nil
+        self.strMeasure16 = nil; self.strMeasure17 = nil; self.strMeasure18 = nil
+        self.strMeasure19 = nil; self.strMeasure20 = nil
+        self.strSource = nil
+        self.strImageSource = nil
+        self.strCreativeCommonsConfirmed = nil
+        self.dateModified = nil
     }
 }
