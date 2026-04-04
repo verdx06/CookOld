@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct SearchView: View
-{
+struct SearchView: View {
     @State private var viewModel: SearchViewModel
 
     init(viewModel: SearchViewModel) {
