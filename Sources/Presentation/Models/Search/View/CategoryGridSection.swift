@@ -18,9 +18,9 @@ struct CategoryGridSection: View {
                 GridItem(.flexible()),
                 GridItem(.flexible())
             ], spacing: 12) {
-                ForEach(categories) { category in
+                ForEach(categories, id: \.id) { category in
                     NavigationLink(
-                        destination: CategoryFilterView(vm: vm, selectedCategory: category)
+                        destination: CategoryFilterView(selectedCategory: category, repository: vm.repository)
                     ) {
                         CategoryCard(category: category)
                             .frame(maxWidth: .infinity)

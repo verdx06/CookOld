@@ -11,16 +11,23 @@ struct SearchContentView: View {
     var vm : SearchViewModel
     
     var body: some View {
-        if case .success(let meals) = vm.searchResult {
+        switch vm.searchResult {
+        case .success(let meals):
             if meals.isEmpty {
                 EmptyStateView()
             } else {
                 MealListView(meals: meals)
                     .transition(.opacity)
+                    .refreshable {
+                        await vm.searchMeals()
+                    }
             }
-        } else {
+        case .loading where !vm.searchText.isEmpty:
+            ScrollView {
+                MealGridPreview()
+            }
+        default:
             CategoriesSection(vm: vm)
         }
     }
 }
-

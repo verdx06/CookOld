@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CategoryFilterView : View {
-    @Bindable var vm : SearchViewModel
+    @State private var vm: CategoryViewModel
     var selectedCategory: MealCategory
+    
+    init(selectedCategory: MealCategory, repository: SearchRepository) {
+        self.selectedCategory = selectedCategory
+        self._vm = State(initialValue: CategoryViewModel(repository: repository))
+    }
     
     var body: some View {
         VStack {
@@ -48,21 +53,11 @@ struct CategoryFilterView : View {
         .task {
             await vm.searchMealsInCategory(category: selectedCategory)
         }
-        .onAppear() {
-            vm.searchText = ""
-            vm.isInCategoryMode = true
-        }
-        .onDisappear() {
-            vm.searchResult = .idle
-            vm.searchText = ""
-            vm.isInCategoryMode = false
-        }
         .onChange(of: vm.searchText) {
-            vm.scheduleCategorySearch(category: selectedCategory)
+            vm.scheduleSearch(category: selectedCategory)
         }
     }
 }
-
 
 private extension CategoryFilterView {
     var preview : some View {
@@ -71,3 +66,4 @@ private extension CategoryFilterView {
         }
     }
 }
+
