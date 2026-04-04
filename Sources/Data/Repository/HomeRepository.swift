@@ -9,32 +9,26 @@ import Foundation
 
 protocol HomeRepository
 {
-    func getPopularMeals() async throws -> [MealModel]
-    func getRandomMeals() async throws -> [MealModel]
+    func getPopularMeals() async throws -> MealResponse
+    func getRecentMeals() async throws -> MealResponse
 }
 
-final class HomeRepositoryImpl: HomeRepository
+final class HomeRepositoryImpl
 {
-    func getPopularMeals() async throws -> [MealModel] {
-        try await self.fetchMeals(urlString: "https://www.themealdb.com/api/json/v2/9973533/latest.php")
+    private let network: Network
+
+    init(network: Network) {
+        self.network = network
+    }
+}
+
+extension HomeRepositoryImpl: HomeRepository
+{
+    func getPopularMeals() async throws -> MealResponse {
+        try await self.network.request(url: "/randomselection.php")
     }
 
-    func getRandomMeals() async throws -> [MealModel] {
-        try await self.fetchMeals(urlString: "https://www.themealdb.com/api/json/v2/9973533/randomselection.php")
-    }
-
-    private func fetchMeals(urlString: String) async throws -> [MealModel] {
-        guard let url = URL(string: urlString) else {
-            throw URLError(.badURL)
-        }
-        let (data, _) = try await URLSession.shared.data(from: url)
-
-        struct MealsResponse: Decodable
-        {
-            let meals: [MealModel]?
-        }
-
-        let decoded = try JSONDecoder().decode(MealsResponse.self, from: data)
-        return decoded.meals ?? []
+    func getRecentMeals() async throws -> MealResponse {
+        try await self.network.request(url: "/latest.php")
     }
 }

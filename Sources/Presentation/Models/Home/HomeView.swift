@@ -18,21 +18,19 @@ struct HomeView: View
     var body: some View {
         Group {
             switch self.viewModel.contentState {
-            case .loading:
+            case .idle, .loading:
                 ProgressView("Загрузка…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
                 self.loadedContent
             case .failed(let message):
                 NetworkErrorView(message: message) {
-                    Task {
-                        await self.viewModel.loadContent()
-                    }
+                    self.viewModel.retry()
                 }
             }
         }
-        .task {
-            await self.viewModel.loadContent()
+        .onAppear {
+            self.viewModel.loadContent()
         }
     }
 }
@@ -50,10 +48,10 @@ private extension HomeView
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(self.viewModel.randomMeals, id: \.self) { randomMeal in
+                        ForEach(self.viewModel.popularMeals.meals ?? [], id: \.idMeal) { meal in
                             CardPopularDishView(
-                                image: randomMeal.thumbURL ?? "",
-                                text: randomMeal.title
+                                image: meal.strMealThumb,
+                                text: meal.strMeal
                             )
                         }
                     }
@@ -67,12 +65,12 @@ private extension HomeView
                     .padding(.top, 24)
                     .padding(.bottom, 12)
 
-                ForEach(self.viewModel.popularMeals, id: \.self) { popularMeal in
+                ForEach(self.viewModel.recentMeals.meals ?? [], id: \.idMeal) { meal in
                     CardDishView(
-                        title: popularMeal.title,
-                        image: popularMeal.thumbURL ?? "",
-                        category: popularMeal.category ?? "",
-                        area: popularMeal.area ?? "",
+                        title: meal.strMeal,
+                        image: meal.strMealThumb,
+                        category: meal.strCategory ?? "",
+                        area: meal.strArea ?? "",
                         isFavorite: false,
                         onFavoriteTap: {}
                     )
@@ -81,7 +79,7 @@ private extension HomeView
             }
         }
         .refreshable {
-            await self.viewModel.reload()
+            self.viewModel.reload()
         }
     }
 }

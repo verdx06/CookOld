@@ -68,11 +68,7 @@ private extension CardDishView
                     .resizable()
                     .scaledToFill()
             default:
-                Color(.systemGray5)
-                    .overlay {
-                        ProgressView()
-                            .tint(.gray)
-                    }
+                PreviewRectangle(cornerRadius: 0)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

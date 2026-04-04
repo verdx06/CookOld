@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PreviewRectangle: View
 {
+    var cornerRadius: CGFloat = 12
+
     @State private var isAnimating = false
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 12)
+        RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
             .fill(Color(.systemGray5))
             .opacity(isAnimating ? 0.4 : 1.0)
             .animation(

@@ -30,11 +30,7 @@ struct CardPopularDishView: View
                         .resizable()
                         .scaledToFill()
                 default:
-                    Color.gray.opacity(0.2)
-                        .overlay {
-                            ProgressView()
-                                .tint(.gray)
-                        }
+                    PreviewRectangle(cornerRadius: 16)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

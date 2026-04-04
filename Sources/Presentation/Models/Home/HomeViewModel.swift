@@ -13,14 +13,15 @@ final class HomeViewModel
 {
     enum State: Equatable
     {
+        case idle
         case loading
         case loaded
         case failed(String)
     }
 
-    var contentState: State = .loading
-    var popularMeals: [MealModel] = []
-    var randomMeals: [MealModel] = []
+    var contentState: State = .idle
+    var popularMeals = MealResponse(meals: [])
+    var recentMeals = MealResponse(meals: [])
 
     private let usecase: HomeUseCase
 
@@ -28,21 +29,29 @@ final class HomeViewModel
         self.usecase = usecase
     }
 
-    func loadContent() async {
+    func loadContent() {
+        guard case .idle = self.contentState else { return }
         self.contentState = .loading
-        await self.reload()
+        self.reload()
     }
 
-    func reload() async {
-        do {
-            async let popular = self.usecase.getPopularMeals()
-            async let random = self.usecase.getRandomMeals()
-            let (popularResult, randomResult) = try await (popular, random)
-            self.popularMeals = popularResult
-            self.randomMeals = randomResult
-            self.contentState = .loaded
-        } catch {
-            self.contentState = .failed(error.localizedDescription)
+    func retry() {
+        self.contentState = .loading
+        self.reload()
+    }
+
+    func reload() {
+        Task {
+            do {
+                async let popular = self.usecase.getPopularMeals()
+                async let recent = self.usecase.getRecentMeals()
+                let (popularResult, recentResult) = try await (popular, recent)
+                self.popularMeals = popularResult
+                self.recentMeals = recentResult
+                self.contentState = .loaded
+            } catch {
+                self.contentState = .failed(error.localizedDescription)
+            }
         }
     }
 }

@@ -9,8 +9,8 @@ import Foundation
 
 protocol HomeUseCase
 {
-    func getPopularMeals() async throws -> [MealModel]
-    func getRandomMeals() async throws -> [MealModel]
+    func getPopularMeals() async throws -> MealResponse
+    func getRecentMeals() async throws -> MealResponse
 }
 
 final class HomeUseCaseImpl: HomeUseCase
@@ -21,11 +21,11 @@ final class HomeUseCaseImpl: HomeUseCase
         self.repository = repository
     }
 
-    func getPopularMeals() async throws -> [MealModel] {
+    func getPopularMeals() async throws -> MealResponse {
         try await self.repository.getPopularMeals()
     }
 
-    func getRandomMeals() async throws -> [MealModel] {
-        try await self.repository.getRandomMeals()
+    func getRecentMeals() async throws -> MealResponse {
+        try await self.repository.getRecentMeals()
     }
 }
