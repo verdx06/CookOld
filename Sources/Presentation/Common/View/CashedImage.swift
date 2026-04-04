@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct CachedAsyncImage: View {
+struct CachedImage: View
+{
     let url: URL?
     let imageCache: ImageCache
-    @State private var image: UIImage? = nil
-    
+    @State private var image: UIImage?
+
     var body: some View {
         Group {
             if let image {
