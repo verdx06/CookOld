@@ -10,7 +10,6 @@ opt_in_rules:
   - fatal_error_message
   - first_where
   - force_try
-  - force_unwrapping
   - identical_operands
   - implicitly_unwrapped_optional
   - last_where
@@ -68,8 +67,6 @@ excluded:
   - "**/NetworkLayer"
 
 force_cast: error
-force_unwrapping:
-  severity: error
 force_try:
   severity: error
 
