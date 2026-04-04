@@ -20,7 +20,7 @@ struct MainView: View
     let diContainer: DIContainer
     @State var activeTab: CustomTab = .home
     let favoriteViewModel: FavoriteViewModel
-
+    
     var body: some View {
         TabView(selection: $activeTab) {
             Tab("main_title".localized(), systemImage: "house.fill", value: .home) {
