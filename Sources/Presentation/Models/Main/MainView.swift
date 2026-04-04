@@ -35,7 +35,13 @@ struct MainView: View
             }
 
             Tab(value: .search, role: .search) {
-                SearchView()
+                SearchView(
+                    vm: SearchViewModel(
+                        repository: SearchRepositoryImpl(
+                            service: NetworkService()
+                        )
+                    )
+                )
             }
         }
     }
