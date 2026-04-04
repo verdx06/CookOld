@@ -6,7 +6,7 @@
 //
 
 // MARK: - Meal
-struct Meal: Codable, Identifiable {
+struct Meal: Decodable, Identifiable {
     let idMeal: String
     let strMeal: String
     let strMealThumb: String
@@ -16,12 +16,12 @@ struct Meal: Codable, Identifiable {
     var id: String { idMeal }
 }
 
-struct MealResponse: Codable {
+struct MealResponse: Decodable {
     let meals: [Meal]?          // Optional — API возвращает null если ничего не найдено
 }
 
 // MARK: - Category
-struct Category: Codable, Identifiable {
+struct Category: Decodable, Identifiable {
     let idCategory: String
     let strCategory: String
     let strCategoryThumb: String
@@ -30,6 +30,6 @@ struct Category: Codable, Identifiable {
     var id: String { idCategory }
 }
 
-struct CategoryResponse: Codable {
+struct CategoryResponse: Decodable {
     let categories: [Category]
 }

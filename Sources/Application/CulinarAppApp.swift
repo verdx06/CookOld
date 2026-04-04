@@ -8,11 +8,13 @@
 import SwiftUI
 
 @main
-struct CulinarAppApp: App
-{
+struct CulinarAppApp: App {
+    @State private var repository = SwiftDataFavouritesRepository()
+
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(repository)
         }
     }
 }

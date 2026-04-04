@@ -1,12 +1,12 @@
 import SwiftData
 
+@Observable
 @MainActor
-final class FavouritesRepository {
+final class SwiftDataFavouritesRepository: FavouritesRepository {
 
-    static let shared = FavouritesRepository()
     private let context: ModelContext
 
-    private init() {
+    init() {
         // ModelContainer is SwiftData's engine — it sets up the database file on disk.
         // You only tell it which models exist; it handles the rest.
         let container = try! ModelContainer(for: FavouriteModel.self)
@@ -20,21 +20,21 @@ final class FavouritesRepository {
         return results.map { $0.toMeal() }
     }
 
-    func contains(_ meal: Meal) -> Bool {
-        find(meal) != nil
+    func contains(_ id: String) -> Bool {
+        find(id) != nil
     }
 
     // MARK: - Write
 
     func save(_ meal: Meal) {
-        guard !contains(meal) else { return }
+        guard !contains(meal.idMeal) else { return }
         context.insert(FavouriteModel(from: meal))
         try? context.save()
     }
 
 
-    func delete(_ meal: Meal) {
-        guard let model = find(meal) else { return }
+    func delete(_ id: String) {
+        guard let model = find(id) else { return }
         context.delete(model)
         try? context.save()
     }
@@ -69,8 +69,8 @@ final class FavouritesRepository {
 
     // MARK: - Helpers
 
-    private func find(_ meal: Meal) -> FavouriteModel? {
+    private func find(_ id: String) -> FavouriteModel? {
         let all = (try? context.fetch(FetchDescriptor<FavouriteModel>())) ?? []
-        return all.first { $0.idMeal == meal.idMeal }
+        return all.first { $0.idMeal == id }
     }
 }

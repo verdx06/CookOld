@@ -19,6 +19,7 @@ struct MainView: View
 {
 
     @State var activeTab: CustomTab = .home
+    @Environment(SwiftDataFavouritesRepository.self) private var repository
 
     var body: some View {
         TabView(selection: $activeTab) {
@@ -27,7 +28,7 @@ struct MainView: View
             }
 
             Tab("favourite_title".localized(), systemImage: "heart.fill", value: .favorite) {
-                FavoriteView()
+                FavoriteView(repository: repository)
             }
 
             Tab("dish_build_title".localized(), systemImage: "cooktop.fill", value: .dish) {
