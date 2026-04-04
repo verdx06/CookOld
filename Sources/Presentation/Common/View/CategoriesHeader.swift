@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CategoriesHeader: View {
+struct CategoriesHeader: View
+{
     var body: some View {
         Text("categories".localized())
             .font(.title2)

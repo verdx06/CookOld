@@ -8,12 +8,14 @@
 import Foundation
 
 // MARK: - Root Response
-struct MealResponse: Codable {
+struct MealResponse: Codable
+{
     let meals: [Meal]?
 }
 
 // MARK: - Meal
-struct Meal: Codable {
+struct Meal: Codable
+{
     let idMeal: String
     let strMeal: String
     let strMealAlternate: String?
@@ -23,7 +25,7 @@ struct Meal: Codable {
     let strMealThumb: String
     let strTags: String?
     let strYoutube: String?
-    
+
     // Ингредиенты (до 20)
     let strIngredient1: String?
     let strIngredient2: String?
@@ -45,7 +47,7 @@ struct Meal: Codable {
     let strIngredient18: String?
     let strIngredient19: String?
     let strIngredient20: String?
-    
+
     // Меры (до 20)
     let strMeasure1: String?
     let strMeasure2: String?
@@ -67,14 +69,14 @@ struct Meal: Codable {
     let strMeasure18: String?
     let strMeasure19: String?
     let strMeasure20: String?
-    
+
     let strSource: String?
     let strImageSource: String?
     let strCreativeCommonsConfirmed: String?
     let dateModified: String?
-    
+
     // MARK: - Computed Properties для удобства работы
-    
+
     /// Возвращает массив всех непустых ингредиентов
     var ingredients: [String] {
         return [
@@ -85,7 +87,7 @@ struct Meal: Codable {
             strIngredient17, strIngredient18, strIngredient19, strIngredient20
         ].compactMap { $0 }.filter { !$0.isEmpty }
     }
-    
+
     /// Возвращает массив всех непустых мер
     var measures: [String] {
         return [
@@ -96,12 +98,12 @@ struct Meal: Codable {
             strMeasure17, strMeasure18, strMeasure19, strMeasure20
         ].compactMap { $0 }.filter { !$0.isEmpty }
     }
-    
+
     /// Возвращает массив пар (ингредиент, мера)
     var ingredientsWithMeasures: [(ingredient: String, measure: String)] {
         var result: [(String, String)] = []
-        for i in 0..<min(ingredients.count, measures.count) {
-            result.append((ingredients[i], measures[i]))
+        for index in 0..<min(ingredients.count, measures.count) {
+            result.append((ingredients[index], measures[index]))
         }
         return result
     }

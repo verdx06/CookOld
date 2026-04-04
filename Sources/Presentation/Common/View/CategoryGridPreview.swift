@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CategoryGridPreview: View {
+struct CategoryGridPreview: View
+{
     var body: some View {
         LazyVGrid(columns: [
             GridItem(.flexible()),
@@ -21,4 +22,3 @@ struct CategoryGridPreview: View {
         .padding(.horizontal)
     }
 }
-

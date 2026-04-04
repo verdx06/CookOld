@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CategoryCard: View {
+struct CategoryCard: View
+{
     let category: MealCategory
 
     var body: some View {

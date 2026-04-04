@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct PreviewRectangle: View {
+struct PreviewRectangle: View
+{
     @State private var isAnimating = false
-    
+
     var body: some View {
         RoundedRectangle(cornerRadius: 12)
             .fill(Color(.systemGray5))

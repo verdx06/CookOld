@@ -9,11 +9,13 @@ import Foundation
 
 
 @Observable
-final class SearchViewModel {
-    let repository: SearchRepository
+final class SearchViewModel
+{
+    private var repository: SearchRepository
+    private var categorySearchTask: Task<Void, Never>?
     private var searchTask: Task<Void, Never>?
     var searchText: String = ""
-    var selectedCategory: MealCategory? = nil
+    var selectedCategory: MealCategory?
     var categoriesState: LoadingState<[MealCategory]> = .idle
     var searchResult: LoadingState<[Meal]> = .idle
 
@@ -31,10 +33,10 @@ final class SearchViewModel {
             await searchMeals()
         }
     }
-    
+
     func loadCategories() async {
         categoriesState = .loading
-        
+
         do {
             categoriesState = .success(try await repository.loadCategories())
         } catch {
@@ -44,7 +46,7 @@ final class SearchViewModel {
 
     func searchMeals() async {
         searchResult = .loading
-        guard !searchText.isEmpty else {
+        guard searchText.isEmpty == false else {
             searchResult = .idle
             return
         }
@@ -58,9 +60,10 @@ final class SearchViewModel {
     }
 }
 
-
-extension SearchViewModel {
-    enum LoadingState<T> {
+extension SearchViewModel
+{
+    enum LoadingState<T>
+    {
         case idle
         case loading
         case success(T)

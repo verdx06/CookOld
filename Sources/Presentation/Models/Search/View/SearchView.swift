@@ -7,39 +7,37 @@
 
 import SwiftUI
 
-struct SearchView: View {
-    @State private var vm : SearchViewModel
-    
-    init(vm: SearchViewModel) {
-        self.vm = vm
+struct SearchView: View
+{
+    @State private var viewModel: SearchViewModel
+
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
-                SearchBar(searchText: $vm.searchText, onSearch: {
-                    Task { await vm.searchMeals() }
+                SearchBar(searchText: $viewModel.searchText, onSearch: {
+                    Task { await viewModel.searchMeals() }
                 })
                 .padding(.top, 8)
-                SearchContentView(vm: vm)
+                SearchContentView(viewModel: viewModel)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .onChange(of: vm.searchText) {
-                vm.scheduleSearch()
+            .onChange(of: viewModel.searchText) {
+                viewModel.scheduleSearch()
             }
         }
     }
 }
 
-
 #Preview {
     SearchView(
-        vm: SearchViewModel(
+        viewModel: SearchViewModel(
             repository: SearchRepositoryImpl(
                 service: NetworkService()
             )
         )
     )
 }
-
-

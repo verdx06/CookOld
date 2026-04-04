@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CategoryFilterView : View {
-    @State private var vm: CategoryViewModel
+    @State private var viewModel: CategoryViewModel
     var selectedCategory: MealCategory
     
     init(selectedCategory: MealCategory, repository: SearchRepository) {
@@ -18,12 +18,12 @@ struct CategoryFilterView : View {
     
     var body: some View {
         VStack {
-            SearchBar(searchText: $vm.searchText, onSearch: {
-                Task { await vm.searchMealsInCategory(category: selectedCategory) }
+            SearchBar(searchText: $viewModel.searchText, onSearch: {
+                Task { await viewModel.searchMealsInCategory(category: selectedCategory) }
             })
             .padding()
-            
-            switch vm.searchResult {
+
+            switch viewModel.searchResult {
             case .idle, .loading:
                 preview
             case .success(let meals):
@@ -32,7 +32,7 @@ struct CategoryFilterView : View {
                 } else {
                     MealListView(meals: meals)
                         .refreshable {
-                            await vm.searchMealsInCategory(category: selectedCategory)
+                            await viewModel.searchMealsInCategory(category: selectedCategory)
                         }
                 }
             case .failure:
@@ -51,16 +51,17 @@ struct CategoryFilterView : View {
             }
         }
         .task {
-            await vm.searchMealsInCategory(category: selectedCategory)
+            await viewModel.searchMealsInCategory(category: selectedCategory)
         }
-        .onChange(of: vm.searchText) {
-            vm.scheduleSearch(category: selectedCategory)
+        .onChange(of: viewModel.searchText) {
+            viewModel.scheduleSearch(category: selectedCategory)
         }
     }
 }
 
-private extension CategoryFilterView {
-    var preview : some View {
+private extension CategoryFilterView
+{
+    var preview: some View {
         ScrollView {
             MealGridPreview()
         }

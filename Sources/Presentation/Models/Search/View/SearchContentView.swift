@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct SearchContentView: View {
-    var vm : SearchViewModel
-    
+struct SearchContentView: View
+{
+    var viewModel: SearchViewModel
+
     var body: some View {
-        switch vm.searchResult {
+        switch viewModel.searchResult {
         case .success(let meals):
             if meals.isEmpty {
                 EmptyStateView()
@@ -19,15 +20,15 @@ struct SearchContentView: View {
                 MealListView(meals: meals)
                     .transition(.opacity)
                     .refreshable {
-                        await vm.searchMeals()
+                        await viewModel.searchMeals()
                     }
             }
-        case .loading where !vm.searchText.isEmpty:
+        case .loading where !viewModel.searchText.isEmpty:
             ScrollView {
                 MealGridPreview()
             }
         default:
-            CategoriesSection(vm: vm)
+            CategoriesSection(viewModel: viewModel)
         }
     }
 }
