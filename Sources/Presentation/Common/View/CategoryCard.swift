@@ -23,10 +23,8 @@ struct CategoryCard: View {
                             .scaledToFill()
                             .frame(width: geo.size.width, height: geo.size.height)
                             .clipped()
-                    case .failure:
-                        Color(.systemGray5)
-                    @unknown default:
-                        Color(.systemGray5)
+                    default:
+                        PreviewRectangle()
                     }
                 }
 
