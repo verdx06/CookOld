@@ -11,7 +11,7 @@ import Foundation
 @Observable
 final class SearchViewModel
 {
-    private var repository: SearchRepository
+    var repository: SearchRepository
     private var categorySearchTask: Task<Void, Never>?
     private var searchTask: Task<Void, Never>?
     var searchText: String = ""

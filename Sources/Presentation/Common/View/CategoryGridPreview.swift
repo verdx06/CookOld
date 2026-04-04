@@ -19,5 +19,6 @@ struct CategoryGridPreview: View
                     .frame(height: 120)
             }
         }
+        .padding(.horizontal)
     }
 }

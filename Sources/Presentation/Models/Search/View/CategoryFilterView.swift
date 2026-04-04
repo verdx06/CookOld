@@ -13,7 +13,7 @@ struct CategoryFilterView : View {
     
     init(selectedCategory: MealCategory, repository: SearchRepository) {
         self.selectedCategory = selectedCategory
-        self._vm = State(initialValue: CategoryViewModel(repository: repository))
+        self._viewModel = State(initialValue: CategoryViewModel(repository: repository))
     }
     
     var body: some View {
