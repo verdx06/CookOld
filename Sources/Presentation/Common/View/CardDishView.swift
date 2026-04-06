@@ -42,18 +42,8 @@ private extension CardDishView
     var content: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading, spacing: 0) {
-                AsyncImage(url: URL(string: image)) { phase in
-                    switch phase {
-                    case .success(let fetchedImage):
-                        fetchedImage
-                            .resizable()
-                            .scaledToFill()
-                    default:
-                        ProgressView()
-                            .tint(.gray)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    }
-                }
+                CachedImage(url: URL(string: image))
+                .scaledToFill()
                 .frame(maxWidth: .infinity)
                 .frame(height: 160)
                 .clipped()

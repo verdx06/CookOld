@@ -10,9 +10,17 @@ import SwiftUI
 @main
 struct CulinarAppApp: App
 {
+    private let imageLoader = ImageLoaderImpl(
+        cache: ImageCacheImpl(
+            memoryCache: NSImageCache(),
+            diskCache: FileImageCache()
+        )
+    )
+
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(\.imageLoader, imageLoader)
         }
     }
 }

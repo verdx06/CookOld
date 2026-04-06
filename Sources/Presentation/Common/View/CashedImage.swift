@@ -10,22 +10,21 @@ import SwiftUI
 struct CachedImage: View
 {
     let url: URL?
-    let imageCache: ImageCache
     @State private var image: UIImage?
+    @Environment(\.imageLoader) private var imageLoader
 
     var body: some View {
-        Group {
+        ZStack {
             if let image {
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFill()
             } else {
                 PreviewRectangle()
             }
         }
         .task {
             guard let url else { return }
-            self.image = await imageCache.load(url: url)
+            self.image = await imageLoader.loadImage(url: url)
         }
     }
 }
