@@ -10,9 +10,8 @@ import Foundation
 @Observable
 final class SearchViewModel
 {
-    var repository: SearchRepository
-    private var categorySearchTask: Task<Void, Never>?
-    private var searchTask: Task<Void, Never>?
+    private(set) var repository: SearchRepository
+    private var searchTask: Task<Void, Error>?
     var searchText: String = ""
     var selectedCategory: MealCategory?
     var categoriesState: LoadingState<[MealCategory]> = .idle
@@ -28,7 +27,7 @@ final class SearchViewModel
     func scheduleSearch() {
         searchTask?.cancel()
         searchTask = Task {
-            try? await Task.sleep(nanoseconds: 500_000_000)
+            try await Task.sleep(nanoseconds: 500_000_000)
             await searchMeals()
         }
     }

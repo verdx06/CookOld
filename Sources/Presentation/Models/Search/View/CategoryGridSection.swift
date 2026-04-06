@@ -21,7 +21,13 @@ struct CategoryGridSection: View
             ], spacing: 12) {
                 ForEach(categories, id: \.id) { category in
                     NavigationLink(
-                        destination: CategoryFilterView(selectedCategory: category, repository: viewModel.repository)
+                        destination: CategoryFilterView(
+                            viewModel:
+                                CategoryViewModel(
+                                    selectedCategory: category,
+                                    repository: viewModel.repository
+                                )
+                            )
                     ) {
                         CategoryCard(category: category)
                             .frame(maxWidth: .infinity)

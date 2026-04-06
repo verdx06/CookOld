@@ -19,7 +19,7 @@ struct MealListView: View
                         title: meal.strMeal,
                         image: meal.strMealThumb,
                         country: meal.strArea ?? "",
-                        timeMinutes: Int.random(in: 15...90),
+                        timeMinutes: meal.cookingTime,
                         isFavorite: false,
                         onFavoriteTap: {}
                     )
