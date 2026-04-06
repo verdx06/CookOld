@@ -22,12 +22,13 @@ final class NetworkService: Network
         guard let url = URL(string: baseURL + url) else {
             throw URLError(.badURL)
         }
+        print(url)
         let (data, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
-    func requestData<T: Decodable>(url: String, params: [String: String]) async throws -> T {
-        guard var components = URLComponents(string: baseURL + url) else {
+    func requestData<T: Decodable>(url path: String, params: [String: String]) async throws -> T {
+        guard var components = URLComponents(string: self.baseURL + path) else {
             throw URLError(.badURL)
         }
         components.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }

@@ -9,110 +9,135 @@ import SwiftUI
 
 struct CardDishView: View
 {
-	let title: String
-	let image: String
-	let country: String
-	let timeMinutes: Int
-	let isFavorite: Bool
-	let onFavoriteTap: () -> Void
+    let title: String
+    let image: String
+    let category: String
+    let area: String
+    let isFavorite: Bool
+    let onFavoriteTap: () -> Void
 
     init(
         title: String,
         image: String,
-        country: String,
-        timeMinutes: Int,
+        category: String,
+        area: String,
         isFavorite: Bool,
         onFavoriteTap: @escaping () -> Void
     ) {
         self.title = title
         self.image = image
-        self.country = country
-        self.timeMinutes = timeMinutes
+        self.category = category
+        self.area = area
         self.isFavorite = isFavorite
         self.onFavoriteTap = onFavoriteTap
     }
 
-	var body: some View {
+    var body: some View {
         self.content
-	}
+    }
 }
 
 private extension CardDishView
 {
+    static let imageHeight: CGFloat = 168
+    static let cornerRadius: CGFloat = 22
+
     var content: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(alignment: .leading, spacing: 0) {
-                AsyncImage(url: URL(string: image)) { phase in
-                    switch phase {
-                    case .success(let fetchedImage):
-                        fetchedImage
-                            .resizable()
-                            .scaledToFill()
-                    default:
-                        ProgressView()
-                            .tint(.gray)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 160)
-                .clipped()
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(title)
-                        .font(.system(size: 26, weight: .bold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-
-                    metaRow
-                }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
+        VStack(alignment: .leading, spacing: 0) {
+            ZStack(alignment: .topTrailing) {
+                self.imageSection
+                self.favoriteButton
+                    .padding(12)
             }
+            .frame(height: Self.imageHeight)
+            .frame(maxWidth: .infinity)
+            .clipped()
 
-            favoriteButton
-                .padding(16)
+            self.textSection
         }
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .shadow(color: Color.black.opacity(0.05), radius: 12, x: 0, y: 6)
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
+        .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 4)
     }
 
-	@ViewBuilder
-    var favoriteButton: some View {
-			Button {
-				onFavoriteTap()
-			} label: {
-                Image(systemName: isFavorite ? "heart.fill" : "heart")
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(isFavorite ? Color.red : Color.gray.opacity(0.7))
-			}
-			.accessibilityLabel("Favorite")
-	}
+    var imageSection: some View {
+        AsyncImage(url: URL(string: self.image)) { phase in
+            switch phase {
+            case .success(let fetchedImage):
+                fetchedImage
+                    .resizable()
+                    .scaledToFill()
+            default:
+                PreviewRectangle(cornerRadius: 0)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
 
-	var metaRow: some View {
-		HStack(spacing: 14) {
-			HStack(spacing: 6) {
-				Image(systemName: "clock")
-					.foregroundStyle(.gray.opacity(0.75))
-				Text("\(timeMinutes) мин")
-					.font(.system(size: 18, weight: .semibold))
-					.foregroundStyle(.gray)
-			}
-            Spacer()
-				Text(country)
-					.font(.system(size: 18, weight: .semibold))
-					.foregroundStyle(.gray)
-		}
-	}
+    var textSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(self.title)
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
+
+            self.metaRow
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.systemGray6))
+    }
+
+    var metaRow: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 16) {
+            if let categoryText = Self.nonEmpty(self.category) {
+                HStack(spacing: 6) {
+                    Image(systemName: "square.grid.2x2")
+                    Text(categoryText)
+                }
+            }
+            if let areaText = Self.nonEmpty(self.area) {
+                HStack(spacing: 6) {
+                    Image(systemName: "globe")
+                    Text(areaText)
+                }
+            }
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+    }
+
+    static func nonEmpty(_ raw: String) -> String? {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+
+    @ViewBuilder
+    var favoriteButton: some View {
+        Button {
+            self.onFavoriteTap()
+        } label: {
+            Image(systemName: self.isFavorite ? "heart.fill" : "heart")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(self.isFavorite ? Color.red : Color.primary.opacity(0.85))
+                .padding(8)
+                .background(.ultraThinMaterial, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Favorite")
+    }
 }
 
 #Preview {
-	CardDishView(
-		title: "Pancakes",
-        image: "https://static.vecteezy.com/system/resources/previews/000/296/081/non_2x/vector-set-of-different-dishes.jpg",
-		country: "American",
-		timeMinutes: 20,
-        isFavorite: true, onFavoriteTap: {}
-	)
+    CardDishView(
+        title: "Carrot Cake",
+        image: "https://www.themealdb.com/images/media/meals/wxyvqw1463898267.jpg",
+        category: "Dessert",
+        area: "British",
+        isFavorite: false,
+        onFavoriteTap: {}
+    )
+    .padding()
 }
