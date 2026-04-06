@@ -8,7 +8,12 @@
 import UIKit
 import SwiftUI
 
-final class ImageLoader
+protocol ImageLoader
+{
+    func loadImage(url: URL) async -> UIImage?
+}
+
+final class ImageLoaderImpl: ImageLoader
 {
     private let cache: ImageCache
     private let session: URLSession
@@ -41,13 +46,20 @@ final class ImageLoader
     }
 }
 
-extension EnvironmentValues
+private struct ImageLoaderKey: EnvironmentKey
 {
-    @Entry var imageLoader = ImageLoader(
+    static let defaultValue: ImageLoader = ImageLoaderImpl(
         cache: CombinedImageCache(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
-        ),
-        session: URLSession.shared
+        )
     )
+}
+
+extension EnvironmentValues
+{
+    var imageLoader: ImageLoader {
+        get { self[ImageLoaderKey.self] }
+        set { self[ImageLoaderKey.self] = newValue }
+    }
 }

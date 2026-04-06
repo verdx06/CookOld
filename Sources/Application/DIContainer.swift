@@ -19,6 +19,13 @@ final class DIContainer
     private lazy var searchRepository: SearchRepository = SearchRepositoryImpl(service: self.network)
     private lazy var searchViewModel = SearchViewModel(repository: self.searchRepository)
 
+    private lazy var imageLoader: ImageLoader = ImageLoaderImpl(
+        cache: CombinedImageCache(
+            memoryCache: NSImageCache(),
+            diskCache: FileImageCache()
+        )
+    )
+
     func makeHomeViewModel() -> HomeViewModel {
         self.homeViewModel
     }
@@ -29,5 +36,9 @@ final class DIContainer
 
     func makeSearchViewModel() -> SearchViewModel {
         self.searchViewModel
+    }
+
+    func makeImageLoader() -> ImageLoader {
+        self.imageLoader
     }
 }

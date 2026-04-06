@@ -46,13 +46,24 @@ private extension CardDishView
     static let cornerRadius: CGFloat = 22
 
     var content: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .topTrailing) {
+            VStack(alignment: .leading, spacing: 0) {
                 self.imageSection
-                if self.showsFavoriteButton {
-                    self.favoriteButton
-                        .padding(12)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 160)
+                    .clipped()
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(title)
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+
+                    metaRow
                 }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
             }
             .frame(height: Self.imageHeight)
             .frame(maxWidth: .infinity)
