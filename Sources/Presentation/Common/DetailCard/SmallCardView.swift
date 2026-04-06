@@ -1,11 +1,7 @@
 import SwiftUI
 
 struct SmallCardView: View {
-    @State private var viewModel: SmallCardViewModel
-
-    init(viewModel: SmallCardViewModel) {
-        _viewModel = State(initialValue: viewModel)
-    }
+    let viewModel: SmallCardViewModel
 
     var body: some View {
         HStack(spacing: 0) {

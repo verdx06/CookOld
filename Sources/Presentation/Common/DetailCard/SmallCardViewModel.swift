@@ -24,9 +24,9 @@ final class SmallCardViewModel {
     }
     
     var mealInfo: String {
-        let area = meal.strArea ?? "Unknown"
+        let area = meal.strArea ?? "unknown".localized()
         let flag = getFlag(for: area)
-        return "\(flag) \(area) · 20 min"
+        return "\(flag) \(area) · 20 \("minutes".localized())"
     }
     
     func getFlag(for area: String) -> String {

@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct FavoriteView: View {
-    @State private var viewModel: FavoriteViewModel
-
-    init(repository: SwiftDataFavouritesRepository) {
-        _viewModel = State(initialValue: FavoriteViewModel(repository: repository))
-    }
+    @State var viewModel: FavoriteViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -27,7 +23,7 @@ struct FavoriteView: View {
                     .foregroundColor(.gray)
                 TextField("recipe_finder".localized(), text: $viewModel.searchText)
                 if !viewModel.searchText.isEmpty {
-                    Button("cancel".localized()) {
+                    Button(.cancel) {
                         viewModel.searchText = ""
                     }
                     .foregroundColor(.blue)
@@ -63,5 +59,5 @@ struct FavoriteView: View {
 #Preview {
     let repository = SwiftDataFavouritesRepository()
     let _ = repository.resetSeed()
-    FavoriteView(repository: repository)
+    FavoriteView(viewModel: FavoriteViewModel(repository: repository))
 }

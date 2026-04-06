@@ -1,6 +1,11 @@
 import SwiftData
+import SwiftUI
 
-@Observable
+
+extension EnvironmentValues {
+    @Entry var favouritesRepository: FavouritesRepository!
+}
+
 @MainActor
 final class SwiftDataFavouritesRepository: FavouritesRepository {
 
