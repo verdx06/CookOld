@@ -13,7 +13,8 @@ struct MealResponse: Decodable {
 }
 
 // MARK: - Meal
-struct Meal: Decodable, Identifiable {
+struct Meal: Codable, Hashable
+{
     let idMeal: String
     let strMeal: String
     let strMealAlternate: String?

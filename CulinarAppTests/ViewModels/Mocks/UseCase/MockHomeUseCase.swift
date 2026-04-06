@@ -27,7 +27,7 @@ final class MockHomeUseCase: HomeUseCase {
         self.popularCalls += 1
         return try self.popularResult.get()
     }
-    
+
     func getRecentMeals() async throws -> MealResponse {
         self.recentCalls += 1
         return try self.recentResult.get()
