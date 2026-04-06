@@ -21,6 +21,12 @@
     "categories" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Categories"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32,6 +38,12 @@
     "change_request" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try changing your request"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43,6 +55,12 @@
     "data_loading_failed" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load data"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71,6 +89,12 @@
     "empty_search" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing found"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -150,6 +174,12 @@
     "search_error" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -161,10 +191,16 @@
     "search_field_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find a recipe…"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Найти рецепт"
+            "value" : "Найти рецепт…"
           }
         }
       }

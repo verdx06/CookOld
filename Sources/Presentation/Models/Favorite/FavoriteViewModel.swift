@@ -8,7 +8,7 @@ final class FavoriteViewModel {
     private var toBeRemoved: Set<String> = []
     private let repository: any FavouritesRepository
 
-    init(repository: SwiftDataFavouritesRepository) {
+    init(repository: FavouritesRepository) {
         self.repository = repository
     }
 

@@ -9,12 +9,15 @@ import SwiftUI
 
 @main
 struct CulinarAppApp: App {
-    @State private var repository = SwiftDataFavouritesRepository()
+    private let favouriteViewModel: FavoriteViewModel
+    
+    init() {
+        favouriteViewModel = FavoriteViewModel(repository: SwiftDataFavouritesRepository())
+    }
 
     var body: some Scene {
         WindowGroup {
-            MainView()
-                .environment(repository)
+            MainView(favoriteViewModel: favouriteViewModel)
         }
     }
 }
