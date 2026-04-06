@@ -9,13 +9,16 @@ import SwiftUI
 
 struct CategoryFilterView: View
 {
-    @Bindable var viewModel: SearchViewModel
-    var selectedCategory: MealCategory
+    @State private var viewModel: CategoryViewModel
+
+    init(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack {
             SearchBar(searchText: $viewModel.searchText, onSearch: {
-                Task { await viewModel.searchMealsInCategory(category: selectedCategory) }
+                Task { await viewModel.searchMealsInCategory() }
             })
             .padding()
 
@@ -28,7 +31,7 @@ struct CategoryFilterView: View
                 } else {
                     MealListView(meals: meals)
                         .refreshable {
-                            await viewModel.searchMealsInCategory(category: selectedCategory)
+                            await viewModel.searchMealsInCategory()
                         }
                 }
             case .failure:
@@ -40,26 +43,14 @@ struct CategoryFilterView: View
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(selectedCategory.name)
+                Text(viewModel.selectedCategory.name)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(.black)
             }
         }
         .task {
-            await viewModel.searchMealsInCategory(category: selectedCategory)
-        }
-        .onAppear {
-            viewModel.searchText = ""
-            viewModel.isInCategoryMode = true
-        }
-        .onDisappear {
-            viewModel.searchResult = .idle
-            viewModel.searchText = ""
-            viewModel.isInCategoryMode = false
-        }
-        .onChange(of: viewModel.searchText) {
-            viewModel.scheduleCategorySearch(category: selectedCategory)
+            await viewModel.searchMealsInCategory()
         }
     }
 }

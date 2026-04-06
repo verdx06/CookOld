@@ -99,6 +99,11 @@ struct Meal: Codable
         ].compactMap { $0 }.filter { !$0.isEmpty }
     }
 
+    var cookingTime: Int {
+        let sum = idMeal.unicodeScalars.reduce(0) { $0 + Int($1.value) }
+        return 15 + (sum % 76)
+    }
+
     /// Возвращает массив пар (ингредиент, мера)
     var ingredientsWithMeasures: [(ingredient: String, measure: String)] {
         var result: [(String, String)] = []

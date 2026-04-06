@@ -10,33 +10,26 @@ import Foundation
 @Observable
 final class SearchViewModel
 {
-    private var repository: SearchRepository
-    private var categorySearchTask: Task<Void, Never>?
-    private var searchTask: Task<Void, Never>?
+    private(set) var repository: SearchRepository
+    private var searchTask: Task<Void, Error>?
     var searchText: String = ""
     var selectedCategory: MealCategory?
     var categoriesState: LoadingState<[MealCategory]> = .idle
     var searchResult: LoadingState<[Meal]> = .idle
-    var isInCategoryMode: Bool = false
+
+    init(repository: SearchRepository) {
+        self.repository = repository
+        Task {
+            await loadCategories()
+        }
+    }
 
     func scheduleSearch() {
         searchTask?.cancel()
         searchTask = Task {
-            try? await Task.sleep(nanoseconds: 500_000_000)
+            try await Task.sleep(nanoseconds: 500_000_000)
             await searchMeals()
         }
-    }
-
-    func scheduleCategorySearch(category: MealCategory) {
-        categorySearchTask?.cancel()
-        categorySearchTask = Task {
-            try? await Task.sleep(nanoseconds: 500_000_000)
-            await searchMealsInCategory(category: category)
-        }
-    }
-
-    init(repository: SearchRepository) {
-        self.repository = repository
     }
 
     func loadCategories() async {
@@ -57,32 +50,6 @@ final class SearchViewModel
         }
         do {
             searchResult = .success(try await repository.searchMeals(name: searchText))
-        } catch {
-            if (error as NSError).code != NSURLErrorCancelled {
-                searchResult = .failure
-            }
-        }
-    }
-
-    func searchMealsByCategories(category: MealCategory) async {
-        searchResult = .loading
-        do {
-            searchResult = .success(try await repository.searchMealsByCategories(category: category))
-        } catch {
-            if (error as NSError).code != NSURLErrorCancelled {
-                searchResult = .failure
-            }
-        }
-    }
-
-    func searchMealsInCategory(category: MealCategory) async {
-        searchResult = .loading
-        guard searchText.isEmpty == false else {
-            await searchMealsByCategories(category: category)
-            return
-        }
-        do {
-            searchResult = .success(try await repository.searchMealsInCategory(name: searchText, category: category))
         } catch {
             if (error as NSError).code != NSURLErrorCancelled {
                 searchResult = .failure
