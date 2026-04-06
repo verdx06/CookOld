@@ -102,6 +102,7 @@ private extension HomeView
                             .padding(.trailing, 24)
                             .padding(.top, 24)
                         }
+                        .padding(.horizontal, 16)
                     }
                 }
             }

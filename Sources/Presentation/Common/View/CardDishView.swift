@@ -10,7 +10,7 @@ import SwiftUI
 struct CardDishView: View
 {
     let title: String
-    let imageURL: URL?
+    let image: String
     let category: String
     let area: String
     let isFavorite: Bool
@@ -19,7 +19,7 @@ struct CardDishView: View
 
     init(
         title: String,
-        imageURL: URL?,
+        image: String,
         category: String,
         area: String,
         isFavorite: Bool,
@@ -27,7 +27,7 @@ struct CardDishView: View
         onFavoriteTap: @escaping () -> Void
     ) {
         self.title = title
-        self.imageURL = imageURL
+        self.image = image
         self.category = category
         self.area = area
         self.isFavorite = isFavorite
@@ -83,7 +83,7 @@ private extension CardDishView
 
     @ViewBuilder
     var imageSection: some View {
-        if let url = self.imageURL {
+        if let url = URL(string: self.image) {
             LoadableImage(url: url)
                 .scaledToFill()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -131,16 +131,4 @@ private extension CardDishView
         .buttonStyle(.plain)
         .accessibilityLabel("Favorite")
     }
-}
-
-#Preview {
-    CardDishView(
-        title: "Carrot Cake",
-        imageURL: URL(string: "https://www.themealdb.com/images/media/meals/wxyvqw1463898267.jpg"),
-        category: "Dessert",
-        area: "British",
-        isFavorite: false,
-        onFavoriteTap: {}
-    )
-    .padding()
 }
