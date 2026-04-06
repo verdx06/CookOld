@@ -24,13 +24,15 @@ struct HomeView: View
             case .loaded:
                 self.loadedContent
             case .failed(let message):
-                NetworkErrorView(message: message) {
+                ErrorStateView(detailMessage: message) {
                     Task { await self.viewModel.retry() }
                 }
             }
         }
-        .task {
-            await self.viewModel.loadContent()
+        .onAppear {
+            Task {
+                await self.viewModel.loadContent()
+            }
         }
     }
 }
