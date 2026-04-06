@@ -25,12 +25,12 @@ struct HomeView: View
                 self.loadedContent
             case .failed(let message):
                 NetworkErrorView(message: message) {
-                    self.viewModel.retry()
+                    Task { await self.viewModel.retry() }
                 }
             }
         }
-        .onAppear {
-            self.viewModel.loadContent()
+        .task {
+            await self.viewModel.loadContent()
         }
     }
 }
@@ -79,7 +79,7 @@ private extension HomeView
             }
         }
         .refreshable {
-            self.viewModel.reload()
+            await self.viewModel.reload()
         }
     }
 }

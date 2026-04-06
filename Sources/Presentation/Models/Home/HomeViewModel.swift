@@ -29,29 +29,27 @@ final class HomeViewModel
         self.usecase = usecase
     }
 
-    func loadContent() {
+    func loadContent() async {
         guard case .idle = self.contentState else { return }
         self.contentState = .loading
-        self.reload()
+        await self.reload()
     }
 
-    func retry() {
+    func retry() async {
         self.contentState = .loading
-        self.reload()
+        await self.reload()
     }
 
-    func reload() {
-        Task {
-            do {
-                async let popular = self.usecase.getPopularMeals()
-                async let recent = self.usecase.getRecentMeals()
-                let (popularResult, recentResult) = try await (popular, recent)
-                self.popularMeals = popularResult
-                self.recentMeals = recentResult
-                self.contentState = .loaded
-            } catch {
-                self.contentState = .failed(error.localizedDescription)
-            }
+    func reload() async {
+        do {
+            async let popular = self.usecase.getPopularMeals()
+            async let recent = self.usecase.getRecentMeals()
+            let (popularResult, recentResult) = try await (popular, recent)
+            self.popularMeals = popularResult
+            self.recentMeals = recentResult
+            self.contentState = .loaded
+        } catch {
+            self.contentState = .failed(error.localizedDescription)
         }
     }
 }
