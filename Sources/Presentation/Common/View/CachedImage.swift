@@ -11,6 +11,7 @@ struct CachedImage: View
 {
     let url: URL?
     @State private var image: UIImage?
+    @State private var isLoading = true
     @Environment(\.imageLoader) private var imageLoader
 
     var body: some View {
@@ -18,13 +19,20 @@ struct CachedImage: View
             if let image {
                 Image(uiImage: image)
                     .resizable()
-            } else {
+            } else if isLoading {
                 PreviewRectangle()
+            } else {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
             }
         }
         .task {
-            guard let url else { return }
-            self.image = await imageLoader.loadImage(url: url)
+            guard let url else {
+                isLoading = false
+                return
+            }
+            image = await imageLoader.loadImage(url: url)
+            isLoading = false
         }
     }
 }
