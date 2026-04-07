@@ -73,7 +73,7 @@ struct ErrorStateView: View
     }
 
     private var subtitleText: String {
-        if let detail = self.detailMessage, !detail.isEmpty {
+        if let detail = self.detailMessage, detail.isEmpty == false {
             return detail
         }
         return "data_loading_failed".localized()

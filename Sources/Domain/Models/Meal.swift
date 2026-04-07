@@ -99,6 +99,8 @@ struct Meal: Codable
         ].compactMap { $0 }.filter { !$0.isEmpty }
     }
 
+    var imageURL: URL? { URL(string: strMealThumb) }
+
     var cookingTime: Int {
         let sum = idMeal.unicodeScalars.reduce(0) { $0 + Int($1.value) }
         return 15 + (sum % 76)

@@ -14,20 +14,10 @@ struct CategoryCard: View
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottomLeading) {
-                AsyncImage(url: URL(string: category.image)) { phase in
-                    switch phase {
-                    case .empty:
-                        PreviewRectangle()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geo.size.width, height: geo.size.height)
-                            .clipped()
-                    default:
-                        PreviewRectangle()
-                    }
-                }
+                LoadableImage(url: category.image)
+                    .scaledToFill()
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
 
                 LinearGradient(
                     colors: [.clear, .clear, .black.opacity(0.6)],

@@ -11,7 +11,7 @@ struct MealCategory: Decodable
 {
     let id: String
     let name: String
-    let image: String
+    let image: URL
 
     enum CodingKeys: String, CodingKey
     {
