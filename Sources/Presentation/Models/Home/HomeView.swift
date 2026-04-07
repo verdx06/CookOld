@@ -72,18 +72,34 @@ private extension HomeView
                         .padding(.bottom, 12)
 
                     ForEach(self.viewModel.recentMeals.meals ?? [], id: \.idMeal) { meal in
-                        NavigationLink(value: meal) {
-                            CardDishView(
-                                title: meal.strMeal,
-                                image: meal.strMealThumb,
-                                category: meal.strCategory ?? "",
-                                area: meal.strArea ?? "",
-                                isFavorite: false,
-                                onFavoriteTap: {}
-                            )
-                            .padding()
+                        ZStack(alignment: .topTrailing) {
+                            NavigationLink(value: meal) {
+                                CardDishView(
+                                    title: meal.strMeal,
+                                    image: meal.strMealThumb,
+                                    category: meal.strCategory ?? "",
+                                    area: meal.strArea ?? "",
+                                    isFavorite: false,
+                                    showsFavoriteButton: false,
+                                    onFavoriteTap: {}
+                                )
+                                .padding()
+                            }
+                            .buttonStyle(.plain)
+
+                            Button {
+                                // TODO: добавить действие для лайка на главном экране
+                            } label: {
+                                Image(systemName: "heart")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundStyle(Color.primary.opacity(0.85))
+                                    .padding(8)
+                                    .background(.ultraThinMaterial, in: Circle())
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.trailing, 24)
+                            .padding(.top, 24)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }

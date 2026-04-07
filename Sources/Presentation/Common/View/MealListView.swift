@@ -17,12 +17,10 @@ struct MealListView: View
                 ForEach(meals, id: \.idMeal) { meal in
                     CardDishView(
                         title: meal.strMeal,
-                        imageURL: meal.imageURL,
+                        image: meal.strMealThumb,
                         category: meal.strCategory ?? "",
                         area: meal.strArea ?? "",
-                        isFavorite: false,
-                        onFavoriteTap: {}
-                    )
+                        isFavorite: false) {}
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
                 .animation(.spring(duration: 0.4), value: meals.count)
