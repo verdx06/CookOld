@@ -11,6 +11,7 @@ struct CategoryGridSection: View
 {
     let viewModel: SearchViewModel
     let categories: [MealCategory]
+    let diContainer: DIContainer
 
     var body: some View {
         ScrollView {
@@ -22,12 +23,12 @@ struct CategoryGridSection: View
                 ForEach(categories, id: \.id) { category in
                     NavigationLink(
                         destination: CategoryFilterView(
-                            viewModel:
-                                CategoryViewModel(
-                                    selectedCategory: category,
-                                    repository: viewModel.repository
-                                )
-                            )
+                            viewModel: CategoryViewModel(
+                                selectedCategory: category,
+                                repository: viewModel.repository
+                            ),
+                            diContainer: diContainer
+                        )
                     ) {
                         CategoryCard(category: category)
                             .frame(maxWidth: .infinity)

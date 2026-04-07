@@ -10,18 +10,26 @@ import SwiftUI
 struct MealListView: View
 {
     let meals: [Meal]
+    let diContainer: DIContainer
 
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(meals, id: \.idMeal) { meal in
-                    CardDishView(
-                        title: meal.strMeal,
-                        image: meal.strMealThumb,
-                        category: meal.strCategory ?? "",
-                        area: meal.strArea ?? "",
-                        isFavorite: false) {}
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    NavigationLink {
+                        DetailView(
+                            initialMeal: meal,
+                            viewModel: diContainer.makeDetailViewModel(mealId: meal.idMeal)
+                        )
+                    } label: {
+                        CardDishView(
+                            title: meal.strMeal,
+                            image: meal.strMealThumb,
+                            category: meal.strCategory ?? "",
+                            area: meal.strArea ?? "",
+                            isFavorite: false) {}
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    }
                 }
                 .animation(.spring(duration: 0.4), value: meals.count)
             }

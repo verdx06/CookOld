@@ -13,7 +13,21 @@ final class DIContainer
     private lazy var homeUseCase: HomeUseCase = HomeUseCaseImpl(repository: self.homeRepository)
     private lazy var homeViewModel = HomeViewModel(usecase: self.homeUseCase)
 
+    private lazy var detailRepository: DetailRepository = DetailRepositoryImpl(network: self.network)
+    private lazy var detailUseCase: DetailUseCase = DetailUseCaseImpl(repository: self.detailRepository)
+
+    private lazy var searchRepository: SearchRepository = SearchRepositoryImpl(service: self.network)
+    private lazy var searchViewModel = SearchViewModel(repository: self.searchRepository)
+
     func makeHomeViewModel() -> HomeViewModel {
         self.homeViewModel
+    }
+
+    func makeDetailViewModel(mealId: String) -> DetailViewModel {
+        DetailViewModel(mealId: mealId, usecase: self.detailUseCase)
+    }
+
+    func makeSearchViewModel() -> SearchViewModel {
+        self.searchViewModel
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchContentView: View
 {
     var viewModel: SearchViewModel
+    let diContainer: DIContainer
 
     var body: some View {
         ScrollView {
@@ -18,7 +19,7 @@ struct SearchContentView: View
                 if meals.isEmpty {
                     EmptyStateView()
                 } else {
-                    MealListView(meals: meals)
+                    MealListView(meals: meals, diContainer: diContainer)
                         .transition(.opacity)
                         .refreshable {
                             await viewModel.searchMeals()
@@ -31,7 +32,7 @@ struct SearchContentView: View
             case .failure:
                 ErrorStateView()
             default:
-                CategoriesSection(viewModel: viewModel)
+                CategoriesSection(viewModel: viewModel, diContainer: diContainer)
             }
         }
         .refreshable {

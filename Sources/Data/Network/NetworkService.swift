@@ -22,7 +22,9 @@ final class NetworkService: Network
         guard let url = URL(string: baseURL + url) else {
             throw URLError(.badURL)
         }
+        #if DEBUG
         print(url)
+        #endif
         let (data, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode(T.self, from: data)
     }
@@ -31,6 +33,10 @@ final class NetworkService: Network
         guard var components = URLComponents(string: self.baseURL + path) else {
             throw URLError(.badURL)
         }
+        #if DEBUG
+        print(components.url)
+        print(params)
+        #endif
         components.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
         guard let finalURL = components.url else {
             throw URLError(.badURL)

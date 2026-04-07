@@ -10,9 +10,11 @@ import SwiftUI
 struct HomeView: View
 {
     @State private var viewModel: HomeViewModel
+    let diContainer: DIContainer
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, diContainer: DIContainer) {
         _viewModel = State(initialValue: viewModel)
+        self.diContainer = diContainer
     }
 
     var body: some View {
@@ -107,12 +109,16 @@ private extension HomeView
                 await self.viewModel.reload()
             }
             .navigationDestination(for: Meal.self) { meal in
-                DetailView(meal: meal)
+                DetailView(
+                    initialMeal: meal,
+                    viewModel: self.diContainer.makeDetailViewModel(mealId: meal.idMeal)
+                )
             }
         }
     }
 }
 
 #Preview {
-    HomeView(viewModel: DIContainer().makeHomeViewModel())
+    let di = DIContainer()
+    HomeView(viewModel: di.makeHomeViewModel(), diContainer: di)
 }

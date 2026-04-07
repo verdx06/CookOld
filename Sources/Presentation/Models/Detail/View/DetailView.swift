@@ -9,32 +9,56 @@ import SwiftUI
 
 struct DetailView: View
 {
-    let meal: Meal
+    let initialMeal: Meal
+    @State private var viewModel: DetailViewModel
     @State private var isFavorite = false
 
+    init(initialMeal: Meal, viewModel: DetailViewModel) {
+        self.initialMeal = initialMeal
+        _viewModel = State(initialValue: viewModel)
+    }
+
     var body: some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) { favoriteButton }
+        Group {
+            switch self.viewModel.contentState {
+            case .idle, .loading:
+                ProgressView("Загрузка…")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            case .loaded:
+                content(meal: self.viewModel.meal ?? self.initialMeal)
+            case .failed(let message):
+                ErrorStateView(detailMessage: message) {
+                    Task { await self.viewModel.retry() }
+                }
             }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) { favoriteButton }
+        }
+        .onAppear {
+            Task { await self.viewModel.loadContent() }
+        }
     }
 }
 
 private extension DetailView
 {
-    var content: some View {
+    func content(meal: Meal) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                hero
-                titleBlock
-                ingredientsSection
-                instructionsSection
+                hero(meal: meal)
+                titleBlock(meal: meal)
+                ingredientsSection(meal: meal)
+                instructionsSection(meal: meal)
             }
+        }
+        .refreshable {
+            await self.viewModel.loadContent()
         }
         .ignoresSafeArea(edges: .top)
     }
 
-    var hero: some View {
+    func hero(meal: Meal) -> some View {
         AsyncImage(url: URL(string: meal.strMealThumb)) { phase in
             switch phase {
             case .success(let image):
@@ -71,7 +95,7 @@ private extension DetailView
         .buttonStyle(.plain)
     }
 
-    var titleBlock: some View {
+    func titleBlock(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(meal.strMeal)
                 .font(.title.bold())
@@ -108,7 +132,7 @@ private extension DetailView
         .padding(.top, 20)
     }
 
-    var ingredientsSection: some View {
+    func ingredientsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(.detailIngredients)
                 .font(.title2.bold())
@@ -134,7 +158,7 @@ private extension DetailView
         .padding(.horizontal, Constants.horizontalPadding)
     }
 
-    var instructionsSection: some View {
+    func instructionsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(.detailInstructions)
                 .font(.title3.bold())
@@ -154,11 +178,11 @@ private extension DetailView
     }
 }
 
-
 // MARK: - Constants
 private extension DetailView
 {
-    enum Constants {
+    enum Constants
+    {
         static let heroCorner: CGFloat = 24
         static let horizontalPadding: CGFloat = 20
         static let accentTag = Color(red: 1, green: 0.44, blue: 0.26)

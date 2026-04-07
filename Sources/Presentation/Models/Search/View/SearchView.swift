@@ -9,9 +9,11 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var viewModel: SearchViewModel
+    let diContainer: DIContainer
 
-    init(viewModel: SearchViewModel) {
+    init(viewModel: SearchViewModel, diContainer: DIContainer) {
         self.viewModel = viewModel
+        self.diContainer = diContainer
     }
 
     var body: some View {
@@ -21,7 +23,7 @@ struct SearchView: View {
                     Task { await viewModel.searchMeals() }
                 })
                 .padding(.top, 8)
-                SearchContentView(viewModel: viewModel)
+                SearchContentView(viewModel: viewModel, diContainer: diContainer)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .onChange(of: viewModel.searchText) {
@@ -32,11 +34,6 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(
-        viewModel: SearchViewModel(
-            repository: SearchRepositoryImpl(
-                service: NetworkService()
-            )
-        )
-    )
+    let di = DIContainer()
+    SearchView(viewModel: di.makeSearchViewModel(), diContainer: di)
 }

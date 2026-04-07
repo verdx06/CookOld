@@ -10,9 +10,11 @@ import SwiftUI
 struct CategoryFilterView: View
 {
     @State private var viewModel: CategoryViewModel
+    let diContainer: DIContainer
 
-    init(viewModel: CategoryViewModel) {
+    init(viewModel: CategoryViewModel, diContainer: DIContainer) {
         self.viewModel = viewModel
+        self.diContainer = diContainer
     }
 
     var body: some View {
@@ -29,7 +31,7 @@ struct CategoryFilterView: View
                 if meals.isEmpty {
                     EmptyStateView()
                 } else {
-                    MealListView(meals: meals)
+                    MealListView(meals: meals, diContainer: diContainer)
                         .refreshable {
                             await viewModel.searchMealsInCategory()
                         }
