@@ -9,8 +9,17 @@ import SwiftUI
 
 struct ErrorStateView: View
 {
+    /// Если задано, показывается вместо стандартного подзаголовка (например, текст из `HomeViewModel`).
+    var detailMessage: String?
+    var onRetry: (() -> Void)?
+
     @State private var isShaking = false
     @State private var appeared = false
+
+    init(detailMessage: String? = nil, onRetry: (() -> Void)? = nil) {
+        self.detailMessage = detailMessage
+        self.onRetry = onRetry
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -39,19 +48,35 @@ struct ErrorStateView: View
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
 
-                Text("data_loading_failed".localized())
+                Text(self.subtitleText)
                     .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
             }
             .opacity(appeared ? 1.0 : 0)
             .offset(y: appeared ? 0 : 8)
             .animation(.easeOut(duration: 0.35).delay(0.15), value: appeared)
+
+            if let onRetry = self.onRetry {
+                Button("retry".localized(), action: onRetry)
+                    .buttonStyle(.borderedProminent)
+                    .opacity(appeared ? 1.0 : 0)
+                    .animation(.easeOut(duration: 0.35).delay(0.25), value: appeared)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             appeared = true
             isShaking = true
         }
+    }
+
+    private var subtitleText: String {
+        if let detail = self.detailMessage, !detail.isEmpty {
+            return detail
+        }
+        return "data_loading_failed".localized()
     }
 }
 

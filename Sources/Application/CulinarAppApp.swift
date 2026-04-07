@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CulinarAppApp: App
 {
+    private let diContainer = DIContainer()
     private let imageLoader = ImageLoader(
         cache: CombinedImageCache(
             memoryCache: NSImageCache(),
@@ -20,7 +21,7 @@ struct CulinarAppApp: App
 
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(diContainer: self.diContainer)
                 .environment(\.imageLoader, imageLoader)
         }
     }

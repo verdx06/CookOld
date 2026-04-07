@@ -37,6 +37,9 @@ playground.xcworkspace
 ## Xcode build artifacts
 DerivedData/
 
+# SwiftLint
+.swiftlint_cache/
+
 ## XcodeGen generated project (we generate via project.yml)
 *.xcodeproj/
 
