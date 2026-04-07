@@ -46,9 +46,11 @@ struct CardPopularDishView: View
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
+                .truncationMode(.tail)
                 .minimumScaleFactor(0.85)
                 .padding(.horizontal, 10)
                 .padding(.bottom, 12)
+                .frame(maxWidth: .infinity)
         }
         .frame(width: self.width, height: height)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
