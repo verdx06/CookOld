@@ -23,7 +23,8 @@ final class DIContainer
         cache: CombinedImageCache(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
-        )
+        ),
+        session: URLSession.shared
     )
 
     func makeHomeViewModel() -> HomeViewModel {
