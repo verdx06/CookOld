@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoadableImage: View
 {
-    let url: URL?
+    let url: URL
     @State private var state: LoadingState = .idle
     @Environment(\.imageLoader) private var imageLoader
 
@@ -27,10 +27,6 @@ struct LoadableImage: View
             }
         }
         .task {
-            guard let url else {
-                state = .failed
-                return
-            }
             guard case .idle = state else { return }
             state = .loading
             let image = await imageLoader.loadImage(url: url)

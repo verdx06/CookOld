@@ -10,7 +10,7 @@ import SwiftUI
 struct CardDishView: View
 {
     let title: String
-    let image: String
+    let imageURL: URL?
     let category: String
     let area: String
     let isFavorite: Bool
@@ -18,14 +18,14 @@ struct CardDishView: View
 
     init(
         title: String,
-        image: String,
+        imageURL: URL?,
         category: String,
         area: String,
         isFavorite: Bool,
         onFavoriteTap: @escaping () -> Void
     ) {
         self.title = title
-        self.image = image
+        self.imageURL = imageURL
         self.category = category
         self.area = area
         self.isFavorite = isFavorite
@@ -43,12 +43,12 @@ private extension CardDishView
     static let cornerRadius: CGFloat = 22
 
     var content: some View {
-            VStack(alignment: .leading, spacing: 0) {
-                ZStack(alignment: .topTrailing) {
-                    self.imageSection
-                    self.favoriteButton
+        VStack(alignment: .leading, spacing: 0) {
+            ZStack(alignment: .topTrailing) {
+                self.imageSection
+                self.favoriteButton
                     .padding(12)
-                }
+            }
             .frame(height: Self.imageHeight)
             .frame(maxWidth: .infinity)
             .clipped()
@@ -60,10 +60,16 @@ private extension CardDishView
         .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 4)
     }
 
+    @ViewBuilder
     var imageSection: some View {
-        LoadableImage(url: URL(string: self.image))
-        .scaledToFill()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        if let url = self.imageURL {
+            LoadableImage(url: url)
+                .scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            Image(systemName: "photo")
+                .foregroundStyle(.secondary)
+        }
     }
 
     var textSection: some View {
@@ -125,7 +131,7 @@ private extension CardDishView
 #Preview {
     CardDishView(
         title: "Carrot Cake",
-        image: "https://www.themealdb.com/images/media/meals/wxyvqw1463898267.jpg",
+        imageURL: URL(string: "https://www.themealdb.com/images/media/meals/wxyvqw1463898267.jpg"),
         category: "Dessert",
         area: "British",
         isFavorite: false,
