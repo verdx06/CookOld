@@ -44,7 +44,7 @@ final class ImageLoader
 extension EnvironmentValues
 {
     @Entry var imageLoader = ImageLoader(
-        cache: ImageCacheImpl(
+        cache: CombinedImageCache(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
         ),

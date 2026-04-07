@@ -11,7 +11,7 @@ import SwiftUI
 struct CulinarAppApp: App
 {
     private let imageLoader = ImageLoader(
-        cache: ImageCacheImpl(
+        cache: CombinedImageCache(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
         ),

@@ -13,7 +13,7 @@ protocol ImageCache
     func set(image: UIImage, url: URL)
 }
 
-final class ImageCacheImpl: ImageCache
+final class CombinedImageCache: ImageCache
 {
     private let memoryCache: NSImageCache
     private let diskCache: FileImageCache
