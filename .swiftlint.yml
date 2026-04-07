@@ -14,7 +14,6 @@ opt_in_rules:
   - implicitly_unwrapped_optional
   - last_where
   - legacy_random
-  - let_var_whitespace
   - lower_acl_than_parent
   - modifier_order
   - multiline_function_chains
@@ -89,31 +88,6 @@ trailing_closure:
   only_single_muted_parameter: true
 
 custom_rules:
-  opening_brace_types:
-    include: "*.swift"
-    name: "Opening brace rule for types"
-    message: "Opening brace should be on new line for type declarations"
-    regex: '^[\t ]*(?:[@\w]+[\t ]+)*(?:class(?![\t ]+(?:func|var|let))|struct|protocol|extension|enum)[\t ]+(?:[^\n]+|[^\n]+\n{2,})\{\s*$'
-
-  opening_brace_func:
-    include: "*.swift"
-    name: "Opening brace rule"
-    message: "Opening brace should be on same line"
-    match_kinds:
-      - identifier
-      - keyword
-      - typeidentifier
-    regex: '(?:init|func)[^{}]+(?:\s{2,}|[^ ])\{\s*$'
-
-  opening_brace_statement:
-    include: "*.swift"
-    name: "Opening brace rule"
-    message: "Opening brace should be on same line"
-    match_kinds:
-      - identifier
-      - keyword
-      - typeidentifier
-    regex: '(?:if|guard|while|for|switch|do|else|catch)\s(?:\s{2,}|[^ ])\{\s*$'
 
   prohibited_global_constants:
     include: "*.swift"

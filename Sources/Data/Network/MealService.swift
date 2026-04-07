@@ -19,36 +19,41 @@ protocol MealAPIServiceProtocol {
 
 // MARK: - Реализация
 final class MealAPIService: MealAPIServiceProtocol {
-    
     static let shared = MealAPIService()
-    private init() {}  // <- важно! приватный init у синглтона
-    
+    private init() {}
+
     private let base = "https://www.themealdb.com/api/json/v2/9973533"
 
     func searchMeals(query: String) async throws -> [Meal] {
-        let url = URL(string: "\(base)/search.php?s=\(query)")!
-        // meals может быть nil если ничего не найдено
+        let url = try makeURL("\(base)/search.php?s=\(query)")
         return try await fetch(MealResponse.self, from: url).meals ?? []
     }
 
     func getCategories() async throws -> [Category] {
-        let url = URL(string: "\(base)/categories.php")!
+        let url = try makeURL("\(base)/categories.php")
         return try await fetch(CategoryResponse.self, from: url).categories
     }
 
     func getMealsByCategory(_ category: String) async throws -> [Meal] {
-        let url = URL(string: "\(base)/filter.php?c=\(category)")!
+        let url = try makeURL("\(base)/filter.php?c=\(category)")
         return try await fetch(MealResponse.self, from: url).meals ?? []
     }
 
     func getMealDetail(id: String) async throws -> Meal? {
-        let url = URL(string: "\(base)/lookup.php?i=\(id)")!
-        return try await fetch(MealResponse.self, from: url).meals?.first  // массив из 1 элеемнта
+        let url = try makeURL("\(base)/lookup.php?i=\(id)")
+        return try await fetch(MealResponse.self, from: url).meals?.first
     }
 
     func getRandomSelection() async throws -> [Meal] {
-        let url = URL(string: "\(base)/randomselection.php")!
+        let url = try makeURL("\(base)/randomselection.php")
         return try await fetch(MealResponse.self, from: url).meals ?? []
+    }
+
+    private func makeURL(_ string: String) throws -> URL {
+        guard let url = URL(string: string) else {
+            throw URLError(.badURL)
+        }
+        return url
     }
 
     private func fetch<T: Decodable>(_ type: T.Type, from url: URL) async throws -> T {
