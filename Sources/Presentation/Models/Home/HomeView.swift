@@ -111,7 +111,6 @@ private extension HomeView
             }
             .navigationDestination(for: Meal.self) { meal in
                 DetailView(
-                    initialMeal: meal,
                     viewModel: self.diContainer.makeDetailViewModel(mealId: meal.idMeal)
                 )
             }

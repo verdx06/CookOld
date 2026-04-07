@@ -9,23 +9,22 @@ import SwiftUI
 
 struct DetailView: View
 {
-    let initialMeal: Meal
     @State private var viewModel: DetailViewModel
     @State private var isFavorite = false
 
-    init(initialMeal: Meal, viewModel: DetailViewModel) {
-        self.initialMeal = initialMeal
-        _viewModel = State(initialValue: viewModel)
+    init(viewModel: DetailViewModel, isFavorite: Bool = false) {
+        self.viewModel = viewModel
+        self.isFavorite = isFavorite
     }
 
     var body: some View {
-        Group {
+        ZStack {
             switch self.viewModel.contentState {
             case .idle, .loading:
                 ProgressView("Загрузка…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
-                content(meal: self.viewModel.meal ?? self.initialMeal)
+                content
             case .failed(let message):
                 ErrorStateView(detailMessage: message) {
                     Task { await self.viewModel.retry() }
@@ -43,13 +42,13 @@ struct DetailView: View
 
 private extension DetailView
 {
-    func content(meal: Meal) -> some View {
+    var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                hero(meal: meal)
-                titleBlock(meal: meal)
-                ingredientsSection(meal: meal)
-                instructionsSection(meal: meal)
+                hero
+                titleBlock
+                ingredientsSection
+                instructionsSection
             }
         }
         .refreshable {
@@ -58,8 +57,8 @@ private extension DetailView
         .ignoresSafeArea(edges: .top)
     }
 
-    func hero(meal: Meal) -> some View {
-        AsyncImage(url: URL(string: meal.strMealThumb)) { phase in
+    var hero: some View {
+        AsyncImage(url: URL(string: viewModel.meal!.strMealThumb)) { phase in
             switch phase {
             case .success(let image):
                 image
@@ -95,20 +94,22 @@ private extension DetailView
         .buttonStyle(.plain)
     }
 
-    func titleBlock(meal: Meal) -> some View {
+    var titleBlock: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(meal.strMeal)
-                .font(.title.bold())
-                .foregroundStyle(.primary)
+            if let title = viewModel.meal?.strMeal {
+                Text(title)
+                    .font(.title.bold())
+                    .foregroundStyle(.primary)
+            }
 
             HStack(alignment: .firstTextBaseline, spacing: 16) {
-                if let category = meal.strCategory {
+                if let category = viewModel.meal?.strCategory {
                     HStack(spacing: 6) {
                         Image(systemName: "square.grid.2x2")
                         Text(category)
                     }
                 }
-                if let area = meal.strArea {
+                if let area = viewModel.meal?.strArea {
                     HStack(spacing: 6) {
                         Image(systemName: "globe")
                         Text(area)
@@ -118,7 +119,7 @@ private extension DetailView
             .font(.subheadline)
             .foregroundStyle(.secondary)
 
-            if let tag = meal.strCategory {
+            if let tag = viewModel.meal?.strCategory {
                 Text(tag)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white)
@@ -132,39 +133,40 @@ private extension DetailView
         .padding(.top, 20)
     }
 
-    func ingredientsSection(meal: Meal) -> some View {
+    var ingredientsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(.detailIngredients)
                 .font(.title2.bold())
                 .foregroundStyle(.primary)
                 .padding(.top, 28)
 
-            let rows = meal.ingredientRows
-            ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
-                HStack(alignment: .firstTextBaseline) {
-                    Text(row.name)
-                        .font(.body)
-                        .foregroundStyle(.primary)
-                    Spacer(minLength: 12)
-                    Text(row.measure)
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.trailing)
+            if let rows = viewModel.meal?.ingredientRows {
+                ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(row.name)
+                            .font(.body)
+                            .foregroundStyle(.primary)
+                        Spacer(minLength: 12)
+                        Text(row.measure)
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    .padding(.vertical, 4)
                 }
-                .padding(.vertical, 4)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Constants.horizontalPadding)
     }
 
-    func instructionsSection(meal: Meal) -> some View {
+    var instructionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(.detailInstructions)
                 .font(.title3.bold())
                 .foregroundStyle(.primary)
-
-            Text(meal.strInstructions ?? "")
+            
+            Text(viewModel.meal?.strInstructions ?? "")
                 .font(.body)
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)

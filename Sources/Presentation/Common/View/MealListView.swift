@@ -18,7 +18,6 @@ struct MealListView: View
                 ForEach(meals, id: \.idMeal) { meal in
                     NavigationLink {
                         DetailView(
-                            initialMeal: meal,
                             viewModel: diContainer.makeDetailViewModel(mealId: meal.idMeal)
                         )
                     } label: {
