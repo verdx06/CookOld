@@ -26,7 +26,6 @@ final class DIContainer
         ),
         session: URLSession.shared
     )
-
     func makeHomeViewModel() -> HomeViewModel {
         self.homeViewModel
     }

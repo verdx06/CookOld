@@ -18,13 +18,18 @@ struct DetailView: View
     }
 
     var body: some View {
-        ZStack {
+        Group {
             switch self.viewModel.contentState {
             case .idle, .loading:
                 ProgressView("Загрузка…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
-                content
+                if let meal = self.viewModel.meal {
+                    content(meal: meal)
+                } else {
+                    ProgressView("Загрузка…")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             case .failed(let message):
                 ErrorStateView(detailMessage: message) {
                     Task { await self.viewModel.retry() }
@@ -42,13 +47,13 @@ struct DetailView: View
 
 private extension DetailView
 {
-    var content: some View {
+    func content(meal: Meal) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                hero
-                titleBlock
-                ingredientsSection
-                instructionsSection
+                hero(meal: meal)
+                titleBlock(meal: meal)
+                ingredientsSection(meal: meal)
+                instructionsSection(meal: meal)
             }
         }
         .refreshable {
@@ -57,8 +62,8 @@ private extension DetailView
         .ignoresSafeArea(edges: .top)
     }
 
-    var hero: some View {
-        AsyncImage(url: URL(string: viewModel.meal!.strMealThumb)) { phase in
+    func hero(meal: Meal) -> some View {
+        AsyncImage(url: URL(string: meal.strMealThumb)) { phase in
             switch phase {
             case .success(let image):
                 image
@@ -94,7 +99,7 @@ private extension DetailView
         .buttonStyle(.plain)
     }
 
-    var titleBlock: some View {
+    func titleBlock(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             if let title = viewModel.meal?.strMeal {
                 Text(title)
@@ -133,7 +138,7 @@ private extension DetailView
         .padding(.top, 20)
     }
 
-    var ingredientsSection: some View {
+    func ingredientsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(.detailIngredients)
                 .font(.title2.bold())
@@ -160,7 +165,7 @@ private extension DetailView
         .padding(.horizontal, Constants.horizontalPadding)
     }
 
-    var instructionsSection: some View {
+    func instructionsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(.detailInstructions)
                 .font(.title3.bold())
