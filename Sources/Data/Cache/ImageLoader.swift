@@ -8,17 +8,14 @@
 import UIKit
 import SwiftUI
 
-protocol ImageLoader
-{
-    func loadImage(url: URL) async -> UIImage?
-}
-
-final class ImageLoaderImpl: ImageLoader
+final class ImageLoader
 {
     private let cache: ImageCache
+    private let session: URLSession
 
-    init(cache: ImageCache) {
+    init(cache: ImageCache, session: URLSession = .shared) {
         self.cache = cache
+        self.session = session
     }
 
     func loadImage(url: URL) async -> UIImage? {
@@ -26,28 +23,31 @@ final class ImageLoaderImpl: ImageLoader
             return cached
         }
 
-        guard let (data, _) = try? await URLSession.shared.data(from: url),
-              let downloaded = UIImage(data: data) else { return nil }
+        let data: Data
+        do {
+            (data, _) = try await session.data(from: url)
+        } catch {
+            print("Ошибка загрузки изображения \(url): \(error)")
+            return nil
+        }
+
+        guard let downloaded = UIImage(data: data) else {
+            print("Ошибка декодирования изображения: \(url)")
+            return nil
+        }
 
         cache.set(image: downloaded, url: url)
         return downloaded
     }
 }
 
-private struct ImageLoaderKey: EnvironmentKey
+extension EnvironmentValues
 {
-    static let defaultValue: ImageLoader = ImageLoaderImpl(
+    @Entry var imageLoader = ImageLoader(
         cache: ImageCacheImpl(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
-        )
+        ),
+        session: URLSession.shared
     )
-}
-
-extension EnvironmentValues
-{
-    var imageLoader: ImageLoader {
-        get { self[ImageLoaderKey.self] }
-        set { self[ImageLoaderKey.self] = newValue }
-    }
 }

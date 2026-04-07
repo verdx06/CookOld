@@ -10,11 +10,12 @@ import SwiftUI
 @main
 struct CulinarAppApp: App
 {
-    private let imageLoader = ImageLoaderImpl(
+    private let imageLoader = ImageLoader(
         cache: ImageCacheImpl(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()
-        )
+        ),
+        session: URLSession.shared
     )
 
     var body: some Scene {

@@ -14,7 +14,7 @@ struct CategoryCard: View
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottomLeading) {
-                CachedImage(url: URL(string: category.image))
+                LoadableImage(url: URL(string: category.image))
                     .scaledToFill()
                     .frame(width: geo.size.width, height: geo.size.height)
                     .clipped()

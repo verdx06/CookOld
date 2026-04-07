@@ -42,7 +42,7 @@ private extension CardDishView
     var content: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading, spacing: 0) {
-                CachedImage(url: URL(string: image))
+                LoadableImage(url: URL(string: image))
                 .scaledToFill()
                 .frame(maxWidth: .infinity)
                 .frame(height: 160)
