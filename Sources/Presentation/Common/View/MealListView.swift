@@ -24,10 +24,12 @@ struct MealListView: View
                     } label: {
                         CardDishView(
                             title: meal.strMeal,
-                            image: meal.strMealThumb,
+                            imageURL: meal.imageURL,
                             category: meal.strCategory ?? "",
                             area: meal.strArea ?? "",
-                            isFavorite: false) {}
+                            isFavorite: false,
+                            onFavoriteTap: {}
+                        )
                         .transition(.opacity.combined(with: .move(edge: .bottom)))
                     }
                 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct CardDishView: View
 {
     let title: String
-    let image: String
+    let imageURL: URL?
     let category: String
     let area: String
     let isFavorite: Bool
@@ -19,7 +19,7 @@ struct CardDishView: View
 
     init(
         title: String,
-        image: String,
+        imageURL: URL?,
         category: String,
         area: String,
         isFavorite: Bool,
@@ -27,7 +27,7 @@ struct CardDishView: View
         onFavoriteTap: @escaping () -> Void
     ) {
         self.title = title
-        self.image = image
+        self.imageURL = imageURL
         self.category = category
         self.area = area
         self.isFavorite = isFavorite
@@ -48,11 +48,18 @@ private extension CardDishView
     var content: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .leading, spacing: 0) {
-                self.imageSection
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 160)
-                    .clipped()
+                ZStack(alignment: .topTrailing) {
+                    self.imageSection
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 160)
+                        .clipped()
+
+                    if self.showsFavoriteButton {
+                        self.favoriteButton
+                            .padding(12)
+                    }
+                }
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title)
@@ -68,8 +75,6 @@ private extension CardDishView
             .frame(height: Self.imageHeight)
             .frame(maxWidth: .infinity)
             .clipped()
-
-            self.textSection
         }
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous))
@@ -78,7 +83,7 @@ private extension CardDishView
 
     @ViewBuilder
     var imageSection: some View {
-        if let url = URL(string: self.image) {
+        if let url = self.imageURL {
             LoadableImage(url: url)
                 .scaledToFill()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,22 +91,6 @@ private extension CardDishView
             Image(systemName: "photo")
                 .foregroundStyle(.secondary)
         }
-    }
-
-    var textSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(self.title)
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.primary)
-                .multilineTextAlignment(.leading)
-                .lineLimit(2)
-
-            self.metaRow
-        }
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemGray6))
     }
 
     var metaRow: some View {
@@ -142,4 +131,16 @@ private extension CardDishView
         .buttonStyle(.plain)
         .accessibilityLabel("Favorite")
     }
+}
+
+#Preview {
+    CardDishView(
+        title: "Carrot Cake",
+        imageURL: URL(string: "https://www.themealdb.com/images/media/meals/wxyvqw1463898267.jpg"),
+        category: "Dessert",
+        area: "British",
+        isFavorite: false,
+        onFavoriteTap: {}
+    )
+    .padding()
 }

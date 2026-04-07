@@ -78,7 +78,7 @@ private extension HomeView
                             NavigationLink(value: meal) {
                                 CardDishView(
                                     title: meal.strMeal,
-                                    image: meal.strMealThumb,
+                                    imageURL: meal.imageURL,
                                     category: meal.strCategory ?? "",
                                     area: meal.strArea ?? "",
                                     isFavorite: false,
