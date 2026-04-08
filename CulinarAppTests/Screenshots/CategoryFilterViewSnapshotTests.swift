@@ -1,8 +1,8 @@
 //
-//  SearchViewSnapshotTests.swift
+//  CategoryFilterViewSnapshotTests.swift
 //  CulinarAppTests
 //
-//  Created by Варя Черепенникова on 07.04.2026.
+//  Created by Варя Черепенникова on 08.04.2026.
 //
 
 import XCTest
@@ -10,47 +10,62 @@ import SnapshotTesting
 import SwiftUI
 @testable import CulinarApp
 
-final class SearchViewSnapshotTests: XCTestCase {
+final class CategoryFilterViewSnapshotTests: XCTestCase {
+
+    private let category = MockData.categories[0]
+
     private func makeVM(
-        categoriesState: SearchViewModel.LoadingState<[MealCategory]> = .idle,
-        searchResult: SearchViewModel.LoadingState<[Meal]> = .idle,
-        searchText: String = ""
-    ) -> SearchViewModel {
-        let vm = SearchViewModel(repository: MockSearchRepository(), autoLoad: false)
-        vm.categoriesState = categoriesState
+        searchResult: CategoryViewModel.LoadingState<[Meal]> = .idle,
+        searchText: String = "",
+    ) -> CategoryViewModel {
+        let vm = CategoryViewModel(selectedCategory: category, repository: MockSearchRepository())
         vm.searchResult = searchResult
         vm.searchText = searchText
         return vm
     }
 
-    private func makeSnapshot(_ vm: SearchViewModel) -> UIViewController {
-        let view = SearchView(viewModel: vm)
-            .environment(\.imageLoader, MockImageLoader())
-            .environment(\.disableEntryAnimation, true)
-            .transaction { $0.animation = nil }
+    private func makeSnapshot(_ vm: CategoryViewModel) -> UIViewController {
+        let view = NavigationStack {
+            CategoryFilterView(viewModel: vm)
+        }
+        .environment(\.imageLoader, MockImageLoader())
+        .environment(\.disableEntryAnimation, true)
+        .transaction { $0.animation = nil }
         let vc = UIHostingController(rootView: view)
         vc.view.frame = UIScreen.main.bounds
         return vc
     }
 
-    func testCategoriesLoading() {
-        let vc = makeSnapshot(makeVM(categoriesState: .loading))
+    func testLoading() {
+        let vc = makeSnapshot(makeVM(
+            searchResult: .loading,
+        ))
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
-    func testCategoriesLoaded() {
-        let vc = makeSnapshot(makeVM(categoriesState: .success(MockData.categories)))
+    func testResultsFound() {
+        let vc = makeSnapshot(makeVM(
+            searchResult: .success(MockData.meals)
+        ))
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
-    func testCategoriesFailure() {
-        let vc = makeSnapshot(makeVM(categoriesState: .failure))
+    func testResultsEmpty() {
+        let vc = makeSnapshot(makeVM(
+            searchResult: .success([]),
+        ))
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
+    func testFailure() {
+        let vc = makeSnapshot(makeVM(
+            searchResult: .failure,
+        ))
+        assertSnapshot(of: vc, as: .image(on: .iPhone13))
+    }
+    
     func testSearchLoading() {
         let vc = makeSnapshot(makeVM(
-            categoriesState: .success(MockData.categories),
             searchResult: .loading,
             searchText: "chicken"
         ))
@@ -59,7 +74,6 @@ final class SearchViewSnapshotTests: XCTestCase {
 
     func testSearchResultsFound() {
         let vc = makeSnapshot(makeVM(
-            categoriesState: .success(MockData.categories),
             searchResult: .success(MockData.meals),
             searchText: "chicken"
         ))
@@ -68,7 +82,6 @@ final class SearchViewSnapshotTests: XCTestCase {
 
     func testSearchResultsEmpty() {
         let vc = makeSnapshot(makeVM(
-            categoriesState: .success(MockData.categories),
             searchResult: .success([]),
             searchText: "zzz"
         ))
@@ -77,7 +90,6 @@ final class SearchViewSnapshotTests: XCTestCase {
 
     func testSearchFailure() {
         let vc = makeSnapshot(makeVM(
-            categoriesState: .success(MockData.categories),
             searchResult: .failure,
             searchText: "chicken"
         ))
