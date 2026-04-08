@@ -25,12 +25,10 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
     }
 
     private func makeSnapshot(_ vm: CategoryViewModel) -> UIViewController {
-        let view = NavigationStack {
-            CategoryFilterView(viewModel: vm)
-        }
-        .environment(\.imageLoader, MockImageLoader())
-        .environment(\.disableEntryAnimation, true)
-        .transaction { $0.animation = nil }
+        let view = CategoryFilterView(viewModel: vm)
+            .environment(\.imageLoader, MockImageLoader())
+            .environment(\.disableEntryAnimation, true)
+            .transaction { $0.animation = nil }
         let vc = UIHostingController(rootView: view)
         vc.view.frame = UIScreen.main.bounds
         return vc
@@ -64,7 +62,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
     
-    func testSearchLoading() {
+    func testSearchCatgoryLoading() {
         let vc = makeSnapshot(makeVM(
             searchResult: .loading,
             searchText: "chicken"
@@ -72,7 +70,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
-    func testSearchResultsFound() {
+    func testSearchCatgoryResultsFound() {
         let vc = makeSnapshot(makeVM(
             searchResult: .success(MockData.meals),
             searchText: "chicken"
@@ -80,7 +78,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
-    func testSearchResultsEmpty() {
+    func testSearchCatgoryResultsEmpty() {
         let vc = makeSnapshot(makeVM(
             searchResult: .success([]),
             searchText: "zzz"
@@ -88,7 +86,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
         assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
 
-    func testSearchFailure() {
+    func testSearchCatgoryFailure() {
         let vc = makeSnapshot(makeVM(
             searchResult: .failure,
             searchText: "chicken"

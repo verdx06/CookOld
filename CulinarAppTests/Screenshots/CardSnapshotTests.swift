@@ -19,11 +19,6 @@ final class CardSnapshotTests: XCTestCase
         let vc = UIHostingController(rootView: hosted)
         vc.view.frame = UIScreen.main.bounds
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = vc
-        window.makeKeyAndVisible()
-        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
-
         return vc
     }
 
