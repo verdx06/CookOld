@@ -23,7 +23,7 @@ struct FavoriteView: View {
                     .foregroundColor(.gray)
                 TextField("recipe_finder".localized(), text: $viewModel.searchText)
                 if viewModel.searchText.isEmpty == false {
-                    Button(.cancel) {
+                    Button("cancel".localized()) {
                         viewModel.searchText = ""
                     }
                     .foregroundColor(.blue)

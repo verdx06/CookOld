@@ -12,20 +12,20 @@ struct DetailView: View
     @State private var viewModel: DetailViewModel
 
     init(viewModel: DetailViewModel) {
-        self.viewModel = viewModel
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
         ZStack {
             switch self.viewModel.contentState {
             case .idle, .loading:
-                ProgressView(.loading)
+                ProgressView("loading".localized())
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
                 if let meal = self.viewModel.meal {
                     content(meal: meal)
                 } else {
-                    ProgressView(.loading)
+                    ProgressView("loading".localized())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             case .failed(let message):
@@ -139,7 +139,7 @@ private extension DetailView
 
     func ingredientsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(.detailIngredients)
+            Text("detail_ingredients".localized())
                 .font(.title2.bold())
                 .foregroundStyle(.primary)
                 .padding(.top, 28)
@@ -164,7 +164,7 @@ private extension DetailView
 
     func instructionsSection(meal: Meal) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(.detailInstructions)
+            Text("detail_instructions".localized())
                 .font(.title3.bold())
                 .foregroundStyle(.primary)
 
