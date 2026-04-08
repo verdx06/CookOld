@@ -49,6 +49,7 @@ struct CardPopularDishView: View
                 .minimumScaleFactor(0.85)
                 .padding(.horizontal, 10)
                 .padding(.bottom, 12)
+                .frame(width: self.width - 20)
         }
         .frame(width: self.width, height: height)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

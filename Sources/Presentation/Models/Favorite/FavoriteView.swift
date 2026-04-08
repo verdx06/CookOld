@@ -22,7 +22,7 @@ struct FavoriteView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
                 TextField("recipe_finder".localized(), text: $viewModel.searchText)
-                if !viewModel.searchText.isEmpty {
+                if viewModel.searchText.isEmpty == false {
                     Button(.cancel) {
                         viewModel.searchText = ""
                     }
@@ -39,7 +39,7 @@ struct FavoriteView: View {
                     ForEach(viewModel.filteredMeals) { meal in
                         SmallCardView(viewModel: SmallCardViewModel(
                             meal: meal,
-                            isLiked: !viewModel.mealToBeRemoved(meal.idMeal),
+                            isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
                             onToggle: { viewModel.toggle(meal) }
                         ))
                     }

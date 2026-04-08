@@ -17,15 +17,22 @@ struct LoadableImage: View
         ZStack {
             switch state {
             case .idle, .loading:
-                PreviewRectangle()
+                PreviewRectangle(cornerRadius: 0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded(let image):
                 Image(uiImage: image)
                     .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .failed:
+                PreviewRectangle(cornerRadius: 0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 Image(systemName: "photo")
                     .foregroundStyle(.secondary)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clipped()
         .task {
             guard case .idle = state else { return }
             state = .loading
