@@ -37,6 +37,9 @@ playground.xcworkspace
 ## Xcode build artifacts
 DerivedData/
 
+# SwiftLint
+.swiftlint_cache/
+
 ## XcodeGen generated project (we generate via project.yml)
 *.xcodeproj/
 
@@ -69,3 +72,4 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+CLAUDE.md

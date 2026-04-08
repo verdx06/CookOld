@@ -1,0 +1,31 @@
+//
+//  CulinarAppApp.swift
+//  CulinarApp
+//
+//  Created by Виталий Багаутдинов on 31.03.2026.
+//
+import SwiftUI
+
+@main
+struct CulinarAppApp: App {
+    private let diContainer = DIContainer()
+    private let favouriteViewModel: FavoriteViewModel
+    private let imageLoader = ImageLoader(
+        cache: CombinedImageCache(
+            memoryCache: NSImageCache(),
+            diskCache: FileImageCache()
+        ),
+        session: URLSession.shared
+    )
+
+    init() {
+        favouriteViewModel = FavoriteViewModel(repository: SwiftDataFavouritesRepository())
+    }
+
+    var body: some Scene {
+        WindowGroup {
+            MainView(diContainer: diContainer, favoriteViewModel: favouriteViewModel)
+                .environment(\.imageLoader, imageLoader)
+        }
+    }
+}
