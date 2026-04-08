@@ -16,9 +16,8 @@ final class HomeViewModelTests: XCTestCase {
         await sut.viewModel.loadContent()
 
         XCTAssertEqual(sut.viewModel.contentState, .loaded)
-        let (popular, recent) = sut.useCase.callCounts()
-        XCTAssertEqual(popular, 1)
-        XCTAssertEqual(recent, 1)
+        XCTAssertEqual(sut.repository.popularCalls, 1)
+        XCTAssertEqual(sut.repository.recentCalls, 1)
     }
 
     func testLoadContentWhenNotIdleDoesNotFetch() async {
@@ -27,9 +26,8 @@ final class HomeViewModelTests: XCTestCase {
 
         await sut.viewModel.loadContent()
 
-        let (popular, recent) = sut.useCase.callCounts()
-        XCTAssertEqual(popular, 0)
-        XCTAssertEqual(recent, 0)
+        XCTAssertEqual(sut.repository.popularCalls, 0)
+        XCTAssertEqual(sut.repository.recentCalls, 0)
     }
 
     func testRetryWhenPopularFailsSetsFailedState() async {
@@ -51,11 +49,17 @@ final class HomeViewModelTests: XCTestCase {
     private func makeSUT(
         popularResult: Result<MealResponse, Error> = .success(MealResponse(meals: nil)),
         recentResult: Result<MealResponse, Error> = .success(MealResponse(meals: nil))
-    ) -> (viewModel: HomeViewModel, useCase: MockHomeUseCase) {
-        let useCase = MockHomeUseCase(
+    ) -> (viewModel: HomeViewModel, repository: MockHomeRepository) {
+        let repository = MockHomeRepository(
             popularResult: popularResult,
             recentResult: recentResult
         )
-        return (HomeViewModel(usecase: useCase), useCase)
+        let viewModel = HomeViewModel(
+            repository: repository,
+            makeDetailViewModel: { _ in
+                fatalError("DetailViewModel factory not needed for these tests")
+            }
+        )
+        return (viewModel, repository)
     }
 }

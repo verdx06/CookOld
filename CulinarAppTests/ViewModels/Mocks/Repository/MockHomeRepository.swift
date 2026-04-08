@@ -1,14 +1,7 @@
-//
-//  MockHomeUseCase.swift
-//  CulinarAppTests
-//
-//  Created by Виталий Багаутдинов on 06.04.2026.
-//
-
 import Foundation
 @testable import CulinarApp
 
-final class MockHomeUseCase: HomeUseCase {
+final class MockHomeRepository: HomeRepository {
     private let popularResult: Result<MealResponse, Error>
     private let recentResult: Result<MealResponse, Error>
 
@@ -27,13 +20,10 @@ final class MockHomeUseCase: HomeUseCase {
         self.popularCalls += 1
         return try self.popularResult.get()
     }
-    
+
     func getRecentMeals() async throws -> MealResponse {
         self.recentCalls += 1
         return try self.recentResult.get()
     }
-
-    func callCounts() -> (Int, Int) {
-        (self.popularCalls, self.recentCalls)
-    }
 }
+
