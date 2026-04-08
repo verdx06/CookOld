@@ -57,7 +57,7 @@ struct Meal: Decodable, Identifiable {
                     "strCreativeCommonsConfirmed"
                 )
             )
-        dateModified                = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
+        dateModified = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
 
         ingredients = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strIngredient\(index)"))

@@ -11,7 +11,7 @@ final class DIContainer
 {
     private lazy var network: Network = NetworkService()
     private lazy var favouritesRepository: any FavouritesRepository = SwiftDataFavouritesRepository()
-    private(set) lazy var imageLoader: ImageLoader = ImageLoader(
+    private(set) lazy var imageLoader = ImageLoader(
         cache: CombinedImageCache(
             memoryCache: NSImageCache(),
             diskCache: FileImageCache()

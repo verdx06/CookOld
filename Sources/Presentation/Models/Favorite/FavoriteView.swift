@@ -55,9 +55,3 @@ struct FavoriteView: View {
         }
     }
 }
-
-#Preview {
-    let repository = SwiftDataFavouritesRepository()
-    let _ = repository.resetSeed()
-    FavoriteView(viewModel: FavoriteViewModel(repository: repository))
-}
