@@ -19,7 +19,7 @@ struct HomeView: View
         ZStack {
             switch self.viewModel.contentState {
             case .idle, .loading:
-                ProgressView("loading".localized())
+                ProgressView(.loading)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
                 self.loadedContent
@@ -43,7 +43,7 @@ private extension HomeView
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("home_popular".localized())
+                    Text(.homePopular)
                         .font(.title.bold())
                         .foregroundStyle(.primary)
                         .padding(.horizontal, 16)
@@ -66,7 +66,7 @@ private extension HomeView
                         .padding(.horizontal, 16)
                     }
 
-                    Text("home_recent".localized())
+                    Text(.homeRecent)
                         .font(.title.bold())
                         .foregroundStyle(.primary)
                         .padding(.horizontal, 16)

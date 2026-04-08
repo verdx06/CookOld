@@ -19,13 +19,13 @@ struct DetailView: View
         ZStack {
             switch self.viewModel.contentState {
             case .idle, .loading:
-                ProgressView("loading".localized())
+                ProgressView(.loading)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
                 if let meal = self.viewModel.meal {
                     content(meal: meal)
                 } else {
-                    ProgressView("loading".localized())
+                    ProgressView(.loading)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             case .failed(let message):
