@@ -2,7 +2,7 @@
 //  CulinarAppUITestsLaunchTests.swift
 //  CulinarAppUITests
 //
-//  Created by Варя Черепенникова on 07.04.2026.
+//  Created by Варя Черепенникова on 08.04.2026.
 //
 
 import XCTest

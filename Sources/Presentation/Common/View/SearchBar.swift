@@ -24,6 +24,7 @@ struct SearchBar: View
                 .onSubmit {
                     onSearch()
                 }
+                .accessibilityIdentifier("searchBar")
             if searchText.isEmpty == false {
                 Button("cancel".localized()) {
                     searchText = ""
