@@ -4,16 +4,35 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 final class DIContainer
 {
     private lazy var network: Network = NetworkService()
+    private lazy var favouritesRepository: any FavouritesRepository = SwiftDataFavouritesRepository()
+    private(set) lazy var imageLoader = ImageLoader(
+        cache: CombinedImageCache(
+            memoryCache: NSImageCache(),
+            diskCache: FileImageCache()
+        ),
+        session: URLSession.shared
+    )
     private lazy var homeRepository: HomeRepository = HomeRepositoryImpl(network: self.network)
-    private lazy var homeUseCase: HomeUseCase = HomeUseCaseImpl(repository: self.homeRepository)
-    private lazy var homeViewModel = HomeViewModel(usecase: self.homeUseCase)
+    private lazy var detailRepository: DetailRepository = DetailRepositoryImpl(network: self.network)
+    private(set) lazy var homeViewModel = HomeViewModel(
+        repository: self.homeRepository,
+        makeDetailViewModel: { [unowned self] mealId in
+            self.makeDetailViewModel(mealId: mealId)
+        }
+    )
+    private(set) lazy var favoriteViewModel = FavoriteViewModel(repository: self.favouritesRepository)
 
-    func makeHomeViewModel() -> HomeViewModel {
-        self.homeViewModel
+    func makeDetailViewModel(mealId: String) -> DetailViewModel {
+        DetailViewModel(
+            mealId: mealId,
+            repository: self.detailRepository,
+            favouritesRepository: self.favouritesRepository
+        )
     }
 }

@@ -23,10 +23,19 @@ final class HomeViewModel
     var popularMeals = MealResponse(meals: [])
     var recentMeals = MealResponse(meals: [])
 
-    private let usecase: HomeUseCase
+    private let repository: HomeRepository
+    private let makeDetailViewModel: (String) -> DetailViewModel
 
-    init(usecase: HomeUseCase) {
-        self.usecase = usecase
+    init(
+        repository: HomeRepository,
+        makeDetailViewModel: @escaping (String) -> DetailViewModel
+    ) {
+        self.repository = repository
+        self.makeDetailViewModel = makeDetailViewModel
+    }
+
+    func detailViewModel(for mealId: String) -> DetailViewModel {
+        self.makeDetailViewModel(mealId)
     }
 
     func loadContent() async {
@@ -42,8 +51,8 @@ final class HomeViewModel
 
     func reload() async {
         do {
-            async let popular = self.usecase.getPopularMeals()
-            async let recent = self.usecase.getRecentMeals()
+            async let popular = self.repository.getPopularMeals()
+            async let recent = self.repository.getRecentMeals()
             let (popularResult, recentResult) = try await (popular, recent)
             self.popularMeals = popularResult
             self.recentMeals = recentResult

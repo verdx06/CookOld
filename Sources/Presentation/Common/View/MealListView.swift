@@ -17,7 +17,7 @@ struct MealListView: View
                 ForEach(meals, id: \.idMeal) { meal in
                     CardDishView(
                         title: meal.strMeal,
-                        imageURL: meal.imageURL,
+                        image: meal.imageURL,
                         category: meal.strCategory ?? "",
                         area: meal.strArea ?? "",
                         isFavorite: false,

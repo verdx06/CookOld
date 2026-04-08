@@ -16,10 +16,10 @@ struct HomeView: View
     }
 
     var body: some View {
-        Group {
+        ZStack {
             switch self.viewModel.contentState {
             case .idle, .loading:
-                ProgressView("Загрузка…")
+                ProgressView(.loading)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
                 self.loadedContent
@@ -40,52 +40,65 @@ struct HomeView: View
 private extension HomeView
 {
     var loadedContent: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Popular")
-                    .font(.title.bold())
-                    .foregroundStyle(.primary)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 12)
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(.homePopular)
+                        .font(.title.bold())
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 12)
 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(self.viewModel.popularMeals.meals ?? [], id: \.idMeal) { meal in
-                            CardPopularDishView(
-                                image: meal.strMealThumb,
-                                text: meal.strMeal
-                            )
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(self.viewModel.popularMeals.meals ?? [], id: \.idMeal) { meal in
+                                NavigationLink {
+                                    DetailView(viewModel: self.viewModel.detailViewModel(for: meal.idMeal))
+                                } label: {
+                                    CardPopularDishView(
+                                        image: meal.strMealThumb,
+                                        text: meal.strMeal
+                                    )
+                                }
+                            .buttonStyle(.plain)
+                            }
                         }
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 16)
-                }
 
-                Text("Recent")
-                    .font(.title.bold())
-                    .foregroundStyle(.primary)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 24)
-                    .padding(.bottom, 12)
+                    Text(.homeRecent)
+                        .font(.title.bold())
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 24)
+                        .padding(.bottom, 12)
 
-                ForEach(self.viewModel.recentMeals.meals ?? [], id: \.idMeal) { meal in
-                    CardDishView(
-                        title: meal.strMeal,
-                        image: meal.strMealThumb,
-                        category: meal.strCategory ?? "",
-                        area: meal.strArea ?? "",
-                        isFavorite: false,
-                        onFavoriteTap: {}
-                    )
-                    .padding()
+                    ForEach(self.viewModel.recentMeals.meals ?? [], id: \.idMeal) { meal in
+                        NavigationLink {
+                            DetailView(viewModel: self.viewModel.detailViewModel(for: meal.idMeal))
+                        } label: {
+                            CardDishView(
+                                title: meal.strMeal,
+                                image: meal.imageURL,
+                                category: meal.strCategory ?? "",
+                                area: meal.strArea ?? "",
+                                isFavorite: false,
+                                onFavoriteTap: {}
+                            )
+                            .padding()
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
-        }
-        .refreshable {
-            await self.viewModel.reload()
+            .refreshable {
+                await self.viewModel.reload()
+            }
         }
     }
 }
 
 #Preview {
-    HomeView(viewModel: DIContainer().makeHomeViewModel())
+    let container = DIContainer()
+    HomeView(viewModel: container.homeViewModel)
 }

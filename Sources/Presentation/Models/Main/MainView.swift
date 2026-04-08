@@ -24,7 +24,7 @@ struct MainView: View
     var body: some View {
         TabView(selection: $activeTab) {
             Tab("main_title".localized(), systemImage: "house.fill", value: .home) {
-                HomeView(viewModel: self.diContainer.makeHomeViewModel())
+                HomeView(viewModel: self.diContainer.homeViewModel)
             }
 
             Tab("favourite_title".localized(), systemImage: "heart.fill", value: .favorite) {
