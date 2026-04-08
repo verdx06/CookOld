@@ -10,7 +10,7 @@ import Foundation
 struct MealCategory: Decodable, Identifiable {
     let id: String
     let name: String
-    let image: String
+    let image: URL
 
     enum CodingKeys: String, CodingKey
     {
