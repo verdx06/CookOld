@@ -25,6 +25,7 @@ final class HomeViewModel
 
     private let repository: HomeRepository
     private let makeDetailViewModel: (String) -> DetailViewModel
+    private var loadingTask: Task<Void, Never>?
 
     init(
         repository: HomeRepository,
@@ -38,26 +39,53 @@ final class HomeViewModel
         self.makeDetailViewModel(mealId)
     }
 
-    func loadContent() async {
+    func loadContent() {
         guard case .idle = self.contentState else { return }
         self.contentState = .loading
-        await self.reload()
+        self.startReloadTask()
     }
 
-    func retry() async {
+    func retry() {
         self.contentState = .loading
-        await self.reload()
+        self.startReloadTask()
     }
 
     func reload() async {
+        self.startReloadTask()
+        await self.loadingTask?.value
+    }
+
+    func cancelActiveRequests() {
+        self.loadingTask?.cancel()
+        self.loadingTask = nil
+
+        if case .loading = self.contentState {
+            self.contentState = .idle
+        }
+    }
+
+    private func startReloadTask() {
+        self.loadingTask?.cancel()
+        self.loadingTask = Task { [weak self] in
+            guard let self else { return }
+            await self.performReload()
+            self.loadingTask = nil
+        }
+    }
+
+    private func performReload() async {
         do {
             async let popular = self.repository.getPopularMeals()
             async let recent = self.repository.getRecentMeals()
             let (popularResult, recentResult) = try await (popular, recent)
+
+            guard Task.isCancelled == false else { return }
+
             self.popularMeals = popularResult
             self.recentMeals = recentResult
             self.contentState = .loaded
         } catch {
+            guard Task.isCancelled == false else { return }
             self.contentState = .failed(error.localizedDescription)
         }
     }
