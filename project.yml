@@ -10,11 +10,21 @@ attributes:
   LastUpgradeCheck: "2630"
   BuildIndependentTargetsInParallel: true
 
+packages:
+  Lottie:
+    url: https://github.com/airbnb/lottie-spm.git
+    from: 4.6.0
+  SnapshotTesting:
+    url: https://github.com/pointfreeco/swift-snapshot-testing
+    from: 1.15.0
+
 targets:
   CulinarApp:
     type: application
     platform: iOS
     sources: [Sources]
+    dependencies:
+      - package: Lottie
     preBuildScripts:
       - name: SwiftLint
         basedOnDependencyAnalysis: false
@@ -53,6 +63,7 @@ targets:
       - CulinarAppTests
     dependencies:
       - target: CulinarApp
+      - package: SnapshotTesting
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
