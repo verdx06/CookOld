@@ -16,7 +16,7 @@ final class CategoryFilterUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments += ["--uitesting"]
         app.launch()
-        app.buttons["Поиск"].tap()
+        app.buttons["Search"].tap()
         let firstCategory = app.buttons["categoryCard_0"]
         XCTAssertTrue(firstCategory.waitForExistence(timeout: 5))
         firstCategory.tap()
@@ -33,13 +33,13 @@ final class CategoryFilterUITests: XCTestCase {
         searchBar.tap()
         searchBar.typeText("a")
         let hasResults = app.buttons["heart"].firstMatch.waitForExistence(timeout: 5)
-        let hasEmpty = app.staticTexts["Ничего не найдено"].exists
+        let hasEmpty = app.staticTexts["Nothing found"].exists
         XCTAssertTrue(hasResults || hasEmpty)
     }
 
     func testBackButtonReturnsToSearch() {
         XCTAssertTrue(app.textFields["searchBar"].waitForExistence(timeout: 5))
-        app.navigationBars.buttons["Назад"].tap()
+        app.navigationBars.buttons["Back"].tap()
         XCTAssertTrue(app.buttons["categoryCard_0"].waitForExistence(timeout: 5))
     }
 }

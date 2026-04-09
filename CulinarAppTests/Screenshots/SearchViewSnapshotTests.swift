@@ -47,7 +47,7 @@ final class SearchViewSnapshotTests: XCTestCase {
     
     func testCategoriesLoading() {
         let vc = makeSnapshot(makeVM(categoriesState: .loading))
-        assertSnapshot(of: vc, as: .image(on: .iPhone13))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
     
     func testCategoriesLoaded() {

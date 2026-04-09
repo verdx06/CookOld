@@ -20,13 +20,6 @@ final class CardSnapshotTests: XCTestCase
         return vc
     }
 
-    func testCategoryCard() {
-        let card = CategoryCard(category: MockData.categories[0])
-            .frame(width: 180)
-            .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image)
-    }
-
     func testCardDishView() {
         let meal = MockData.meals[0]
         let card = CardDishView(

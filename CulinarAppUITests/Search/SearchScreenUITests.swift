@@ -16,7 +16,7 @@ final class SearchScreenUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments += ["--uitesting"]
         app.launch()
-        app.buttons["Поиск"].tap()
+        app.buttons["Search"].tap()
     }
 
     func testSearchBarExists() {
