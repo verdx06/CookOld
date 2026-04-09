@@ -13,7 +13,6 @@ struct ErrorStateView: View
     var detailMessage: String?
     var onRetry: (() -> Void)?
 
-    @State private var isShaking = false
     @State private var appeared = false
 
     init(detailMessage: String? = nil, onRetry: (() -> Void)? = nil) {
@@ -31,13 +30,6 @@ struct ErrorStateView: View
                 Image(systemName: "fork.knife")
                     .font(.system(size: 36, weight: .medium))
                     .foregroundStyle(.red.opacity(0.8))
-                    .rotationEffect(.degrees(isShaking ? -12 : 0))
-                    .animation(
-                        .easeInOut(duration: 0.12)
-                        .repeatCount(5, autoreverses: true)
-                        .delay(0.2),
-                        value: isShaking
-                    )
             }
             .scaleEffect(appeared ? 1.0 : 0.6)
             .opacity(appeared ? 1.0 : 0)
@@ -68,7 +60,6 @@ struct ErrorStateView: View
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             appeared = true
-            isShaking = true
         }
     }
 

@@ -5,15 +5,13 @@ struct SmallCardView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            AsyncImage(url: URL(string: viewModel.meal.strMealThumb)) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().aspectRatio(contentMode: .fill)
-                case .failure:
-                    Image(systemName: "fork.knife")
-                        .foregroundColor(.gray)
-                default:
-                    Color.gray.opacity(0.2)
+            Group {
+                if let url = viewModel.meal.imageURL {
+                    LoadableImage(url: url)
+                        .scaledToFill()
+                } else {
+                    Image(systemName: "photo")
+                        .foregroundStyle(.secondary)
                 }
             }
             .frame(width: 100, height: 100)

@@ -12,30 +12,25 @@ struct SearchContentView: View
     var viewModel: SearchViewModel
 
     var body: some View {
-        ScrollView {
-            switch viewModel.searchResult {
-            case .success(let meals):
-                if meals.isEmpty {
-                    EmptyStateView()
-                } else {
-                    MealListView(meals: meals)
-                        .transition(.opacity)
-                        .refreshable {
-                            await viewModel.searchMeals()
-                        }
-                }
-            case .loading where viewModel.searchText.isEmpty == false:
-                ScrollView {
-                    MealGridPreview()
-                }
-            case .failure:
-                ErrorStateView()
-            default:
-                CategoriesSection(viewModel: viewModel)
+        switch viewModel.searchResult {
+        case .success(let meals):
+            if meals.isEmpty {
+                EmptyStateView()
+            } else {
+                MealListView(viewModel: viewModel, meals: meals)
+                    .transition(.opacity)
+                    .refreshable {
+                        await viewModel.searchMeals()
+                    }
             }
-        }
-        .refreshable {
-            await viewModel.loadCategories()
+        case .loading where viewModel.searchText.isEmpty == false:
+            ScrollView {
+                MealGridPreview()
+            }
+        case .failure:
+            ErrorStateView()
+        default:
+            CategoriesSection(viewModel: viewModel)
         }
     }
 }

@@ -25,7 +25,8 @@ struct CategoryGridSection: View
                             viewModel:
                                 CategoryViewModel(
                                     selectedCategory: category,
-                                    repository: viewModel.repository
+                                    repository: viewModel.repository,
+                                    makeDetailViewModel: viewModel.makeDetailViewModel,
                                 )
                             )
                     ) {

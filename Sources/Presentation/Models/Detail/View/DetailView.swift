@@ -63,14 +63,13 @@ private extension DetailView
     }
 
     func hero(meal: Meal) -> some View {
-        AsyncImage(url: URL(string: meal.strMealThumb)) { phase in
-            switch phase {
-            case .success(let image):
-                image
-                    .resizable()
+        Group {
+            if let url = meal.imageURL {
+                LoadableImage(url: url)
                     .scaledToFill()
-            default:
-                PreviewRectangle(cornerRadius: 0)
+            } else {
+                Image(systemName: "photo")
+                    .foregroundStyle(.secondary)
             }
         }
         .frame(height: 300)
@@ -85,6 +84,28 @@ private extension DetailView
                 style: .continuous
             )
         )
+//        AsyncImage(url: URL(string: meal.strMealThumb)) { phase in
+//            switch phase {
+//            case .success(let image):
+//                image
+//                    .resizable()
+//                    .scaledToFill()
+//            default:
+//                PreviewRectangle(cornerRadius: 0)
+//            }
+//        }
+//        .frame(height: 300)
+//        .frame(maxWidth: .infinity)
+//        .clipped()
+//        .clipShape(
+//            UnevenRoundedRectangle(
+//                topLeadingRadius: 0,
+//                bottomLeadingRadius: Constants.heroCorner,
+//                bottomTrailingRadius: Constants.heroCorner,
+//                topTrailingRadius: 0,
+//                style: .continuous
+//            )
+//        )
     }
 
     var favoriteButton: some View {

@@ -36,18 +36,8 @@ struct MainView: View
             }
 
             Tab(value: .search, role: .search) {
-                SearchView(
-                    viewModel: SearchViewModel(
-                        repository: SearchRepositoryImpl(
-                            service: NetworkService()
-                        )
-                    )
-                )
+                SearchView(viewModel: self.diContainer.searchViewModel)
             }
         }
     }
-}
-
-#Preview {
-    MainView(diContainer: DIContainer(), favoriteViewModel: FavoriteViewModel(repository: StubFavouritesRepository()))
 }
