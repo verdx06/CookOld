@@ -10,6 +10,12 @@ import UIKit
 
 final class MockImageLoader: ImageLoading {
     func loadImage(url: URL) async -> UIImage? {
-        return UIImage(systemName: "photo")
+        let size = CGSize(width: 100, height: 100)
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        UIColor.gray.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }
