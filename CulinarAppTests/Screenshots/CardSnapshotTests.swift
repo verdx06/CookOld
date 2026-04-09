@@ -33,7 +33,7 @@ final class CardSnapshotTests: XCTestCase
         let meal = MockData.meals[0]
         let card = CardDishView(
             title: meal.strMeal,
-            imageURL: meal.imageURL,
+            image: meal.imageURL,
             category: meal.strCategory ?? "",
             area: meal.strArea ?? "",
             isFavorite: false,
@@ -47,7 +47,7 @@ final class CardSnapshotTests: XCTestCase
         let meal = MockData.meals[0]
         let card = CardDishView(
             title: meal.strMeal,
-            imageURL: meal.imageURL,
+            image: meal.imageURL,
             category: meal.strCategory ?? "",
             area: meal.strArea ?? "",
             isFavorite: true,
@@ -60,7 +60,7 @@ final class CardSnapshotTests: XCTestCase
     func testCardDishViewNoImage() {
         let card = CardDishView(
             title: "Dish without image",
-            imageURL: nil,
+            image: nil,
             category: "Dessert",
             area: "French",
             isFavorite: false,
