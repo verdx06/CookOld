@@ -45,8 +45,11 @@ final class HomeViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.viewModel.contentState, .failed("Test error"))
     }
+}
 
-    private func makeSUT(
+private extension HomeViewModelTests
+{
+    func makeSUT(
         popularResult: Result<MealResponse, Error> = .success(MealResponse(meals: nil)),
         recentResult: Result<MealResponse, Error> = .success(MealResponse(meals: nil))
     ) -> (viewModel: HomeViewModel, repository: MockHomeRepository) {
