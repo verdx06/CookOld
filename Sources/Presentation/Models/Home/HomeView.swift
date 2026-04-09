@@ -25,14 +25,15 @@ struct HomeView: View
                 self.loadedContent
             case .failed(let message):
                 ErrorStateView(detailMessage: message) {
-                    Task { await self.viewModel.retry() }
+                    self.viewModel.retry()
                 }
             }
         }
         .onAppear {
-            Task {
-                await self.viewModel.loadContent()
-            }
+            self.viewModel.loadContent()
+        }
+        .onDisappear {
+            self.viewModel.cancelActiveRequests()
         }
     }
 }
