@@ -35,7 +35,7 @@ struct ErrorStateView: View
             }
             .scaleEffect(isAppeared ? 1.0 : 0.6)
             .opacity(isAppeared ? 1.0 : 0)
-            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: appeared)
+            .animation(disableEntryAnimation ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: appeared)
 
             VStack(spacing: 6) {
                 Text("search_error".localized())
@@ -50,18 +50,22 @@ struct ErrorStateView: View
             }
             .opacity(isAppeared ? 1.0 : 0)
             .offset(y: isAppeared ? 0 : 8)
-            .animation(.easeOut(duration: 0.35).delay(0.15), value: appeared)
+            .animation(disableEntryAnimation ? nil : .easeOut(duration: 0.35).delay(0.15), value: appeared)
 
             if let onRetry = self.onRetry {
                 Button("retry".localized(), action: onRetry)
                     .buttonStyle(.borderedProminent)
                     .opacity(isAppeared ? 1.0 : 0)
-                    .animation(.easeOut(duration: 0.35).delay(0.25), value: appeared)
+                    .animation(disableEntryAnimation ? nil : .easeOut(duration: 0.35).delay(0.25), value: appeared)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             appeared = true
+<<<<<<< HEAD
+=======
+            isShaking = disableEntryAnimation ? false : true
+>>>>>>> 4f6ed84 (fix)
         }
     }
 
