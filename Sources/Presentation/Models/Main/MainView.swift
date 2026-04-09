@@ -41,7 +41,3 @@ struct MainView: View
         }
     }
 }
-
-#Preview {
-    MainView(diContainer: DIContainer(), favoriteViewModel: FavoriteViewModel(repository: StubFavouritesRepository()))
-}

@@ -26,7 +26,12 @@ final class DIContainer
             self.makeDetailViewModel(mealId: mealId)
         }
     )
-    private(set) lazy var favoriteViewModel = FavoriteViewModel(repository: self.favouritesRepository)
+    private(set) lazy var favoriteViewModel = FavoriteViewModel(
+        repository: self.favouritesRepository,
+        makeDetailViewModel: { [unowned self] mealId in
+            self.makeDetailViewModel(mealId: mealId)
+        }
+    )
     private lazy var searchRepository: SearchRepository = SearchRepositoryImpl(service: self.network)
     private(set) lazy var searchViewModel = SearchViewModel(
         repository: self.searchRepository,
