@@ -26,7 +26,7 @@ final class CardSnapshotTests: XCTestCase
         let card = CategoryCard(category: MockData.categories[0])
             .frame(width: 180)
             .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image(on: .iPhone13))
+        assertSnapshot(of: makeCardSnapshot(card), as: .image)
     }
 
     func testCardDishView() {
@@ -40,7 +40,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image(on: .iPhone13))
+        assertSnapshot(of: makeCardSnapshot(card), as: .image)
     }
 
     func testCardDishViewFavorite() {
@@ -54,7 +54,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image(on: .iPhone13))
+        assertSnapshot(of: makeCardSnapshot(card), as: .image)
     }
 
     func testCardDishViewNoImage() {
@@ -67,7 +67,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image(on: .iPhone13))
+        assertSnapshot(of: makeCardSnapshot(card), as: .image)
     }
 
     func testCardPopularDishView() {
@@ -76,6 +76,6 @@ final class CardSnapshotTests: XCTestCase
             text: "Migas"
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image(on: .iPhone13))
+        assertSnapshot(of: makeCardSnapshot(card), as: .image)
     }
 }
