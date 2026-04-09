@@ -62,10 +62,6 @@ struct ErrorStateView: View
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             appeared = true
-<<<<<<< HEAD
-=======
-            isShaking = disableEntryAnimation ? false : true
->>>>>>> 4f6ed84 (fix)
         }
     }
 

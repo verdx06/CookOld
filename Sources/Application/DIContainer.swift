@@ -32,7 +32,9 @@ final class DIContainer
             self.makeDetailViewModel(mealId: mealId)
         }
     )
-    private lazy var searchRepository: SearchRepository = SearchRepositoryImpl(service: self.network)
+    private lazy var searchRepository: SearchRepository = ProcessInfo.processInfo.arguments.contains("--uitesting")
+        ? UITestSearchRepository()
+        : SearchRepositoryImpl(service: self.network)
     private(set) lazy var searchViewModel = SearchViewModel(
         repository: self.searchRepository,
         makeDetailViewModel: { [unowned self] mealId in

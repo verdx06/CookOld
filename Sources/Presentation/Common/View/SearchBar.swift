@@ -30,6 +30,7 @@ struct SearchBar: View
                     searchText = ""
                 }
                 .foregroundColor(.blue)
+                .accessibilityIdentifier("clearSearchButton")
             }
         }
         .padding(8)

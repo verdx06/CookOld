@@ -10,15 +10,28 @@ import SnapshotTesting
 import SwiftUI
 @testable import CulinarApp
 
+@MainActor
 final class CategoryFilterViewSnapshotTests: XCTestCase {
 
     private let category = MockData.categories[0]
+
+    private func makeMockDetailViewModel(_ mealId: String) -> DetailViewModel {
+        DetailViewModel(
+            mealId: mealId,
+            repository: MockDetailRepository(),
+            favouritesRepository: MockFavouritesRepository()
+        )
+    }
 
     private func makeVM(
         searchResult: CategoryViewModel.LoadingState<[Meal]> = .idle,
         searchText: String = "",
     ) -> CategoryViewModel {
-        let vm = CategoryViewModel(selectedCategory: category, repository: MockSearchRepository())
+        let vm = CategoryViewModel(
+            selectedCategory: category,
+            repository: MockSearchRepository(),
+            makeDetailViewModel: makeMockDetailViewModel
+        )
         vm.searchResult = searchResult
         vm.searchText = searchText
         return vm

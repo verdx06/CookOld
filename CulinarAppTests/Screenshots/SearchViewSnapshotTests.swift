@@ -10,13 +10,26 @@ import SnapshotTesting
 import SwiftUI
 @testable import CulinarApp
 
+@MainActor
 final class SearchViewSnapshotTests: XCTestCase {
+    private func makeMockDetailViewModel(_ mealId: String) -> DetailViewModel {
+        DetailViewModel(
+            mealId: mealId,
+            repository: MockDetailRepository(),
+            favouritesRepository: MockFavouritesRepository()
+        )
+    }
+
     private func makeVM(
         categoriesState: SearchViewModel.LoadingState<[MealCategory]> = .idle,
         searchResult: SearchViewModel.LoadingState<[Meal]> = .idle,
         searchText: String = ""
     ) -> SearchViewModel {
-        let vm = SearchViewModel(repository: MockSearchRepository(), autoLoad: false)
+        let vm = SearchViewModel(
+            repository: MockSearchRepository(),
+            makeDetailViewModel: makeMockDetailViewModel,
+            autoLoad: false
+        )
         vm.categoriesState = categoriesState
         vm.searchResult = searchResult
         vm.searchText = searchText

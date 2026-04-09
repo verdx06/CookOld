@@ -14,6 +14,7 @@ final class CategoryFilterUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments += ["--uitesting"]
         app.launch()
         app.buttons["Поиск"].tap()
         let firstCategory = app.buttons["categoryCard_0"]
@@ -23,11 +24,11 @@ final class CategoryFilterUITests: XCTestCase {
 
     func testMealsLoadAfterNavigation() {
         let firstMeal = app.buttons["heart"].firstMatch
-        XCTAssertTrue(firstMeal.waitForExistence(timeout: 8))
+        XCTAssertTrue(firstMeal.waitForExistence(timeout: 5))
     }
 
     func testSearchBarFiltersMeals() {
-        XCTAssertTrue(app.buttons["heart"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertTrue(app.buttons["heart"].firstMatch.waitForExistence(timeout: 5))
         let searchBar = app.textFields["searchBar"]
         searchBar.tap()
         searchBar.typeText("a")
@@ -39,6 +40,6 @@ final class CategoryFilterUITests: XCTestCase {
     func testBackButtonReturnsToSearch() {
         XCTAssertTrue(app.textFields["searchBar"].waitForExistence(timeout: 5))
         app.navigationBars.buttons["Назад"].tap()
-        XCTAssertTrue(app.buttons["categoryCard_0"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["categoryCard_0"].waitForExistence(timeout: 5))
     }
 }

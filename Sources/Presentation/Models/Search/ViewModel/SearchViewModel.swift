@@ -20,12 +20,15 @@ final class SearchViewModel: MealListProviding
 
     init(
         repository: SearchRepository,
-        makeDetailViewModel: @escaping (String) -> DetailViewModel
+        makeDetailViewModel: @escaping (String) -> DetailViewModel,
+        autoLoad: Bool = true
     ) {
         self.repository = repository
         self.makeDetailViewModel = makeDetailViewModel
-        Task {
-            await loadCategories()
+        if autoLoad {
+            Task {
+                await loadCategories()
+            }
         }
     }
 

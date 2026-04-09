@@ -14,6 +14,7 @@ final class SearchScreenUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments += ["--uitesting"]
         app.launch()
         app.buttons["Поиск"].tap()
     }
@@ -34,7 +35,7 @@ final class SearchScreenUITests: XCTestCase {
         let searchBar = app.textFields["searchBar"]
         searchBar.tap()
         searchBar.typeText("test")
-        XCTAssertTrue(app.buttons["xmark.circle.fill"].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.buttons["clearSearchButton"].waitForExistence(timeout: 1))
     }
 
     func testCategoriesLoad() {
@@ -47,6 +48,6 @@ final class SearchScreenUITests: XCTestCase {
         XCTAssertTrue(firstCategory.waitForExistence(timeout: 5))
         firstCategory.tap()
         let searchBar = app.textFields["searchBar"]
-        XCTAssertTrue(searchBar.waitForExistence(timeout: 6))
+        XCTAssertTrue(searchBar.waitForExistence(timeout: 5))
     }
 }
