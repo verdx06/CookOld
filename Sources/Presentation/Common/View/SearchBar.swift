@@ -24,7 +24,12 @@ struct SearchBar: View
                 .onSubmit {
                     onSearch()
                 }
-                .submitLabel(.search)
+            if searchText.isEmpty == false {
+                Button("cancel".localized()) {
+                    searchText = ""
+                }
+                .foregroundColor(.blue)
+            }
         }
         .padding(8)
         .background(Color(.systemGray6))

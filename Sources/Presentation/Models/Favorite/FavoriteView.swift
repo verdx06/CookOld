@@ -17,7 +17,7 @@ struct FavoriteView: View {
                 .bold()
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
-
+            
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
@@ -34,20 +34,26 @@ struct FavoriteView: View {
             .cornerRadius(10)
             .padding(.horizontal, 16)
 
-            ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(viewModel.filteredMeals) { meal in
-                        SmallCardView(viewModel: SmallCardViewModel(
-                            meal: meal,
-                            isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
-                            onToggle: { viewModel.toggle(meal) }
-                        ))
+            if viewModel.filteredMeals.isEmpty {
+                EmptyStateView()
+            } else {
+                NavigationStack {
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.filteredMeals) { meal in
+                                SmallCardView(viewModel: SmallCardViewModel(
+                                    meal: meal,
+                                    isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
+                                    onToggle: { viewModel.toggle(meal) }
+                                ))
+                            }
+                        }
+                    }
+                    .scrollDismissesKeyboard(.immediately)
+                    .refreshable {
+                        viewModel.load()
                     }
                 }
-            }
-            .scrollDismissesKeyboard(.immediately)
-            .refreshable {
-                viewModel.load()
             }
         }
         .onAppear {

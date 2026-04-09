@@ -7,9 +7,18 @@ final class FavoriteViewModel {
     private(set) var allMeals: [Meal] = []
     private var toBeRemoved: Set<String> = []
     private let repository: any FavouritesRepository
+    let makeDetailViewModel: (String) -> DetailViewModel
 
-    init(repository: FavouritesRepository) {
+    init(
+        repository: FavouritesRepository,
+        makeDetailViewModel: @escaping (String) -> DetailViewModel
+    ) {
         self.repository = repository
+        self.makeDetailViewModel = makeDetailViewModel
+    }
+
+    func detailViewModel(for mealId: String) -> DetailViewModel {
+        self.makeDetailViewModel(mealId)
     }
 
     var filteredMeals: [Meal] {
