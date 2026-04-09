@@ -10,6 +10,4 @@ protocol FavouritesRepository {
     func fetchAll() -> [Meal]
     func save(_ meal: Meal)
     func delete(_ id: String)
-    func resetSeed()
-    func seedIfEmpty()
 }

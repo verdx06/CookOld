@@ -9,11 +9,7 @@ import SwiftUI
 
 struct CardDishView: View
 {
-    let title: String
-    let image: URL?
-    let category: String
-    let area: String
-    let isFavorite: Bool
+    let meal: Meal
     let onFavoriteTap: () -> Void
 
     var body: some View {
@@ -46,7 +42,7 @@ private extension CardDishView
 
     @ViewBuilder
     var imageSection: some View {
-        if let url = image {
+        if let url = meal.imageURL {
             LoadableImage(url: url)
                 .scaledToFill()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,7 +54,7 @@ private extension CardDishView
 
     var textSection: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(self.title)
+            Text(meal.strMeal)
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(.primary)
@@ -74,13 +70,13 @@ private extension CardDishView
 
     var metaRow: some View {
         HStack(alignment: .firstTextBaseline, spacing: 16) {
-            if let categoryText = Self.nonEmpty(self.category) {
+            if let categoryText = Self.nonEmpty(meal.strCategory ?? "") {
                 HStack(spacing: 6) {
                     Image(systemName: "square.grid.2x2")
                     Text(categoryText)
                 }
             }
-            if let areaText = Self.nonEmpty(self.area) {
+            if let areaText = Self.nonEmpty(meal.strArea ?? "") {
                 HStack(spacing: 6) {
                     Image(systemName: "globe")
                     Text(areaText)
@@ -101,9 +97,9 @@ private extension CardDishView
         Button {
             self.onFavoriteTap()
         } label: {
-            Image(systemName: self.isFavorite ? "heart.fill" : "heart")
+            Image(systemName: meal.isLiked ? "heart.fill" : "heart")
                 .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(self.isFavorite ? Color.red : Color.primary.opacity(0.85))
+                .foregroundStyle(meal.isLiked ? Color.red : Color.primary.opacity(0.85))
                 .padding(8)
                 .background(.ultraThinMaterial, in: Circle())
         }

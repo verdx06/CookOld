@@ -27,12 +27,13 @@ final class DIContainer
         }
     )
     private(set) lazy var favoriteViewModel = FavoriteViewModel(repository: self.favouritesRepository)
+    private(set) lazy var dishBuilderViewModel = DishBuilderViewModel(network: network)
 
     func makeDetailViewModel(mealId: String) -> DetailViewModel {
         DetailViewModel(
             mealId: mealId,
             repository: self.detailRepository,
-            favouritesRepository: self.favouritesRepository
+            favouriteViewModel: self.favoriteViewModel
         )
     }
 }

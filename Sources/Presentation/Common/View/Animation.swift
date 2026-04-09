@@ -9,13 +9,18 @@ import SwiftUI
 import Lottie
 
 struct AnimationView: View {
+    var onFinish: () -> Void
+
     var body: some View {
         LottieView(animation: .named("CookoldAnimation"))
-            .playing(loopMode: .loop)
-            .frame(width: 400, height: 400)
+            .playing(loopMode: .playOnce)
+            .animationDidFinish { _ in onFinish() }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+            .ignoresSafeArea()
     }
 }
 
 #Preview {
-    AnimationView()
+    AnimationView(onFinish: {})
 }
