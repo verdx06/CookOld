@@ -24,16 +24,7 @@ struct SearchBar: View
                 .onSubmit {
                     onSearch()
                 }
-
-            if isFocused {
-                Button(action: {
-                    searchText = ""
-                    isFocused = false
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
-                }
-            }
+                .submitLabel(.search)
         }
         .padding(8)
         .background(Color(.systemGray6))

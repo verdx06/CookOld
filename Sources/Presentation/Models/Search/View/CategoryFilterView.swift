@@ -29,7 +29,7 @@ struct CategoryFilterView: View
                 if meals.isEmpty {
                     EmptyStateView()
                 } else {
-                    MealListView(meals: meals)
+                    MealListView(viewModel: viewModel, meals: meals)
                         .refreshable {
                             await viewModel.searchMealsInCategory()
                         }
