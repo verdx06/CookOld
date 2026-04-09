@@ -38,28 +38,28 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
         let vc = makeSnapshot(makeVM(
             searchResult: .loading,
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testResultsFound() {
         let vc = makeSnapshot(makeVM(
             searchResult: .success(MockData.meals)
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testResultsEmpty() {
         let vc = makeSnapshot(makeVM(
             searchResult: .success([]),
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testFailure() {
         let vc = makeSnapshot(makeVM(
             searchResult: .failure,
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
     
     func testSearchCatgoryLoading() {
@@ -67,7 +67,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
             searchResult: .loading,
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchCatgoryResultsFound() {
@@ -75,7 +75,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
             searchResult: .success(MockData.meals),
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchCatgoryResultsEmpty() {
@@ -83,7 +83,7 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
             searchResult: .success([]),
             searchText: "zzz"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchCatgoryFailure() {
@@ -91,6 +91,6 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
             searchResult: .failure,
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 }

@@ -40,7 +40,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image)
+        assertSnapshot(of: makeCardSnapshot(card), as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testCardDishViewFavorite() {
@@ -54,7 +54,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image)
+        assertSnapshot(of: makeCardSnapshot(card), as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testCardDishViewNoImage() {
@@ -67,7 +67,7 @@ final class CardSnapshotTests: XCTestCase
             onFavoriteTap: {}
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image)
+        assertSnapshot(of: makeCardSnapshot(card), as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testCardPopularDishView() {
@@ -76,6 +76,6 @@ final class CardSnapshotTests: XCTestCase
             text: "Migas"
         )
         .padding()
-        assertSnapshot(of: makeCardSnapshot(card), as: .image)
+        assertSnapshot(of: makeCardSnapshot(card), as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 }

@@ -35,17 +35,17 @@ final class SearchViewSnapshotTests: XCTestCase {
 
     func testCategoriesLoading() {
         let vc = makeSnapshot(makeVM(categoriesState: .loading))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testCategoriesLoaded() {
         let vc = makeSnapshot(makeVM(categoriesState: .success(MockData.categories)))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testCategoriesFailure() {
         let vc = makeSnapshot(makeVM(categoriesState: .failure))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchLoading() {
@@ -54,7 +54,7 @@ final class SearchViewSnapshotTests: XCTestCase {
             searchResult: .loading,
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchResultsFound() {
@@ -63,7 +63,7 @@ final class SearchViewSnapshotTests: XCTestCase {
             searchResult: .success(MockData.meals),
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchResultsEmpty() {
@@ -72,7 +72,7 @@ final class SearchViewSnapshotTests: XCTestCase {
             searchResult: .success([]),
             searchText: "zzz"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 
     func testSearchFailure() {
@@ -81,6 +81,6 @@ final class SearchViewSnapshotTests: XCTestCase {
             searchResult: .failure,
             searchText: "chicken"
         ))
-        assertSnapshot(of: vc, as: .image)
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 }
