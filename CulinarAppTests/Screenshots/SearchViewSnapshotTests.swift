@@ -22,32 +22,31 @@ final class SearchViewSnapshotTests: XCTestCase {
         vm.searchText = searchText
         return vm
     }
-
+    
     private func makeSnapshot(_ vm: SearchViewModel) -> UIViewController {
         let view = SearchView(viewModel: vm)
             .environment(\.imageLoader, MockImageLoader())
             .environment(\.disableEntryAnimation, true)
             .transaction { $0.animation = nil }
         let vc = UIHostingController(rootView: view)
-        vc.view.frame = UIScreen.main.bounds
         return vc
     }
-
+    
     func testCategoriesLoading() {
         let vc = makeSnapshot(makeVM(categoriesState: .loading))
-        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+        assertSnapshot(of: vc, as: .image(on: .iPhone13))
     }
-
+    
     func testCategoriesLoaded() {
         let vc = makeSnapshot(makeVM(categoriesState: .success(MockData.categories)))
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
-
+    
     func testCategoriesFailure() {
         let vc = makeSnapshot(makeVM(categoriesState: .failure))
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
-
+    
     func testSearchLoading() {
         let vc = makeSnapshot(makeVM(
             categoriesState: .success(MockData.categories),
@@ -56,7 +55,7 @@ final class SearchViewSnapshotTests: XCTestCase {
         ))
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
-
+    
     func testSearchResultsFound() {
         let vc = makeSnapshot(makeVM(
             categoriesState: .success(MockData.categories),
@@ -65,7 +64,7 @@ final class SearchViewSnapshotTests: XCTestCase {
         ))
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
-
+    
     func testSearchResultsEmpty() {
         let vc = makeSnapshot(makeVM(
             categoriesState: .success(MockData.categories),
@@ -74,7 +73,7 @@ final class SearchViewSnapshotTests: XCTestCase {
         ))
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
-
+    
     func testSearchFailure() {
         let vc = makeSnapshot(makeVM(
             categoriesState: .success(MockData.categories),
@@ -84,3 +83,4 @@ final class SearchViewSnapshotTests: XCTestCase {
         assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
     }
 }
+

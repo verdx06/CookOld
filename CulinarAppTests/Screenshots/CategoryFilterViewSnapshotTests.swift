@@ -30,7 +30,6 @@ final class CategoryFilterViewSnapshotTests: XCTestCase {
             .environment(\.disableEntryAnimation, true)
             .transaction { $0.animation = nil }
         let vc = UIHostingController(rootView: view)
-        vc.view.frame = UIScreen.main.bounds
         return vc
     }
 

@@ -17,8 +17,6 @@ final class CardSnapshotTests: XCTestCase
             .environment(\.imageLoader, MockImageLoader())
             .transaction { $0.animation = nil }
         let vc = UIHostingController(rootView: hosted)
-        vc.view.frame = UIScreen.main.bounds
-
         return vc
     }
 
