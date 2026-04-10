@@ -54,8 +54,14 @@ struct Meal: Decodable, Identifiable {
         strYoutube                  = try container.decodeIfPresent(String.self, forKey: .init("strYoutube"))
         strSource                   = try container.decodeIfPresent(String.self, forKey: .init("strSource"))
         strImageSource              = try container.decodeIfPresent(String.self, forKey: .init("strImageSource"))
-        strCreativeCommonsConfirmed = try container.decodeIfPresent(String.self, forKey: .init("strCreativeCommonsConfirmed"))
-        dateModified                = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
+        strCreativeCommonsConfirmed = try container
+            .decodeIfPresent(
+                String.self,
+                forKey: .init(
+                    "strCreativeCommonsConfirmed"
+                )
+            )
+        dateModified = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
 
         ingredients = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strIngredient\(index)"))
