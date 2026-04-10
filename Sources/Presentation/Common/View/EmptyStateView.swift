@@ -9,8 +9,11 @@ import SwiftUI
 
 struct EmptyStateView: View
 {
+    @Environment(\.disableEntryAnimation) private var disableEntryAnimation
     @State private var isAnimating = false
     @State private var appeared = false
+
+    private var isAppeared: Bool { disableEntryAnimation || appeared }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -29,8 +32,8 @@ struct EmptyStateView: View
                         value: isAnimating
                     )
             }
-            .scaleEffect(appeared ? 1.0 : 0.6)
-            .opacity(appeared ? 1.0 : 0)
+            .scaleEffect(isAppeared ? 1.0 : 0.6)
+            .opacity(isAppeared ? 1.0 : 0)
             .animation(.spring(response: 0.4, dampingFraction: 0.6), value: appeared)
 
             VStack(spacing: 6) {
@@ -42,8 +45,8 @@ struct EmptyStateView: View
                     .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
             }
-            .opacity(appeared ? 1.0 : 0)
-            .offset(y: appeared ? 0 : 8)
+            .opacity(isAppeared ? 1.0 : 0)
+            .offset(y: isAppeared ? 0 : 8)
             .animation(.easeOut(duration: 0.35).delay(0.15), value: appeared)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

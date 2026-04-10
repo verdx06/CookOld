@@ -19,7 +19,7 @@ struct CategoryGridSection: View
                 GridItem(.flexible()),
                 GridItem(.flexible())
             ], spacing: 12) {
-                ForEach(categories, id: \.id) { category in
+                ForEach(Array(categories.enumerated()), id: \.element.id) { index, category in
                     NavigationLink(
                         destination: CategoryFilterView(
                             viewModel:
@@ -35,6 +35,7 @@ struct CategoryGridSection: View
                             .transition(.opacity.combined(with: .scale(scale: 0.9)))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("categoryCard_\(index)")
                 }
             }
             .padding(.horizontal)

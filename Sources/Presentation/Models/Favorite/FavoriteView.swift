@@ -18,7 +18,7 @@ struct FavoriteView: View {
                     .bold()
                     .padding(.horizontal, 16)
                     .padding(.top, 10)
-
+                
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -34,7 +34,7 @@ struct FavoriteView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-
+                
                 if viewModel.filteredMeals.isEmpty {
                     EmptyStateView()
                 } else {
@@ -59,9 +59,37 @@ struct FavoriteView: View {
                         viewModel.load()
                     }
                 }
-            }
-            .onAppear {
-                viewModel.load()
+                
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    TextField("recipe_finder".localized(), text: $viewModel.searchText)
+                    if viewModel.searchText.isEmpty == false {
+                        Button("cancel".localized()) {
+                            viewModel.searchText = ""
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 16)
+                
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        ForEach(viewModel.filteredMeals) { meal in
+                            SmallCardView(viewModel: SmallCardViewModel(
+                                meal: meal,
+                                isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
+                                onToggle: { viewModel.toggle(meal) }
+                            ))
+                        }
+                    }
+                }
+                .onAppear {
+                    viewModel.load()
+                }
             }
         }
     }

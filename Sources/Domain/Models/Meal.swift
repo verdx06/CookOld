@@ -35,6 +35,10 @@ struct Meal: Decodable, Identifiable {
 
     var imageURL: URL? { URL(string: strMealThumb) }
 
+    var ingredientsWithMeasures: [(ingredient: String, measure: String)] {
+        zip(ingredients, measures).map { ($0, $1) }
+    }
+
     // MARK: - Custom Decoder
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
@@ -50,23 +54,17 @@ struct Meal: Decodable, Identifiable {
         strYoutube                  = try container.decodeIfPresent(String.self, forKey: .init("strYoutube"))
         strSource                   = try container.decodeIfPresent(String.self, forKey: .init("strSource"))
         strImageSource              = try container.decodeIfPresent(String.self, forKey: .init("strImageSource"))
-        strCreativeCommonsConfirmed = try container
-            .decodeIfPresent(
-                String.self,
-                forKey: .init(
-                    "strCreativeCommonsConfirmed"
-                )
-            )
-        dateModified = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
+        strCreativeCommonsConfirmed = try container.decodeIfPresent(String.self, forKey: .init("strCreativeCommonsConfirmed"))
+        dateModified                = try container.decodeIfPresent(String.self, forKey: .init("dateModified"))
 
         ingredients = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strIngredient\(index)"))
-            return val.flatMap { $0.isEmpty ? nil : $0 }
+            return val.flatMap { $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }
         }
 
         measures = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strMeasure\(index)"))
-            return val.flatMap { $0.isEmpty ? nil : $0 }
+            return val.flatMap { $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }
         }
     }
 }
