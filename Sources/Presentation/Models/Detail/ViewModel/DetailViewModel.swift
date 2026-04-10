@@ -21,7 +21,8 @@ final class DetailViewModel
 
     var contentState: State = .idle
     var meal: Meal?
-    var isFavorite = false
+
+    var isFavorite: Bool { favouriteViewModel.isLiked(mealId) }
 
     var ingredientRows: [(name: String, measure: String)] {
         guard let meal else { return [] }
@@ -35,17 +36,16 @@ final class DetailViewModel
 
     private let mealId: String
     private let repository: DetailRepository
-    private let favouritesRepository: any FavouritesRepository
+    private let favouriteViewModel: FavoriteViewModel
 
     init(
         mealId: String,
         repository: DetailRepository,
-        favouritesRepository: any FavouritesRepository
+        favouriteViewModel: FavoriteViewModel
     ) {
         self.mealId = mealId
         self.repository = repository
-        self.favouritesRepository = favouritesRepository
-        self.syncFavoriteState()
+        self.favouriteViewModel = favouriteViewModel
     }
 
     func loadContent() async {
@@ -62,7 +62,6 @@ final class DetailViewModel
     func reload() async {
         do {
             self.meal = try await self.repository.getMealDetails(id: self.mealId)
-            self.syncFavoriteState()
             self.contentState = .loaded
         } catch {
             self.contentState = .failed(error.localizedDescription)
@@ -70,20 +69,7 @@ final class DetailViewModel
     }
 
     func toggleFavorite() {
-        if self.isFavorite {
-            self.favouritesRepository.delete(self.mealId)
-            self.isFavorite = false
-            return
-        }
-
         guard let meal else { return }
-        self.favouritesRepository.save(meal)
-        self.isFavorite = true
-    }
-
-    private func syncFavoriteState() {
-        self.isFavorite = self.favouritesRepository
-            .fetchAll()
-            .contains { $0.idMeal == self.mealId }
+        favouriteViewModel.toggleLike(meal)
     }
 }

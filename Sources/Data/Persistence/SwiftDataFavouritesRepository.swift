@@ -11,8 +11,6 @@ final class StubFavouritesRepository: FavouritesRepository {
     func fetchAll() -> [Meal] { [] }
     func save(_ meal: Meal) {}
     func delete(_ id: String) {}
-    func resetSeed() {}
-    func seedIfEmpty() {}
 }
 
 @MainActor
@@ -21,8 +19,6 @@ final class SwiftDataFavouritesRepository: FavouritesRepository {
     private let context: ModelContext
 
     init() {
-        // ModelContainer is SwiftData's engine — it sets up the database file on disk.
-        // You only tell it which models exist; it handles the rest.
         do {
             let container = try ModelContainer(for: FavouriteModel.self)
             self.context = ModelContext(container)

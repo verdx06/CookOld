@@ -20,6 +20,7 @@ struct MainView: View
     let diContainer: DIContainer
     @State var activeTab: CustomTab = .home
     let favoriteViewModel: FavoriteViewModel
+    let dishBuilderViewModel: DishBuilderViewModel
 
     var body: some View {
         TabView(selection: $activeTab) {
@@ -31,8 +32,10 @@ struct MainView: View
                 FavoriteView(viewModel: favoriteViewModel)
             }
 
-            Tab("dish_build_title".localized(), systemImage: "cooktop.fill", value: .dish) {
-                DishBuilderView()
+            Tab("dish_build_title".localized(), systemImage: "frying.pan.fill", value: .dish) {
+                NavigationStack {
+                    DishBuilderView(viewModel: dishBuilderViewModel)
+                }
             }
 
             Tab(value: .search, role: .search) {
@@ -49,5 +52,11 @@ struct MainView: View
 }
 
 #Preview {
-    MainView(diContainer: DIContainer(), favoriteViewModel: FavoriteViewModel(repository: StubFavouritesRepository()))
+    MainView(
+        diContainer: DIContainer(),
+        favoriteViewModel: FavoriteViewModel(
+            repository: StubFavouritesRepository()
+        ),
+        dishBuilderViewModel: DishBuilderViewModel(network: NetworkService())
+    )
 }

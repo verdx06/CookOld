@@ -25,7 +25,8 @@ final class MealAPIService: MealAPIServiceProtocol {
     private let base = "https://www.themealdb.com/api/json/v2/9973533"
 
     func searchMeals(query: String) async throws -> [Meal] {
-        let url = try makeURL("\(base)/search.php?s=\(query)")
+        let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query
+        let url = try makeURL("\(base)/search.php?s=\(encoded)")
         return try await fetch(MealResponse.self, from: url).meals ?? []
     }
 
@@ -35,7 +36,8 @@ final class MealAPIService: MealAPIServiceProtocol {
     }
 
     func getMealsByCategory(_ category: String) async throws -> [Meal] {
-        let url = try makeURL("\(base)/filter.php?c=\(category)")
+        let encoded = category.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? category
+        let url = try makeURL("\(base)/filter.php?c=\(encoded)")
         return try await fetch(MealResponse.self, from: url).meals ?? []
     }
 
