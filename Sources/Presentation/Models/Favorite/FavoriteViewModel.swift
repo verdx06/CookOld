@@ -5,7 +5,7 @@ import SwiftUI
 
 extension EnvironmentValues {
     @Entry var favoriteViewModel: FavoriteViewModel = MainActor.assumeIsolated {
-        FavoriteViewModel(repository: StubFavouritesRepository())
+        FavoriteViewModel(repository: StubFavouritesRepository(), makeDetailViewModel: { _ in fatalError("stub") })
     }
 }
 
@@ -18,9 +18,18 @@ final class FavoriteViewModel {
     private(set) var allMeals: [Meal] = []
     private var toBeRemoved: Set<String> = []
     private let repository: any FavouritesRepository
+    let makeDetailViewModel: (String) -> DetailViewModel
 
-    init(repository: FavouritesRepository) {
+    init(
+        repository: FavouritesRepository,
+        makeDetailViewModel: @escaping (String) -> DetailViewModel
+    ) {
         self.repository = repository
+        self.makeDetailViewModel = makeDetailViewModel
+    }
+
+    func detailViewModel(for mealId: String) -> DetailViewModel {
+        self.makeDetailViewModel(mealId)
     }
 
     // MARK: - Liked state

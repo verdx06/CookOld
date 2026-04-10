@@ -114,7 +114,11 @@ struct DishBuilderView: View
             }
         }
         .navigationDestination(isPresented: $viewModel.showCooked) {
-            CookedView(chosen: viewModel.allChosenIngredients, network: viewModel.network)
+            CookedView(
+                chosen: viewModel.allChosenIngredients,
+                network: viewModel.network,
+                makeDetailViewModel: viewModel.makeDetailViewModel
+            )
         }
         .overlay {
             if showAnimation {
@@ -135,6 +139,6 @@ struct DishBuilderView: View
 }
 
 #Preview {
-    let dbvm = DishBuilderViewModel(network: NetworkService())
+    let dbvm = DishBuilderViewModel(network: NetworkService(), makeDetailViewModel: { _ in fatalError("stub") })
     return DishBuilderView(viewModel: dbvm)
 }

@@ -71,6 +71,21 @@ targets:
         IPHONEOS_DEPLOYMENT_TARGET: 18.0
         SWIFT_VERSION: 5.10
 
+  CulinarAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - CulinarAppUITests
+    dependencies:
+      - target: CulinarApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: ru.vitalijbagautdinov.culinarapp.uitests
+        IPHONEOS_DEPLOYMENT_TARGET: 18.5
+        SWIFT_VERSION: 5.0
+        TEST_TARGET_NAME: CulinarApp
+
 schemes:
   CulinarApp:
     build:
@@ -82,3 +97,4 @@ schemes:
       config: Debug
       targets:
         - CulinarAppTests
+        - CulinarAppUITests

@@ -12,9 +12,10 @@ struct ErrorStateView: View
     /// Если задано, показывается вместо стандартного подзаголовка (например, текст из `HomeViewModel`).
     var detailMessage: String?
     var onRetry: (() -> Void)?
-
-    @State private var isShaking = false
+    @Environment(\.disableEntryAnimation) private var disableEntryAnimation
     @State private var appeared = false
+
+    private var isAppeared: Bool { disableEntryAnimation || appeared }
 
     init(detailMessage: String? = nil, onRetry: (() -> Void)? = nil) {
         self.detailMessage = detailMessage
@@ -31,17 +32,10 @@ struct ErrorStateView: View
                 Image(systemName: "fork.knife")
                     .font(.system(size: 36, weight: .medium))
                     .foregroundStyle(.red.opacity(0.8))
-                    .rotationEffect(.degrees(isShaking ? -12 : 0))
-                    .animation(
-                        .easeInOut(duration: 0.12)
-                        .repeatCount(5, autoreverses: true)
-                        .delay(0.2),
-                        value: isShaking
-                    )
             }
-            .scaleEffect(appeared ? 1.0 : 0.6)
-            .opacity(appeared ? 1.0 : 0)
-            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: appeared)
+            .scaleEffect(isAppeared ? 1.0 : 0.6)
+            .opacity(isAppeared ? 1.0 : 0)
+            .animation(disableEntryAnimation ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: appeared)
 
             VStack(spacing: 6) {
                 Text("search_error".localized())
@@ -54,21 +48,20 @@ struct ErrorStateView: View
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
-            .opacity(appeared ? 1.0 : 0)
-            .offset(y: appeared ? 0 : 8)
-            .animation(.easeOut(duration: 0.35).delay(0.15), value: appeared)
+            .opacity(isAppeared ? 1.0 : 0)
+            .offset(y: isAppeared ? 0 : 8)
+            .animation(disableEntryAnimation ? nil : .easeOut(duration: 0.35).delay(0.15), value: appeared)
 
             if let onRetry = self.onRetry {
                 Button("retry".localized(), action: onRetry)
                     .buttonStyle(.borderedProminent)
-                    .opacity(appeared ? 1.0 : 0)
-                    .animation(.easeOut(duration: 0.35).delay(0.25), value: appeared)
+                    .opacity(isAppeared ? 1.0 : 0)
+                    .animation(disableEntryAnimation ? nil : .easeOut(duration: 0.35).delay(0.25), value: appeared)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             appeared = true
-            isShaking = true
         }
     }
 

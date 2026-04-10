@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class CategoryViewModel
+final class CategoryViewModel: MealListProviding
 {
     private var repository: SearchRepository
     private var searchTask: Task<Void, Error>?
@@ -17,10 +17,20 @@ final class CategoryViewModel
         didSet { scheduleSearch() }
     }
     var searchResult: LoadingState<[Meal]> = .idle
+    private let makeDetailViewModel: (String) -> DetailViewModel
 
-    init(selectedCategory: MealCategory, repository: SearchRepository) {
+    init(
+        selectedCategory: MealCategory,
+         repository: SearchRepository,
+         makeDetailViewModel: @escaping (String) -> DetailViewModel
+    ) {
         self.selectedCategory = selectedCategory
         self.repository = repository
+        self.makeDetailViewModel = makeDetailViewModel
+    }
+
+    func detailViewModel(for mealId: String) -> DetailViewModel {
+        self.makeDetailViewModel(mealId)
     }
 
     func scheduleSearch() {

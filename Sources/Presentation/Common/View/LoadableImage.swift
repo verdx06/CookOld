@@ -37,10 +37,6 @@ struct LoadableImage: View
         .clipped()
         .task {
             guard case .idle = state else { return }
-            if let cached = imageLoader.cachedImage(for: url) {
-                state = .loaded(cached)
-                return
-            }
             state = .loading
             let image = await imageLoader.loadImage(url: url)
             guard Task.isCancelled == false else { return }

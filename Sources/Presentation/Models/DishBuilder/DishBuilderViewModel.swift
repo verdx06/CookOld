@@ -15,9 +15,11 @@ final class DishBuilderViewModel {
     private(set) var chosen: Set<String> = []
     private(set) var state: ResponseStates = .empty
     let network: Network
+    let makeDetailViewModel: (String) -> DetailViewModel
 
-    init(network: Network) {
+    init(network: Network, makeDetailViewModel: @escaping (String) -> DetailViewModel) {
         self.network = network
+        self.makeDetailViewModel = makeDetailViewModel
     }
 
     var chosenIngredients: [Ingredient] {

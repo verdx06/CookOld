@@ -24,15 +24,13 @@ struct SearchBar: View
                 .onSubmit {
                     onSearch()
                 }
-
-            if isFocused {
-                Button(action: {
+                .accessibilityIdentifier("searchBar")
+            if searchText.isEmpty == false {
+                Button("cancel".localized()) {
                     searchText = ""
-                    isFocused = false
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
                 }
+                .foregroundColor(.blue)
+                .accessibilityIdentifier("clearSearchButton")
             }
         }
         .padding(8)

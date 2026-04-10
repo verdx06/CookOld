@@ -1,0 +1,99 @@
+//
+//  SearchViewSnapshotTests.swift
+//  CulinarAppTests
+//
+//  Created by Варя Черепенникова on 07.04.2026.
+//
+
+import XCTest
+import SnapshotTesting
+import SwiftUI
+@testable import CulinarApp
+
+@MainActor
+final class SearchViewSnapshotTests: XCTestCase {
+    private func makeMockDetailViewModel(_ mealId: String) -> DetailViewModel {
+        DetailViewModel(
+            mealId: mealId,
+            repository: MockDetailRepository(),
+            favouritesRepository: MockFavouritesRepository()
+        )
+    }
+
+    private func makeVM(
+        categoriesState: SearchViewModel.LoadingState<[MealCategory]> = .idle,
+        searchResult: SearchViewModel.LoadingState<[Meal]> = .idle,
+        searchText: String = ""
+    ) -> SearchViewModel {
+        let vm = SearchViewModel(
+            repository: MockSearchRepository(),
+            makeDetailViewModel: makeMockDetailViewModel,
+            autoLoad: false
+        )
+        vm.categoriesState = categoriesState
+        vm.searchResult = searchResult
+        vm.searchText = searchText
+        return vm
+    }
+    
+    private func makeSnapshot(_ vm: SearchViewModel) -> UIViewController {
+        let view = SearchView(viewModel: vm)
+            .environment(\.imageLoader, MockImageLoader())
+            .environment(\.disableEntryAnimation, true)
+            .transaction { $0.animation = nil }
+        let vc = UIHostingController(rootView: view)
+        return vc
+    }
+    
+    func testCategoriesLoading() {
+        let vc = makeSnapshot(makeVM(categoriesState: .loading))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testCategoriesLoaded() {
+        let vc = makeSnapshot(makeVM(categoriesState: .success(MockData.categories)))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testCategoriesFailure() {
+        let vc = makeSnapshot(makeVM(categoriesState: .failure))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testSearchLoading() {
+        let vc = makeSnapshot(makeVM(
+            categoriesState: .success(MockData.categories),
+            searchResult: .loading,
+            searchText: "chicken"
+        ))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testSearchResultsFound() {
+        let vc = makeSnapshot(makeVM(
+            categoriesState: .success(MockData.categories),
+            searchResult: .success(MockData.meals),
+            searchText: "chicken"
+        ))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testSearchResultsEmpty() {
+        let vc = makeSnapshot(makeVM(
+            categoriesState: .success(MockData.categories),
+            searchResult: .success([]),
+            searchText: "zzz"
+        ))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+    
+    func testSearchFailure() {
+        let vc = makeSnapshot(makeVM(
+            categoriesState: .success(MockData.categories),
+            searchResult: .failure,
+            searchText: "chicken"
+        ))
+        assertSnapshot(of: vc, as: .image(precision: 0.98, perceptualPrecision: 0.98))
+    }
+}
+

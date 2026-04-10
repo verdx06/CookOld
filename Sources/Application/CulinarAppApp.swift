@@ -8,7 +8,6 @@ import SwiftUI
 
 @main
 struct CulinarAppApp: App {
-
     private let diContainer = DIContainer()
 
     var body: some Scene {

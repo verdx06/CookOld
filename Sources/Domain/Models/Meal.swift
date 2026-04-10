@@ -37,6 +37,10 @@ struct Meal: Decodable, Identifiable {
 
     var imageURL: URL? { URL(string: strMealThumb) }
 
+    var ingredientsWithMeasures: [(ingredient: String, measure: String)] {
+        zip(ingredients, measures).map { ($0, $1) }
+    }
+
     // MARK: - Custom Decoder
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
@@ -63,13 +67,12 @@ struct Meal: Decodable, Identifiable {
 
         ingredients = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strIngredient\(index)"))
-            return val.flatMap { $0.isEmpty ? nil : $0 }
+            return val.flatMap { $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }
         }
 
         measures = (1...20).compactMap { index in
             let val = try? container.decodeIfPresent(String.self, forKey: .init("strMeasure\(index)"))
-
-            return val.flatMap { $0.isEmpty ? nil : $0 }
+            return val.flatMap { $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }
         }
     }
 

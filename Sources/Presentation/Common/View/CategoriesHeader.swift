@@ -11,9 +11,9 @@ struct CategoriesHeader: View
 {
     var body: some View {
         Text("categories".localized())
-            .font(.title2)
-            .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.title.bold())
             .padding(.horizontal, 16)
+            .padding(.top, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

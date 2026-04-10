@@ -11,6 +11,7 @@ struct CookedView: View {
     var chosen: [String]
     @State private(set) var state: ResponseStates = .empty
     let network: Network
+    let makeDetailViewModel: (String) -> DetailViewModel
 
     @Environment(\.favoriteViewModel) private var favoriteViewModel
 
@@ -34,10 +35,15 @@ struct CookedView: View {
                     LazyVStack(spacing: 16) {
                         ForEach(state.allMeals) { meal in
                             let stamped = favoriteViewModel.stamped(meal)
-                            CardDishView(meal: stamped) {
-                                favoriteViewModel.toggleLike(meal)
+                            NavigationLink {
+                                DetailView(viewModel: makeDetailViewModel(meal.idMeal))
+                            } label: {
+                                CardDishView(meal: stamped) {
+                                    favoriteViewModel.toggleLike(meal)
+                                }
+                                .padding(.horizontal)
                             }
-                            .padding(.horizontal)
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -83,6 +89,7 @@ struct CookedView: View {
 #Preview {
     CookedView(
         chosen: ["Chicken", "Garlic"],
-        network: NetworkService()
+        network: NetworkService(),
+        makeDetailViewModel: { _ in fatalError("stub") }
     )
 }

@@ -29,7 +29,7 @@ struct CategoryFilterView: View
                 if meals.isEmpty {
                     EmptyStateView()
                 } else {
-                    MealListView(meals: meals)
+                    MealListView(viewModel: viewModel, meals: meals)
                         .refreshable {
                             await viewModel.searchMealsInCategory()
                         }
@@ -39,14 +39,13 @@ struct CategoryFilterView: View
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color.yellow, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(viewModel.selectedCategory.name)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
             }
         }
         .task {

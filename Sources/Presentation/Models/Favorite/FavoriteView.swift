@@ -17,7 +17,6 @@ struct FavoriteView: View
                 .font(.largeTitle)
                 .bold()
                 .padding(.horizontal, 16)
-                .padding(.top, 10)
 
             HStack {
                 Image(systemName: "magnifyingglass")
@@ -61,5 +60,5 @@ struct FavoriteView: View
 
 #Preview {
     let repository = SwiftDataFavouritesRepository()
-    FavoriteView(viewModel: FavoriteViewModel(repository: repository))
+    FavoriteView(viewModel: FavoriteViewModel(repository: repository, makeDetailViewModel: { _ in fatalError("stub") }))
 }

@@ -30,13 +30,3 @@ struct SearchView: View {
         }
     }
 }
-
-#Preview {
-    SearchView(
-        viewModel: SearchViewModel(
-            repository: SearchRepositoryImpl(
-                service: NetworkService()
-            )
-        )
-    )
-}

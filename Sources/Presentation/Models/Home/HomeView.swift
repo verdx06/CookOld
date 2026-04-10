@@ -26,14 +26,15 @@ struct HomeView: View
                 self.loadedContent
             case .failed(let message):
                 ErrorStateView(detailMessage: message) {
-                    Task { await self.viewModel.retry() }
+                    self.viewModel.retry()
                 }
             }
         }
         .onAppear {
-            Task {
-                await self.viewModel.loadContent()
-            }
+            self.viewModel.loadContent()
+        }
+        .onDisappear {
+            self.viewModel.cancelActiveRequests()
         }
     }
 }
@@ -58,7 +59,11 @@ private extension HomeView
                                 } label: {
                                     CardPopularDishView(
                                         image: meal.strMealThumb,
-                                        text: meal.strMeal
+                                        text: meal.strMeal,
+                                        isFavorite: self.viewModel.isFavorite(meal.idMeal),
+                                        onFavoriteTap: {
+                                            self.viewModel.toggleFavorite(meal)
+                                        }
                                     )
                                 }
                             .buttonStyle(.plain)

@@ -22,12 +22,32 @@ final class DIContainer
     private lazy var detailRepository: DetailRepository = DetailRepositoryImpl(network: self.network)
     private(set) lazy var homeViewModel = HomeViewModel(
         repository: self.homeRepository,
+        favouritesRepository: self.favouritesRepository,
         makeDetailViewModel: { [unowned self] mealId in
             self.makeDetailViewModel(mealId: mealId)
         }
     )
-    private(set) lazy var favoriteViewModel = FavoriteViewModel(repository: self.favouritesRepository)
-    private(set) lazy var dishBuilderViewModel = DishBuilderViewModel(network: network)
+    private(set) lazy var favoriteViewModel = FavoriteViewModel(
+        repository: self.favouritesRepository,
+        makeDetailViewModel: { [unowned self] mealId in
+            self.makeDetailViewModel(mealId: mealId)
+        }
+    )
+    private lazy var searchRepository: SearchRepository = ProcessInfo.processInfo.arguments.contains("--uitesting")
+        ? UITestSearchRepository()
+        : SearchRepositoryImpl(service: self.network)
+    private(set) lazy var searchViewModel = SearchViewModel(
+        repository: self.searchRepository,
+        makeDetailViewModel: { [unowned self] mealId in
+            self.makeDetailViewModel(mealId: mealId)
+        }
+    )
+    private(set) lazy var dishBuilderViewModel = DishBuilderViewModel(
+        network: network,
+        makeDetailViewModel: { [unowned self] mealId in
+            self.makeDetailViewModel(mealId: mealId)
+        }
+    )
 
     func makeDetailViewModel(mealId: String) -> DetailViewModel {
         DetailViewModel(

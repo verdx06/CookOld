@@ -39,13 +39,7 @@ struct MainView: View
             }
 
             Tab(value: .search, role: .search) {
-                SearchView(
-                    viewModel: SearchViewModel(
-                        repository: SearchRepositoryImpl(
-                            service: NetworkService()
-                        )
-                    )
-                )
+                SearchView(viewModel: self.diContainer.searchViewModel)
             }
         }
     }
@@ -55,8 +49,15 @@ struct MainView: View
     MainView(
         diContainer: DIContainer(),
         favoriteViewModel: FavoriteViewModel(
-            repository: StubFavouritesRepository()
+            repository: StubFavouritesRepository(),
+            makeDetailViewModel: { _ in fatalError("stub") }
         ),
-        dishBuilderViewModel: DishBuilderViewModel(network: NetworkService())
+        dishBuilderViewModel: DishBuilderViewModel(
+            network: NetworkService(),
+            makeDetailViewModel: {
+                _ in fatalError(
+                    "stub"
+                )
+            })
     )
 }
