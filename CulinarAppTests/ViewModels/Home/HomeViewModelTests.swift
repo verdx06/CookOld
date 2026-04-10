@@ -80,8 +80,10 @@ private extension HomeViewModelTests
             popularResult: popularResult,
             recentResult: recentResult
         )
+        let favouritesRepository = MockFavouritesRepository()
         let viewModel = HomeViewModel(
             repository: repository,
+            favouritesRepository: favouritesRepository,
             makeDetailViewModel: { _ in
                 fatalError("DetailViewModel factory not needed for these tests")
             }
