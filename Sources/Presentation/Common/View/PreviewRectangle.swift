@@ -14,13 +14,28 @@ struct PreviewRectangle: View
     @State private var isAnimating = false
 
     var body: some View {
-        RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
-            .fill(Color(.systemGray5))
-            .opacity(isAnimating ? 0.4 : 1.0)
-            .animation(
-                .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
-                value: isAnimating
-            )
-            .onAppear { isAnimating = true }
+        GeometryReader { geo in
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                .fill(Color(.systemGray5))
+                .overlay(alignment: .leading) {
+                    LinearGradient(
+                        stops: [
+                            .init(color: .clear, location: 0),
+                            .init(color: Color(.systemGray3).opacity(0.7), location: 0.5),
+                            .init(color: .clear, location: 1)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: geo.size.width * 0.5)
+                    .offset(x: isAnimating ? geo.size.width * 1.5 : -geo.size.width * 0.5)
+                    .animation(
+                        .linear(duration: 1.2).repeatForever(autoreverses: false),
+                        value: isAnimating
+                    )
+                }
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+        }
+        .onAppear { isAnimating = true }
     }
 }

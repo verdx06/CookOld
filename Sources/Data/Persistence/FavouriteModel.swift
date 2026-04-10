@@ -22,7 +22,8 @@ final class FavouriteModel {
             strMeal: strMeal,
             strMealThumb: strMealThumb,
             strArea: strArea,
-            strCategory: strCategory
+            strCategory: strCategory,
+            isLiked: true
         )
     }
 }

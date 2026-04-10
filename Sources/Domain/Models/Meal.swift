@@ -31,6 +31,8 @@ struct Meal: Decodable, Identifiable {
     let ingredients: [String]
     let measures: [String]
 
+    var isLiked: Bool = false
+
     var id: String { idMeal }
 
     var imageURL: URL? { URL(string: strMealThumb) }
@@ -73,6 +75,47 @@ struct Meal: Decodable, Identifiable {
             return val.flatMap { $0.trimmingCharacters(in: .whitespaces).isEmpty ? nil : $0 }
         }
     }
+
+    // MARK: - Get flag
+    func getFlag() -> String {
+        switch self.strArea {
+        case "American":   return "🇺🇸"
+        case "British":    return "🇬🇧"
+        case "Canadian":   return "🇨🇦"
+        case "Chinese":    return "🇨🇳"
+        case "Croatian":   return "🇭🇷"
+        case "Dutch":      return "🇳🇱"
+        case "Egyptian":   return "🇪🇬"
+        case "Filipino":   return "🇵🇭"
+        case "French":     return "🇫🇷"
+        case "Greek":      return "🇬🇷"
+        case "Indian":     return "🇮🇳"
+        case "Irish":      return "🇮🇪"
+        case "Italian":    return "🇮🇹"
+        case "Jamaican":   return "🇯🇲"
+        case "Japanese":   return "🇯🇵"
+        case "Kenyan":     return "🇰🇪"
+        case "Malaysian":  return "🇲🇾"
+        case "Mexican":    return "🇲🇽"
+        case "Moroccan":   return "🇲🇦"
+        case "Polish":     return "🇵🇱"
+        case "Portuguese": return "🇵🇹"
+        case "Russian":    return "🇷🇺"
+        case "Spanish":    return "🇪🇸"
+        case "Thai":       return "🇹🇭"
+        case "Tunisian":   return "🇹🇳"
+        case "Turkish":    return "🇹🇷"
+        case "Ukrainian":  return "🇺🇦"
+        case "Vietnamese": return "🇻🇳"
+        default:           return "🏳️"
+        }
+    }
+    // MARK: - meal info
+    func getMealInfo() -> String {
+        let area = self.strArea ?? "unknown".localized()
+        let flag = self.areaFlag
+        return "\(flag) \(area)"
+    }
 }
 
 // MARK: - DynamicKey
@@ -98,14 +141,65 @@ struct CategoryResponse: Decodable {
     let categories: [Category]
 }
 
+// MARK: - Display Helpers
+extension Meal {
+    var mealInfo: String {
+        let area = strArea ?? "unknown".localized()
+        let flag = areaFlag
+        return "\(flag) \(area)"
+    }
+
+    var areaFlag: String {
+        switch strArea {
+        case "American":   return "🇺🇸"
+        case "British":    return "🇬🇧"
+        case "Canadian":   return "🇨🇦"
+        case "Chinese":    return "🇨🇳"
+        case "Croatian":   return "🇭🇷"
+        case "Dutch":      return "🇳🇱"
+        case "Egyptian":   return "🇪🇬"
+        case "Filipino":   return "🇵🇭"
+        case "French":     return "🇫🇷"
+        case "Greek":      return "🇬🇷"
+        case "Indian":     return "🇮🇳"
+        case "Irish":      return "🇮🇪"
+        case "Italian":    return "🇮🇹"
+        case "Jamaican":   return "🇯🇲"
+        case "Japanese":   return "🇯🇵"
+        case "Kenyan":     return "🇰🇪"
+        case "Malaysian":  return "🇲🇾"
+        case "Mexican":    return "🇲🇽"
+        case "Moroccan":   return "🇲🇦"
+        case "Polish":     return "🇵🇱"
+        case "Portuguese": return "🇵🇹"
+        case "Russian":    return "🇷🇺"
+        case "Spanish":    return "🇪🇸"
+        case "Thai":       return "🇹🇭"
+        case "Tunisian":   return "🇹🇳"
+        case "Turkish":    return "🇹🇷"
+        case "Ukrainian":  return "🇺🇦"
+        case "Vietnamese": return "🇻🇳"
+        default:           return "🏳️"
+        }
+    }
+}
+
 // MARK: - Preview / Testing
 extension Meal {
-    init(idMeal: String, strMeal: String, strMealThumb: String, strArea: String? = nil, strCategory: String? = nil) {
+    init(
+        idMeal: String,
+        strMeal: String,
+        strMealThumb: String,
+        strArea: String? = nil,
+        strCategory: String? = nil,
+        isLiked: Bool = false
+    ) {
         self.idMeal = idMeal
         self.strMeal = strMeal
         self.strMealThumb = strMealThumb
         self.strArea = strArea
         self.strCategory = strCategory
+        self.isLiked = isLiked
         self.strMealAlternate = nil
         self.strInstructions = nil
         self.strTags = nil

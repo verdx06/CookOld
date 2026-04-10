@@ -7,90 +7,58 @@
 
 import SwiftUI
 
-struct FavoriteView: View {
+struct FavoriteView: View
+{
     @State var viewModel: FavoriteViewModel
 
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("favourite_title".localized())
-                    .font(.largeTitle)
-                    .bold()
-                    .padding(.horizontal, 16)
-                    .padding(.top, 10)
-
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("recipe_finder".localized(), text: $viewModel.searchText)
-                    if viewModel.searchText.isEmpty == false {
-                        Button("cancel".localized()) {
-                            viewModel.searchText = ""
-                        }
-                        .foregroundColor(.blue)
-                    }
-                }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
+        VStack(alignment: .leading, spacing: 16) {
+            Text(.favouriteTitle)
+                .font(.largeTitle)
+                .bold()
                 .padding(.horizontal, 16)
 
-                if viewModel.filteredMeals.isEmpty {
-                    EmptyStateView()
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            ForEach(viewModel.filteredMeals) { meal in
-                                NavigationLink {
-                                    DetailView(viewModel: viewModel.detailViewModel(for: meal.idMeal))
-                                } label: {
-                                    SmallCardView(viewModel: SmallCardViewModel(
-                                        meal: meal,
-                                        isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
-                                        onToggle: { viewModel.toggle(meal) }
-                                    ))
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                TextField("recipe_finder".localized(), text: $viewModel.searchText)
+                if viewModel.searchText.isEmpty == false {
+                    Button(.cancel) {
+                        viewModel.searchText = ""
                     }
-                    .scrollDismissesKeyboard(.immediately)
-                    .refreshable {
-                        viewModel.load()
-                    }
+                    .foregroundColor(.blue)
                 }
-
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("recipe_finder".localized(), text: $viewModel.searchText)
-                    if viewModel.searchText.isEmpty == false {
-                        Button("cancel".localized()) {
-                            viewModel.searchText = ""
-                        }
-                        .foregroundColor(.blue)
-                    }
-                }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 16)
-
+            }
+            .padding(12)
+            .background(Color(.systemGray6))
+            .cornerRadius(10)
+            .padding(.horizontal, 16)
+            if viewModel.filteredMeals.isEmpty {
+                EmptyStateView()
+            } else {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(viewModel.filteredMeals) { meal in
-                            SmallCardView(viewModel: SmallCardViewModel(
-                                meal: meal,
-                                isLiked: viewModel.mealToBeRemoved(meal.idMeal) == false,
+                            FavouriteCardView(
+                                meal: viewModel.stamped(meal),
                                 onToggle: { viewModel.toggle(meal) }
-                            ))
+                            )
                         }
                     }
                 }
-                .onAppear {
+                .scrollDismissesKeyboard(.immediately)
+                .refreshable {
                     viewModel.load()
                 }
             }
         }
+        .onAppear {
+            viewModel.load()
+        }
     }
+}
+
+#Preview {
+    let repository = SwiftDataFavouritesRepository()
+    FavoriteView(viewModel: FavoriteViewModel(repository: repository, makeDetailViewModel: { _ in fatalError("stub") }))
 }

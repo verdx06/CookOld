@@ -23,6 +23,10 @@ final class ImageLoader: ImageLoading
         self.session = session
     }
 
+    func cachedImage(for url: URL) -> UIImage? {
+        cache.get(url: url)
+    }
+
     func loadImage(url: URL) async -> UIImage? {
         if let cached = cache.get(url: url) {
             return cached

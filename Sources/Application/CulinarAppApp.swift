@@ -12,8 +12,13 @@ struct CulinarAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView(diContainer: diContainer, favoriteViewModel: diContainer.favoriteViewModel)
-                .environment(\.imageLoader, diContainer.imageLoader)
+            MainView(
+                diContainer: diContainer,
+                favoriteViewModel: diContainer.favoriteViewModel,
+                dishBuilderViewModel: diContainer.dishBuilderViewModel
+            )
+            .environment(\.imageLoader, diContainer.imageLoader)
+            .environment(\.favoriteViewModel, diContainer.favoriteViewModel)
         }
     }
 }

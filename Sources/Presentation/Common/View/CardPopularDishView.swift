@@ -32,18 +32,18 @@ struct CardPopularDishView: View
     var body: some View {
         let height = self.width * 3 / 2
 
-        ZStack(alignment: .bottom) {
-            AsyncImage(url: URL(string: self.image)) { phase in
-                switch phase {
-                case .success(let fetchedImage):
-                    fetchedImage
-                        .resizable()
-                        .scaledToFill()
-                default:
+        ZStack {
+            Group {
+                if let url = URL(string: self.image) {
+                    LoadableImage(
+                        url: url,
+                        contentMode: .fill
+                    )
+                    .frame(width: width)
+                } else {
                     PreviewRectangle(cornerRadius: 16)
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             LinearGradient(
                 colors: [.black.opacity(0.6), .black.opacity(0.2), .clear],
@@ -81,18 +81,18 @@ struct CardPopularDishView: View
 }
 
 #Preview {
-    HStack(spacing: 12) {
-        CardPopularDishView(
-            image: "https://www.themealdb.com/images/media/meals/1548772567.jpg",
-            text: "Migas",
-            width: 120
-        )
+    ScrollView(.horizontal) {
+        HStack(spacing: 12) {
+            CardPopularDishView(
+                image: "https://www.themealdb.com/images/media/meals/1548772567.jpg",
+                text: "Migas",
+            )
 
-        CardPopularDishView(
-            image: "https://www.themealdb.com/images/media/meals/1548772567.jpg",
-            text: "15-minute chicken & halloumi burgers",
-            width: 120
-        )
+            CardPopularDishView(
+                image: "https://www.themealdb.com/images/media/meals/1548772567.jpg",
+                text: "15-minute chicken & halloumi burgers",
+            )
+        }
+        .padding()
     }
-    .padding()
 }

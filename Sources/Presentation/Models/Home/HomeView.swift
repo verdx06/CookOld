@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View
 {
     @State private var viewModel: HomeViewModel
+    @Environment(\.favoriteViewModel) private var favoriteViewModel
 
     init(viewModel: HomeViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -79,19 +80,13 @@ private extension HomeView
                         .padding(.bottom, 12)
 
                     ForEach(self.viewModel.recentMeals.meals ?? [], id: \.idMeal) { meal in
+                        let stamped = favoriteViewModel.stamped(meal)
                         NavigationLink {
                             DetailView(viewModel: self.viewModel.detailViewModel(for: meal.idMeal))
                         } label: {
-                            CardDishView(
-                                title: meal.strMeal,
-                                image: meal.imageURL,
-                                category: meal.strCategory ?? "",
-                                area: meal.strArea ?? "",
-                                isFavorite: self.viewModel.isFavorite(meal.idMeal),
-                                onFavoriteTap: {
-                                    self.viewModel.toggleFavorite(meal)
-                                }
-                            )
+                            CardDishView(meal: stamped) {
+                                favoriteViewModel.toggleLike(meal)
+                            }
                             .padding()
                         }
                         .buttonStyle(.plain)
@@ -108,4 +103,5 @@ private extension HomeView
 #Preview {
     let container = DIContainer()
     HomeView(viewModel: container.homeViewModel)
+        .environment(\.favoriteViewModel, container.favoriteViewModel)
 }

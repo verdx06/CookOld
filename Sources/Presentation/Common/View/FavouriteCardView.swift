@@ -1,28 +1,30 @@
 import SwiftUI
 
-struct SmallCardView: View {
-    let viewModel: SmallCardViewModel
+struct FavouriteCardView: View {
+    let meal: Meal
+    let onToggle: () -> Void
 
     var body: some View {
         HStack(spacing: 0) {
             Group {
-                if let url = viewModel.meal.imageURL {
-                    LoadableImage(url: url)
-                        .scaledToFill()
+                if let url = URL(string: meal.strMealThumb) {
+                    LoadableImage(url: url, contentMode: .fill)
                 } else {
-                    Image(systemName: "photo")
-                        .foregroundStyle(.secondary)
+                    Image(systemName: "fork.knife")
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(.systemGray5))
                 }
             }
             .frame(width: 100, height: 100)
             .clipped()
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.meal.strMeal)
+                Text(meal.strMeal)
                     .font(.headline)
                     .lineLimit(2)
 
-                Text(viewModel.mealInfo)
+                Text(meal.mealInfo)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -30,9 +32,9 @@ struct SmallCardView: View {
 
             Spacer()
 
-            Button(action: viewModel.toggle) {
-                Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
-                    .foregroundColor(viewModel.isLiked ? .red : .gray)
+            Button(action: onToggle) {
+                Image(systemName: meal.isLiked ? "heart.fill" : "heart")
+                    .foregroundColor(meal.isLiked ? .red : .gray)
                     .font(.system(size: 24, weight: .bold))
                     .frame(width: 44, height: 44)
             }
@@ -46,15 +48,15 @@ struct SmallCardView: View {
 }
 
 #Preview {
-    SmallCardView(viewModel: SmallCardViewModel(
+    FavouriteCardView(
         meal: Meal(
             idMeal: "1",
             strMeal: "Blini Z goyda",
             strMealThumb: "https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg",
             strArea: "Russian",
-            strCategory: "Breakfast"
+            strCategory: "Breakfast",
+            isLiked: true
         ),
-        isLiked: false,
         onToggle: {}
-    ))
+    )
 }

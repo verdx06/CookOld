@@ -10,6 +10,8 @@ import SwiftUI
 struct LoadableImage: View
 {
     let url: URL
+    var contentMode: ContentMode = .fill
+    var imagePadding: CGFloat = 0
     @State private var state: LoadingState = .idle
     @Environment(\.imageLoader) private var imageLoader
 
@@ -22,8 +24,8 @@ struct LoadableImage: View
             case .loaded(let image):
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .aspectRatio(contentMode: contentMode)
+                    .padding(imagePadding)
             case .failed:
                 PreviewRectangle(cornerRadius: 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -37,10 +39,7 @@ struct LoadableImage: View
             guard case .idle = state else { return }
             state = .loading
             let image = await imageLoader.loadImage(url: url)
-            guard Task.isCancelled == false else {
-                state = .idle
-                return
-            }
+            guard Task.isCancelled == false else { return }
             state = image.map { .loaded($0) } ?? .failed
         }
     }

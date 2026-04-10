@@ -19,14 +19,7 @@ struct MealListView: View
                     NavigationLink {
                         DetailView(viewModel: viewModel.detailViewModel(for: meal.idMeal))
                     } label: {
-                        CardDishView(
-                            title: meal.strMeal,
-                            image: meal.imageURL,
-                            category: meal.strCategory ?? "",
-                            area: meal.strArea ?? "",
-                            isFavorite: false,
-                            onFavoriteTap: {}
-                        )
+                        CardDishView(meal: meal) {}
                     }
                     .buttonStyle(.plain)
                 }
