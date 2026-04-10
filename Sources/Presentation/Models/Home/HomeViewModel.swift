@@ -24,19 +24,36 @@ final class HomeViewModel
     var recentMeals = MealResponse(meals: [])
 
     private let repository: HomeRepository
+    private let favouritesRepository: any FavouritesRepository
     private let makeDetailViewModel: (String) -> DetailViewModel
     private var loadingTask: Task<Void, Never>?
 
     init(
         repository: HomeRepository,
+        favouritesRepository: any FavouritesRepository,
         makeDetailViewModel: @escaping (String) -> DetailViewModel
     ) {
         self.repository = repository
+        self.favouritesRepository = favouritesRepository
         self.makeDetailViewModel = makeDetailViewModel
     }
 
     func detailViewModel(for mealId: String) -> DetailViewModel {
         self.makeDetailViewModel(mealId)
+    }
+
+    func isFavorite(_ mealId: String) -> Bool {
+        self.favouritesRepository
+            .fetchAll()
+            .contains { $0.idMeal == mealId }
+    }
+
+    func toggleFavorite(_ meal: Meal) {
+        if self.isFavorite(meal.idMeal) {
+            self.favouritesRepository.delete(meal.idMeal)
+            return
+        }
+        self.favouritesRepository.save(meal)
     }
 
     func loadContent() {

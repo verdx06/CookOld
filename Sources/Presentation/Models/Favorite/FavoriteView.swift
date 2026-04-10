@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavoriteView: View {
     @State var viewModel: FavoriteViewModel
-    
+
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
@@ -18,7 +18,7 @@ struct FavoriteView: View {
                     .bold()
                     .padding(.horizontal, 16)
                     .padding(.top, 10)
-                
+
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -34,7 +34,7 @@ struct FavoriteView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                
+
                 if viewModel.filteredMeals.isEmpty {
                     EmptyStateView()
                 } else {
@@ -59,7 +59,7 @@ struct FavoriteView: View {
                         viewModel.load()
                     }
                 }
-                
+
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -75,7 +75,7 @@ struct FavoriteView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                
+
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(viewModel.filteredMeals) { meal in

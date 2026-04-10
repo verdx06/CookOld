@@ -58,7 +58,11 @@ private extension HomeView
                                 } label: {
                                     CardPopularDishView(
                                         image: meal.strMealThumb,
-                                        text: meal.strMeal
+                                        text: meal.strMeal,
+                                        isFavorite: self.viewModel.isFavorite(meal.idMeal),
+                                        onFavoriteTap: {
+                                            self.viewModel.toggleFavorite(meal)
+                                        }
                                     )
                                 }
                             .buttonStyle(.plain)
@@ -83,8 +87,10 @@ private extension HomeView
                                 image: meal.imageURL,
                                 category: meal.strCategory ?? "",
                                 area: meal.strArea ?? "",
-                                isFavorite: false,
-                                onFavoriteTap: {}
+                                isFavorite: self.viewModel.isFavorite(meal.idMeal),
+                                onFavoriteTap: {
+                                    self.viewModel.toggleFavorite(meal)
+                                }
                             )
                             .padding()
                         }

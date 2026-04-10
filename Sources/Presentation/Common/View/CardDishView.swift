@@ -107,7 +107,7 @@ private extension CardDishView
                 .padding(8)
                 .background(.ultraThinMaterial, in: Circle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.borderless)
         .accessibilityLabel("Favorite")
     }
 }

@@ -22,6 +22,7 @@ final class DIContainer
     private lazy var detailRepository: DetailRepository = DetailRepositoryImpl(network: self.network)
     private(set) lazy var homeViewModel = HomeViewModel(
         repository: self.homeRepository,
+        favouritesRepository: self.favouritesRepository,
         makeDetailViewModel: { [unowned self] mealId in
             self.makeDetailViewModel(mealId: mealId)
         }
